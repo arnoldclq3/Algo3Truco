@@ -10,3 +10,22 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Evita Archivos temporales
+*~
+
+# Evita informes de Ant (Usa la nomenclatura Inicial de los test)
+TEST-algo3.*
+
+# Evita la Carpeta Build
+build
+
+# Evita la carpeta bin
+bin
+
+# archivos classpath y project
+.classpath
+.project
+
+# Sin archivos .html
+*.html
