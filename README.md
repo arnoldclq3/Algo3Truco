@@ -7,6 +7,7 @@ __Integrantes del Grupo:__
 | Sebastián Outeiro     | 92108        |
 | Arnold Colque         | 94181        |
 | Andres Cauci          | 91073        |
+| Juan Manuel Zaragoza  | 92308        |
 
 __________
 ### Notas  
