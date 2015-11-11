@@ -37,7 +37,11 @@ public class Mazo {
 		Random random = new Random();
 		int posicion = (random.nextInt(40));
 		
-		return this.cartas.remove(posicion);
+		return cartas.remove(posicion);
+	}
+	public boolean contieneEstaCarta(Carta unaCarta) {
+		
+		return cartas.contains(unaCarta);
 	}
 
 }

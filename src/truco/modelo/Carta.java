@@ -20,5 +20,19 @@ public class Carta {
 		
 		return this.valor;
 	}
-
+	
+	@Override
+	public boolean equals(Object objeto){
+		
+		if ( objeto instanceof Carta ) {
+			
+			Carta unaCarta = (Carta)objeto;
+			return ( this.valor == unaCarta.valor && this.palo == unaCarta.palo );
+			
+		} else {
+			
+			return false;
+		}
+	}
+	
 }

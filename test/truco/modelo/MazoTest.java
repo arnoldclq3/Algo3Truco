@@ -28,5 +28,15 @@ public class MazoTest {
 		
 		assertEquals(39,miMazo.cantidadCartas());
 	}
+	
+	@Test
+	public void testElMazoNoContieneLasCartasOchoYNueve() {
+		
+		Carta unaCarta = new Carta(9,"oro");
+		Carta otraCarta = new Carta(8,"espada");
+		
+		assertFalse(miMazo.contieneEstaCarta(unaCarta));
+		assertFalse(miMazo.contieneEstaCarta(otraCarta));
+	}
 
 }

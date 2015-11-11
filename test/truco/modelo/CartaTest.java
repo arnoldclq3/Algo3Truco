@@ -22,5 +22,13 @@ public class CartaTest {
 		
 		assertTrue(miCarta.mismoPalo(otraCarta));
 	}
+	
+	@Test
+	public void testCartasDelMismoValorYPaloSonIguales() {
+		
+		Carta otraCarta = new Carta(1,"espada");
+		
+		assertTrue(miCarta.equals(otraCarta));
+	}
 
 }
