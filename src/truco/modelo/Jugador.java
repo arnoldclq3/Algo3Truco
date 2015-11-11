@@ -5,6 +5,7 @@ import java.util.List;
 
 import truco.excepciones.jugador.ElJugadorNoTieneFlor;
 import truco.excepciones.jugador.CartaEnManoInexistenteException;
+import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnManoException;;
 
 public class Jugador {
 	
@@ -16,6 +17,9 @@ public class Jugador {
 	}
 
 	public void nuevaCarta(Carta unaCarta) {
+		if(this.manoDelJugador.size() >= 3){
+			throw new JugadorNoPuedeTenerMasDeTresCartasEnManoException();
+		}
 		this.manoDelJugador.add(unaCarta);
 	}
 

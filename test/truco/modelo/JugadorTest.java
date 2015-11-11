@@ -132,5 +132,14 @@ public class JugadorTest {
 		
 		assertFalse(cartas.contains(new Carta(10,"copa")));
 	}
+	
+	@Test (expected = RuntimeException.class)
+	public void testJugadorQuiereAgarrarMasDeTresCartasYLanzaExcepcion() {
+		
+		this.jugador.nuevaCarta( new Carta(1,"espada") );
+		this.jugador.nuevaCarta( new Carta(7,"espada") );
+		this.jugador.nuevaCarta( new Carta(6,"oro") );
+		this.jugador.nuevaCarta( new Carta(12,"oro") );
+	}
 
 }
