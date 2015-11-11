@@ -2,6 +2,8 @@ package truco.modelo;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -114,6 +116,21 @@ public class JugadorTest {
 		this.jugador.nuevaCarta( new Carta(6,"oro") );
 		
 		this.jugador.puntajeFlor();
+	}
+	
+	@Test
+	public void testUnJugadorTiraLaCartaQueYNoLaTieneMasEnLaMano() {
+
+		this.jugador.nuevaCarta( new Carta(10,"copa") );
+		this.jugador.nuevaCarta( new Carta(11,"copa") );
+		this.jugador.nuevaCarta( new Carta(1,"copa") );
+		
+		List<Carta> cartas = this.jugador.obtenerCartasEnMano();
+		this.jugador.tirarCarta(cartas.get(0));
+		
+		cartas = this.jugador.obtenerCartasEnMano();
+		
+		assertFalse(cartas.contains(new Carta(10,"copa")));
 	}
 
 }

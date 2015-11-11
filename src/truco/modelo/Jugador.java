@@ -1,8 +1,10 @@
 package truco.modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import truco.excepciones.jugador.ElJugadorNoTieneFlor;
+import truco.excepciones.jugador.CartaEnManoInexistenteException;
 
 public class Jugador {
 	
@@ -61,6 +63,20 @@ public class Jugador {
 				return false;		
 		}
 		return true;
+	}
+	
+	public List<Carta> obtenerCartasEnMano(){
+		return this.manoDelJugador;
+	}
+	
+	public Carta tirarCarta(Carta carta){
+		for (Carta otraCarta : this.manoDelJugador){
+			if(otraCarta.equals(carta)){
+				this.manoDelJugador.remove(otraCarta);
+				return otraCarta;
+			}
+		}
+		throw new CartaEnManoInexistenteException();
 	}
 	
 	
