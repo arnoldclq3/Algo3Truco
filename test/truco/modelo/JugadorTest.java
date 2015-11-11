@@ -134,6 +134,16 @@ public class JugadorTest {
 	}
 	
 	@Test (expected = RuntimeException.class)
+	public void testUnJugadorQuiereTiraUnaCartaQueNoTieneYLanzaExcepcion() {
+
+		this.jugador.nuevaCarta( new Carta(10,"copa") );
+		this.jugador.nuevaCarta( new Carta(11,"copa") );
+		this.jugador.nuevaCarta( new Carta(1,"copa") );
+		
+		this.jugador.tirarCarta( new Carta(1,"oro"));
+	}
+	
+	@Test (expected = RuntimeException.class)
 	public void testJugadorQuiereAgarrarMasDeTresCartasYLanzaExcepcion() {
 		
 		this.jugador.nuevaCarta( new Carta(1,"espada") );
