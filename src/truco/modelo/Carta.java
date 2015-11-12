@@ -21,6 +21,19 @@ public class Carta {
 		return this.valor;
 	}
 	
+	String getNombre() {
+		
+		String nombre;
+		
+		if (this.valor == 1) { 
+			nombre = "ancho" + palo;
+		}else{
+			nombre = this.valor + this.palo;
+		}
+		
+		return nombre;
+	}
+	
 	@Override
 	public boolean equals(Object objeto){
 		
@@ -33,6 +46,5 @@ public class Carta {
 			
 			return false;
 		}
-	}
-	
+	}	
 }

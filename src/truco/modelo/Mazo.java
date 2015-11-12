@@ -1,11 +1,12 @@
 package truco.modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Mazo {
 
-	private ArrayList<Carta> cartas;
+	private List<Carta> cartas;
 	
 	public Mazo() {
 		
@@ -32,13 +33,14 @@ public class Mazo {
 		return cartas.size();
 	}
 	
-	public Carta obtenerCarta() {
+	public Carta repartirCarta() {
 		
 		Random random = new Random();
 		int posicion = (random.nextInt(40));
 		
 		return cartas.remove(posicion);
 	}
+	
 	public boolean contieneEstaCarta(Carta unaCarta) {
 		
 		return cartas.contains(unaCarta);

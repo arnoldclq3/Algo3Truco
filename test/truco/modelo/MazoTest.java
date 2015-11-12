@@ -24,7 +24,7 @@ public class MazoTest {
 	@Test
 	public void testObtenerCartaSacaLaCartaDelMazo() {
 		
-		miMazo.obtenerCarta();
+		miMazo.repartirCarta();
 		
 		assertEquals(39,miMazo.cantidadCartas());
 	}
