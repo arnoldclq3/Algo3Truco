@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import truco.excepciones.jugador.ElJugadorNoTieneFlor;
-import truco.excepciones.jugador.CartaEnManoInexistenteException;
-import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnManoException;;
+import truco.excepciones.jugador.CartaEnManoInexistente;
+import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnMano;;
 
 public class Jugador {
 	
@@ -95,12 +95,12 @@ public class Jugador {
 				return otraCarta;
 			}
 		}
-		throw new CartaEnManoInexistenteException();
+		throw new CartaEnManoInexistente();
 	}
 	
 	public void tomarCarta(Carta unaCarta) {
 		if(this.manoDelJugador.size() >= 3){
-			throw new JugadorNoPuedeTenerMasDeTresCartasEnManoException();
+			throw new JugadorNoPuedeTenerMasDeTresCartasEnMano();
 		}
 		this.manoDelJugador.add(unaCarta);
 	}

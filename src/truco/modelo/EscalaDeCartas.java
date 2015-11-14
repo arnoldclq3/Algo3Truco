@@ -1,74 +1,59 @@
 package truco.modelo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class EscalaDeCartas {
 
-	private List<String> escala;
+	private HashMap<Carta,Integer> escala;
 	
 	public EscalaDeCartas() {
 		
-		this.escala = new ArrayList<String>();
+		this.escala = new HashMap<Carta,Integer>();
 		this.establecerEscala();
 	}
 	
 	public int enfrentarCartas(Carta carta1, Carta carta2) {
 		
-		String nombre1 = carta1.getNombre();
-		String nombre2 = carta2.getNombre();
+		int valorCarta1 = this.escala.get(carta1);
+		int valorCarta2 = this.escala.get(carta2);
 		
-		int valor1=0;
-		int valor2=0;
-		int i = 0;
-	
-		for(String valor : escala){
-			
-			if (valor.matches("(.*)"+nombre1+"(.*)")) {
-				valor1 = i;
-			}
-			
-			if (valor.matches("(.*)"+nombre2+"(.*)")) {
-				valor2 = i;
-			}
-			
-			i++;
-		}
-		
-		if ( valor1 < valor2 ){ return 1;}
-		if ( valor1 > valor2 ){ return -1;}
-		
-		return 0;
+		if (valorCarta1 == valorCarta2)
+			return 0;
+		if (valorCarta1 > valorCarta2)
+			return 1;
+		return -1;
 	}
+	
+	
+	private void agregarTodasLasCartasConValor( int valorCarta ,int valorEscala ){
+		
+		for ( Palo unPalo : Palo.values() )
+			this.escala.put( new Carta( valorCarta , unPalo ) , valorEscala );
+	}
+	
 	
 	private void establecerEscala() {
 		
-		escala.add("anchoespada");
+		// Los 4 tendran el valor 1, los 5 el valor 2, y los 6 el valor 3
+		for (int valorCarta = 4 ; valorCarta < 7 ; valorCarta ++)
+			this.agregarTodasLasCartasConValor( valorCarta  , valorCarta - 3 );
+		// Se agregan el 7 de Basto y 7 de Copa con valor 4.
+		this.escala.put( new Carta( 7 , Palo.BASTO ) , 4 );
+		this.escala.put( new Carta( 7 , Palo.COPA ) , 4 );
+		// Se agrega a las escalas (Key : Value) = (10 : 5) (11 : 6) (12 : 7)
+		for (int valorCarta = 10 ; valorCarta <= 12 ; valorCarta ++)
+			this.agregarTodasLasCartasConValor(valorCarta, valorCarta - 5);
+		// Se agregan el 1 de Oro y 7 de Copa con valor 8.
+		this.escala.put( new Carta( 1 , Palo.ORO ) , 8 );
+		this.escala.put( new Carta( 1 , Palo.COPA ) , 8 );
+		// Se agrega a las escalas (Key : Value) = (2 : 9) (3 : 10)
+		for (int valorCarta = 2 ; valorCarta <= 3 ; valorCarta ++)
+			this.agregarTodasLasCartasConValor(valorCarta, valorCarta + 7);
+		// Se agregan las 4 Cartas mas valiosas con los mayores valores de la escala
+		this.escala.put( new Carta( 7 , Palo.ORO ) , 11 );
+		this.escala.put( new Carta( 7 , Palo.ESPADA ) , 12 );
+		this.escala.put( new Carta( 1 , Palo.BASTO ) , 13 );
+		this.escala.put( new Carta( 1 , Palo.ESPADA ) , 14 );
 		
-		escala.add("anchobasto");
-
-		escala.add("7espada");
-
-		escala.add("7oro");
-
-		escala.add("3espada 3basto 3oro 3copa");
-
-		escala.add("2espada 2basto 2oro 2copa");
-	
-		escala.add("anchooro anchocopa");
-		
-		escala.add("12espada 12basto 12oro 12copa");
-		
-		escala.add("11espada 11basto 11oro 11copa");
-		
-		escala.add("10espada 10basto 10oro 10copa");
-		
-		escala.add("7basto 7copa");
-		
-		escala.add("6espada 6basto 6oro 6copa");
-		
-		escala.add("5espada 5basto 5oro 5copa");
-		
-		escala.add("4espada 4basto 4oro 4copa");
 	}
 }

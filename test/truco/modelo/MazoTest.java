@@ -32,8 +32,8 @@ public class MazoTest {
 	@Test
 	public void testElMazoNoContieneLasCartasOchoYNueve() {
 		
-		Carta unaCarta = new Carta(9,"oro");
-		Carta otraCarta = new Carta(8,"espada");
+		Carta unaCarta = new Carta(9,Palo.ORO);
+		Carta otraCarta = new Carta(8,Palo.ESPADA);
 		
 		assertFalse(miMazo.contieneEstaCarta(unaCarta));
 		assertFalse(miMazo.contieneEstaCarta(otraCarta));

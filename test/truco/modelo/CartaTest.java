@@ -12,13 +12,13 @@ public class CartaTest {
 	@Before
 	public void setup() {
 		
-		this.miCarta = new Carta(1,"espada");
+		this.miCarta = new Carta(1,Palo.ESPADA);
 	}
 	
 	@Test
 	public void testCartaDelMismoPaloDevuelveTrue() {
 		
-		Carta otraCarta = new Carta(7,"espada");
+		Carta otraCarta = new Carta(7,Palo.ESPADA);
 		
 		assertTrue(miCarta.mismoPalo(otraCarta));
 	}
@@ -26,7 +26,7 @@ public class CartaTest {
 	@Test
 	public void testCartasDelMismoValorYPaloSonIguales() {
 		
-		Carta otraCarta = new Carta(1,"espada");
+		Carta otraCarta = new Carta(1,Palo.ESPADA);
 		
 		assertTrue(miCarta.equals(otraCarta));
 	}

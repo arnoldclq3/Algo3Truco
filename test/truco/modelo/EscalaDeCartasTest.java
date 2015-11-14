@@ -18,8 +18,8 @@ public class EscalaDeCartasTest {
 	@Test
 	public void testUnoEspadaGanaAUnoBasto() {
 		
-		Carta carta1 = new Carta(1,"espada");
-		Carta carta2 = new Carta(1,"basto");
+		Carta carta1 = new Carta(1,Palo.ESPADA);
+		Carta carta2 = new Carta(1,Palo.BASTO);
 		
 		int resultado = miEscala.enfrentarCartas(carta1, carta2);
 		
@@ -29,8 +29,8 @@ public class EscalaDeCartasTest {
 	@Test
 	public void testTresCopaEmpataTresBasto() {
 		
-		Carta carta1 = new Carta(3,"copa");
-		Carta carta2 = new Carta(3,"basto");
+		Carta carta1 = new Carta(3,Palo.COPA);
+		Carta carta2 = new Carta(3,Palo.BASTO);
 		
 		int resultado = miEscala.enfrentarCartas(carta2, carta1);
 		

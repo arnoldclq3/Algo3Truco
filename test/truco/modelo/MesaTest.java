@@ -18,13 +18,13 @@ public class MesaTest {
 		this.segundoJugador = new Jugador();
 		this.mesa = new Mesa(primerJugador,segundoJugador);
 		
-		primerJugador.tomarCarta( new Carta(5,"espada") );
-		primerJugador.tomarCarta( new Carta(3,"espada") );
-		primerJugador.tomarCarta( new Carta(7,"espada") );
+		primerJugador.tomarCarta( new Carta(5,Palo.ESPADA) );
+		primerJugador.tomarCarta( new Carta(3,Palo.ESPADA) );
+		primerJugador.tomarCarta( new Carta(7,Palo.ESPADA) );
 		
-		segundoJugador.tomarCarta( new Carta(1,"basto") );
-		segundoJugador.tomarCarta( new Carta(6,"basto") );
-		segundoJugador.tomarCarta( new Carta(7,"basto") );
+		segundoJugador.tomarCarta( new Carta(1,Palo.BASTO) );
+		segundoJugador.tomarCarta( new Carta(6,Palo.BASTO) );
+		segundoJugador.tomarCarta( new Carta(7,Palo.BASTO) );
 	}
 	
 	@Test

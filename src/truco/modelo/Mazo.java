@@ -12,22 +12,16 @@ public class Mazo {
 		
 		this.cartas = new ArrayList<Carta>();
 		
-		for (int i=1; i<=7; i++) {
-			
-			this.cartas.add(new Carta(i,"espada"));
-			this.cartas.add(new Carta(i,"basto"));
-			this.cartas.add(new Carta(i,"oro"));
-			this.cartas.add(new Carta(i,"copa"));
-		}
+		for (int valorCarta = 1; valorCarta <= 7; valorCarta ++)
+			for (Palo paloCarta : Palo.values() )
+				this.cartas.add( new Carta(valorCarta,paloCarta) );
 		
-		for (int i=10; i<=12; i++) {
-			
-			this.cartas.add(new Carta(i,"espada"));
-			this.cartas.add(new Carta(i,"basto"));
-			this.cartas.add(new Carta(i,"oro"));
-			this.cartas.add(new Carta(i,"copa"));
-		}
+		for (int valorCarta = 10; valorCarta <= 12; valorCarta ++)
+			for (Palo paloCarta : Palo.values() )
+				this.cartas.add( new Carta(valorCarta,paloCarta) );
 	}
+	
+	
 	public int cantidadCartas() {
 		
 		return cartas.size();

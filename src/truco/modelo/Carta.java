@@ -3,9 +3,9 @@ package truco.modelo;
 public class Carta {
 
 	private int valor;
-	private String palo;
+	private Palo palo;
 	
-	public Carta(int valor, String palo) {
+	public Carta(int valor, Palo palo) {
 		
 		this.valor = valor;
 		this.palo = palo;
@@ -21,7 +21,8 @@ public class Carta {
 		return this.valor;
 	}
 	
-	String getNombre() {
+	/*
+	public String getNombre() {
 		
 		String nombre;
 		
@@ -33,18 +34,24 @@ public class Carta {
 		
 		return nombre;
 	}
+	*/
 	
 	@Override
-	public boolean equals(Object objeto){
+	public boolean equals(Object unObjeto){
 		
-		if ( objeto instanceof Carta ) {
-			
-			Carta unaCarta = (Carta)objeto;
-			return ( this.valor == unaCarta.valor && this.palo == unaCarta.palo );
-			
-		} else {
-			
+		if ( ! ( unObjeto  instanceof Carta ) )
 			return false;
-		}
-	}	
+			
+		Carta unaCarta = (Carta)unObjeto;
+		return ( this.valor == unaCarta.valor && this.palo == unaCarta.palo );
+			
+	
+	}
+	
+	@Override
+	public int hashCode(){
+		return ( this.valor * 51 + this.palo.valor() ) * 17;
+		
+	}
+	
 }
