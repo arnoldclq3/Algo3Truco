@@ -2,12 +2,12 @@
 
 __Integrantes del Grupo:__   
 
-| Nombre                | Padrón       |
-| --------------------- |--------------| 
-| Sebastián Outeiro     | 92108        |
-| Arnold Colque         | 94181        |
-| Andres Cauci          | 91073        |
-| Juan Manuel Zaragoza  | 92308        |
+| Nombre                | Padrón       | E-mail                  |
+| --------------------- |--------------|------------------------ |
+| Sebastián Outeiro     | 92108        | sebas_out@hotmail.com   |
+| Arnold Colque         | 94181        | arnoldclq3@gmail.com    |
+| Andres Cauci          | 91073        | andres.cauci@gmail.com  |
+| Juan Manuel Zaragoza  | 92308        | juanmanuelzar@gmail.com |
 
 __________
 ### Notas  
