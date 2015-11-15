@@ -1,0 +1,60 @@
+[1mdiff --git a/src/truco/modelo/Mano.java b/src/truco/modelo/Mano.java[m
+[1mindex 521274f..4ceb4cc 100644[m
+[1m--- a/src/truco/modelo/Mano.java[m
+[1m+++ b/src/truco/modelo/Mano.java[m
+[36m@@ -14,6 +14,11 @@[m [mpublic class Mano {[m
+ [m
+ 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {[m
+ 		[m
+[31m-		cartasJugadas.put(unJugador, unaCarta);[m
+[32m+[m		[32mthis.cartasJugadas.put(unJugador, unaCarta);[m
+[32m+[m	[32m}[m
+[32m+[m
+[32m+[m	[32mpublic Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {[m
+[32m+[m[41m		[m
+[32m+[m		[32mreturn ( this.cartasJugadas.get(unJugador) );[m[41m [m
+ 	}[m
+ }[m
+[1mdiff --git a/src/truco/modelo/Mesa.java b/src/truco/modelo/Mesa.java[m
+[1mindex f1d484e..c964793 100644[m
+[1m--- a/src/truco/modelo/Mesa.java[m
+[1m+++ b/src/truco/modelo/Mesa.java[m
+[36m@@ -31,7 +31,12 @@[m [mpublic class Mesa {[m
+ 	[m
+ 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {[m
+ 		[m
+[31m-		ronda.jugarCarta(unJugador,unaCarta);[m
+[32m+[m		[32mthis.ronda.jugarCarta(unJugador,unaCarta);[m
+[32m+[m	[32m}[m
+[32m+[m[41m	[m
+[32m+[m	[32mpublic Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {[m
+[32m+[m[41m		[m
+[32m+[m		[32mreturn ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) );[m[41m [m
+ 	}[m
+ [m
+ 	public Jugador resultadoEnvido() {[m
+[1mdiff --git a/src/truco/modelo/Ronda.java b/src/truco/modelo/Ronda.java[m
+[1mindex 612d473..9751968 100644[m
+[1m--- a/src/truco/modelo/Ronda.java[m
+[1m+++ b/src/truco/modelo/Ronda.java[m
+[36m@@ -12,12 +12,17 @@[m [mpublic class Ronda {[m
+ 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {[m
+ 		[m
+ 		if ( miMano == null ) {[m
+[31m-			miMano = new ManoPrincipal();[m
+[32m+[m			[32mthis.miMano = new ManoPrincipal();[m
+ 		} else {[m
+[31m-			miMano = new ManoSecundaria();[m
+[32m+[m			[32mthis.miMano = new ManoSecundaria();[m
+ 		}[m
+ 		[m
+ 		miMano.jugarCarta(unJugador,unaCarta);[m
+ 	}[m
+ [m
+[32m+[m	[32mpublic Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {[m
+[32m+[m[41m		[m
+[32m+[m		[32mreturn ( this.miMano.mostrarUltimaCartaJugadaPor(unJugador) );[m
+[32m+[m	[32m}[m
+[32m+[m
+ }[m
+\ No newline at end of file[m

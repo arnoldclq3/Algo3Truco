@@ -31,7 +31,12 @@ public class Mesa {
 	
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
-		ronda.jugarCarta(unJugador,unaCarta);
+		this.ronda.jugarCarta(unJugador,unaCarta);
+	}
+	
+	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
+		
+		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
 	}
 
 	public Jugador resultadoEnvido() {

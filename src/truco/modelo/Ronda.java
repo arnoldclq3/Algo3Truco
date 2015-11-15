@@ -12,12 +12,17 @@ public class Ronda {
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
 		if ( miMano == null ) {
-			miMano = new ManoPrincipal();
+			this.miMano = new ManoPrincipal();
 		} else {
-			miMano = new ManoSecundaria();
+			this.miMano = new ManoSecundaria();
 		}
 		
 		miMano.jugarCarta(unJugador,unaCarta);
+	}
+
+	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
+		
+		return ( this.miMano.mostrarUltimaCartaJugadaPor(unJugador) );
 	}
 
 }

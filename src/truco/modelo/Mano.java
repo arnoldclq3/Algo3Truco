@@ -14,6 +14,11 @@ public class Mano {
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
-		cartasJugadas.put(unJugador, unaCarta);
+		this.cartasJugadas.put(unJugador, unaCarta);
+	}
+
+	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
+		
+		return ( this.cartasJugadas.get(unJugador) ); 
 	}
 }
