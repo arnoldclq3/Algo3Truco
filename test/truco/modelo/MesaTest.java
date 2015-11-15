@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRonda;
+
 public class MesaTest {
 
 	private Mesa mesa;
@@ -50,6 +52,36 @@ public class MesaTest {
 		this.mesa.cantarTantoDeFlor(segundoJugador);
 		
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , primerJugador);
+	}
+	
+	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRonda.class)
+	public void testUnaVezFinalizadoElProcesoDeUnEnvidoNoPuedeVolverseACantarOtroEnvido(){
+		this.mesa.cantarEnvido(primerJugador);
+		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.cantarTantoDeEnvido(primerJugador);
+		this.mesa.cantarTantoDeEnvido(segundoJugador);
+		
+		this.mesa.cantarEnvido(primerJugador);
+	}
+	
+	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRonda.class)
+	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoPuedeCantarseEnvido(){
+		this.mesa.cantarFlor(primerJugador);
+		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.cantarTantoDeFlor(primerJugador);
+		this.mesa.cantarTantoDeFlor(segundoJugador);
+		
+		this.mesa.cantarEnvido(primerJugador);
+	}
+	
+	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRonda.class)
+	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoSePuedeVolverACantarFlor(){
+		this.mesa.cantarFlor(primerJugador);
+		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.cantarTantoDeFlor(primerJugador);
+		this.mesa.cantarTantoDeFlor(segundoJugador);
+		
+		this.mesa.cantarFlor(primerJugador);
 	}
 	
 }

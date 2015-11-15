@@ -3,6 +3,8 @@ package truco.modelo;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRonda;
+
 public class Mesa {
 
 	/*************************************************
@@ -23,6 +25,7 @@ public class Mesa {
 		this.jugadores.add(primerJugador);
 		this.jugadores.add(segundoJugador);
 		this.ronda = new Ronda();
+		this.listadoCantosDelTanto = null;
 	}
 	
 	/*************************************************
@@ -34,15 +37,12 @@ public class Mesa {
 	
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
-		this.ronda.jugarCarta(unJugador,unaCarta);
-	}
-	
-	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
-		
-		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
+		ronda.jugarCarta(unJugador,unaCarta);
 	}
 
 	public void cantarEnvido(Jugador unJugador) {
+		if (this.listadoCantosDelTanto != null)
+			throw new NoSePuedeCantarTantoDosVecesEnUnaRonda();
 		this.listadoCantosDelTanto = new LinkedList<Canto>();
 		Canto envido = new Envido();
 		this.listadoCantosDelTanto.addLast(envido);
@@ -66,6 +66,8 @@ public class Mesa {
 	}
 
 	public void cantarFlor(Jugador unJugador) {
+		if (this.listadoCantosDelTanto != null)
+			throw new NoSePuedeCantarTantoDosVecesEnUnaRonda();
 		this.listadoCantosDelTanto = new LinkedList<Canto>();
 		Canto flor = new Flor();
 		this.listadoCantosDelTanto.addLast(flor);	
