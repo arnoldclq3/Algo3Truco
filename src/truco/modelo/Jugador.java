@@ -19,6 +19,7 @@ public class Jugador {
 	 *************************************************/
 	public Jugador(){
 		this.manoDelJugador = new ArrayList<Carta>();
+	
 	}
 	
 	/*************************************************

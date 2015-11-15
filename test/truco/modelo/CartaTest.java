@@ -15,6 +15,7 @@ public class CartaTest {
 		this.miCarta = new Carta(1,Palo.ESPADA);
 	}
 	
+	
 	@Test
 	public void testCartaDelMismoPaloDevuelveTrue() {
 		
@@ -29,6 +30,24 @@ public class CartaTest {
 		Carta otraCarta = new Carta(1,Palo.ESPADA);
 		
 		assertTrue(miCarta.equals(otraCarta));
+	}
+	
+	@Test
+	public void testElAnchoDeEspadaEsLaCartaMasAlta(){
+		
+		Carta primeraCarta = new Carta(1,Palo.ESPADA);
+		Carta segundaCarta = new Carta(1,Palo.BASTO);
+		
+		assertEquals(miCarta.compararCon(primeraCarta),0);
+		assertEquals(miCarta.compararCon(segundaCarta),1);
+	}
+	
+	@Test
+	public void testElAnchoDeCopaEsMenorQueElAnchoDeEspada(){
+		
+		Carta primeraCarta = new Carta(1,Palo.COPA);
+		
+		assertEquals(primeraCarta.compararCon(miCarta),-1);
 	}
 
 }

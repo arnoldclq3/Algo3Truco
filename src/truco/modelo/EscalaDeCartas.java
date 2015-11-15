@@ -29,6 +29,7 @@ public class EscalaDeCartas {
 		
 		for ( Palo unPalo : Palo.values() )
 			this.escala.put( new Carta( valorCarta , unPalo ) , valorEscala );
+		
 	}
 	
 	

@@ -4,6 +4,7 @@ public class Carta {
 
 	private int valor;
 	private Palo palo;
+	private static final EscalaDeCartas escala = new EscalaDeCartas();
 	
 	public Carta(int valor, Palo palo) {
 		
@@ -21,20 +22,10 @@ public class Carta {
 		return this.valor;
 	}
 	
-	/*
-	public String getNombre() {
-		
-		String nombre;
-		
-		if (this.valor == 1) { 
-			nombre = "ancho" + palo;
-		}else{
-			nombre = this.valor + this.palo;
-		}
-		
-		return nombre;
+	public int compararCon(Carta unaCarta){
+		return Carta.escala.enfrentarCartas(this, unaCarta);		
 	}
-	*/
+	
 	
 	@Override
 	public boolean equals(Object unObjeto){
@@ -44,13 +35,12 @@ public class Carta {
 			
 		Carta unaCarta = (Carta)unObjeto;
 		return ( this.valor == unaCarta.valor && this.palo == unaCarta.palo );
-			
-	
+		
 	}
 	
 	@Override
 	public int hashCode(){
-		return ( this.valor * 51 + this.palo.valor() ) * 17;
+		return ( this.valor * 13 + this.palo.valor() ) * 3;
 		
 	}
 	
