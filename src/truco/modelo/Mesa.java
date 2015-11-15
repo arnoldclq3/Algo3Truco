@@ -37,9 +37,14 @@ public class Mesa {
 	
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
-		ronda.jugarCarta(unJugador,unaCarta);
+		this.ronda.jugarCarta(unJugador,unaCarta);
 	}
-
+			
+	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
+				
+		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
+	}
+	
 	public void cantarEnvido(Jugador unJugador) {
 		if (this.listadoCantosDelTanto != null)
 			throw new NoSePuedeCantarTantoDosVecesEnUnaRonda();
