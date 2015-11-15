@@ -45,5 +45,4 @@ public class MesaTest {
 		
 		assertEquals(jugadorGanador,this.primerJugador);
 	}
-
 }

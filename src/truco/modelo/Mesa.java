@@ -9,6 +9,7 @@ public class Mesa {
 	 *************************************************/
 	
 	private ArrayList<Jugador> jugadores;
+	private Ronda ronda;
 	
 	/*************************************************
 	 ** 			   Constructores				**
@@ -18,6 +19,7 @@ public class Mesa {
 		this.jugadores = new ArrayList<Jugador>();
 		this.jugadores.add(primerJugador);
 		this.jugadores.add(segundoJugador);
+		this.ronda = new Ronda();
 	}
 	
 	/*************************************************
@@ -25,6 +27,11 @@ public class Mesa {
 	 *************************************************/
 	public int cantidadDeJugadores() {
 		return this.jugadores.size();
+	}
+	
+	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
+		
+		ronda.jugarCarta(unJugador,unaCarta);
 	}
 
 	public Jugador resultadoEnvido() {
