@@ -11,11 +11,13 @@ public class EquipoTest {
 	
 	private Jugador unJugador;
 	private Jugador otroJugador;
+	private Jugador tercerJugador;
 
 	@Before
 	public void setup() {
 		this.unJugador = new Jugador("Jugador 1");
 		this.otroJugador = new Jugador("Jugador 2");
+		this.tercerJugador = new Jugador("Jugador 3");
 	}
 	
 	@Test (expected = ExisteJugadorEnEquipoException.class)
@@ -53,5 +55,59 @@ public class EquipoTest {
 		assertFalse(equipo.estaJugador(this.otroJugador));
 		
 	}
+	
+	@Test
+	public void testEquipoDeUnJugadorDevuelveElMismoJugadorAlPedirTurnoSiguiente() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		
+		Jugador nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+		
+	}
+	
+	@Test
+	public void testEquipoDeDosJugadoresDevuelvePrimeroUnJugadorYLuegoElOtro() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		equipo.agregarJugador(this.otroJugador);
+		
+		Jugador nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.otroJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+	}
+	
+	@Test
+	public void testEquipoDeTresJugadoresDevuelveTodosLosJugadoresYVuelveAlPrimero() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		equipo.agregarJugador(this.otroJugador);
+		equipo.agregarJugador(this.tercerJugador);
+		
+		Jugador nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.otroJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.tercerJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+	}
+	
+	
 
 }

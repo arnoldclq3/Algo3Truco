@@ -144,6 +144,14 @@ public class Jugador {
 		return esPie;
 	}
 
+	public void setEsMano(boolean esMano) {
+		this.esMano = esMano;
+	}
+	
+	public void setEsPie(boolean esPie) {
+		this.esPie = esPie;
+	}
+
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**
 	 *************************************************/
