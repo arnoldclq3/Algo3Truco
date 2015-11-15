@@ -14,8 +14,8 @@ public class MesaTest {
 
 	@Before
 	public void setup(){
-		this.primerJugador = new Jugador();
-		this.segundoJugador = new Jugador();
+		this.primerJugador = new Jugador("Jugador 1");
+		this.segundoJugador = new Jugador("Jugador 2");
 		this.mesa = new Mesa(primerJugador,segundoJugador);
 		
 		primerJugador.tomarCarta( new Carta(5,Palo.ESPADA) );

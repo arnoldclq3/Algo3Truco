@@ -13,13 +13,15 @@ public class Jugador {
 	 ** 				Atributos					**
 	 *************************************************/
 	private ArrayList<Carta> manoDelJugador;
+	private String nombre;
 	
 	/*************************************************
-	 ** 			   Constructores				**
+	 ** 			   Constructores				
+	 * @param nombrEJugador **
 	 *************************************************/
-	public Jugador(){
+	public Jugador(String nombreJugador){
+		this.nombre = nombreJugador;
 		this.manoDelJugador = new ArrayList<Carta>();
-	
 	}
 	
 	/*************************************************
@@ -104,6 +106,21 @@ public class Jugador {
 			throw new JugadorNoPuedeTenerMasDeTresCartasEnMano();
 		}
 		this.manoDelJugador.add(unaCarta);
+	}
+
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	@Override
+	public boolean equals(Object unObjeto){
+		
+		if ( ! ( unObjeto  instanceof Jugador ) )
+			return false;
+			
+		Jugador unJugador = (Jugador)unObjeto;
+		return ( this.nombre == unJugador.nombre);
+		
 	}
 
 	/*************************************************

@@ -15,7 +15,7 @@ public class JugadorTest {
 
 	@Before
 	public void setup(){
-		this.jugador = new Jugador();
+		this.jugador = new Jugador("Jugador 1");
 	}
 
 	@Test
@@ -170,6 +170,26 @@ public class JugadorTest {
 		this.jugador.tirarCarta( new Carta(1,Palo.ESPADA) );
 		
 		assertEquals(this.jugador.cantidadDeCartas(),2);
+	}
+	
+	@Test
+	public void testJugadorDevuelveNombreCorrectamente() {
+		
+		assertEquals(this.jugador.getNombre(),"Jugador 1");
+	}
+	
+	@Test
+	public void testSiUnJugadorEsIgualAOtroDevuelveTrue() {
+		
+		Jugador otroJugador = new Jugador("Jugador 1");
+		assertTrue(this.jugador.equals(otroJugador));
+	}
+	
+	@Test
+	public void testSiUnJugadorEsDistintoAOtroDevuelveFalse() {
+		
+		Jugador otroJugador = new Jugador("Jugador 2");
+		assertFalse(this.jugador.equals(otroJugador));
 	}
 
 }
