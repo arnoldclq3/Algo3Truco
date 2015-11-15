@@ -191,5 +191,33 @@ public class JugadorTest {
 		Jugador otroJugador = new Jugador("Jugador 2");
 		assertFalse(this.jugador.equals(otroJugador));
 	}
+	
+	@Test
+	public void testJugadorDevuelveTrueSiEsMano() {
+		
+		Jugador otroJugador = new Jugador("Jugador 2",true,false);
+		assertTrue(otroJugador.esMano());
+	}
+	
+	@Test
+	public void testJugadorDevuelveFalseSiNoEsMano() {
+		
+		Jugador otroJugador = new Jugador("Jugador 2",false,false);
+		assertFalse(otroJugador.esMano());
+	}
+	
+	@Test
+	public void testJugadorDevuelveTrueSiEsPie() {
+		
+		Jugador otroJugador = new Jugador("Jugador 2",false,true);
+		assertTrue(otroJugador.esPie());
+	}
+	
+	@Test
+	public void testJugadorDevuelveTrueSiNoEsPie() {
+		
+		Jugador otroJugador = new Jugador("Jugador 2",false,false);
+		assertFalse(otroJugador.esPie());
+	}
 
 }
