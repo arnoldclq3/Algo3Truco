@@ -18,10 +18,11 @@ public class Equipo {
 		this.jugadores.add(unJugador);
 	}
 
-	public void agregarJugador(Jugador unJugador) {
-		
+	public boolean agregarJugador(Jugador unJugador) {
+
 		if(!this.jugadorExiste(unJugador)){
 			this.jugadores.add(unJugador);
+			return true;
 		}
 		
 		throw new ExisteJugadorEnEquipoException();
@@ -29,12 +30,18 @@ public class Equipo {
 	}
 
 	private boolean jugadorExiste(Jugador unJugador) {
+		
 		for (Jugador otroJugador : this.jugadores){
 			if(otroJugador.equals(unJugador)){
 				return true;
 			}
+			
 		}
 		return false;
+	}
+
+	public int cantidadJugadores() {
+		return this.jugadores.size();
 	}
 	
 	
