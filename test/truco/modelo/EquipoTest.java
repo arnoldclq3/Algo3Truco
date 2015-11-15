@@ -52,6 +52,7 @@ public class EquipoTest {
 		
 		assertFalse(equipo.estaJugador(this.otroJugador));
 		assertFalse(equipo.estaJugador(this.otroJugador));
+		assertFalse(equipo.estaJugador(this.otroJugador));
 
 	}
 
