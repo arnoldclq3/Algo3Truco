@@ -5,7 +5,7 @@ import java.util.List;
 
 import truco.excepciones.jugador.ElJugadorNoTieneFlor;
 import truco.excepciones.jugador.CartaEnManoInexistente;
-import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnMano;;
+import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnMano;
 
 public class Jugador {
 	
