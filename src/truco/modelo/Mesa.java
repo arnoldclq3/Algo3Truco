@@ -1,6 +1,9 @@
 package truco.modelo;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+
+import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRonda;
 
 public class Mesa {
 
@@ -9,6 +12,9 @@ public class Mesa {
 	 *************************************************/
 	
 	private ArrayList<Jugador> jugadores;
+	private Ronda ronda;
+	private LinkedList<Canto> listadoCantosDelTanto;
+	private Jugador jugadorConMayorTanto;
 	
 	/*************************************************
 	 ** 			   Constructores				**
@@ -18,6 +24,8 @@ public class Mesa {
 		this.jugadores = new ArrayList<Jugador>();
 		this.jugadores.add(primerJugador);
 		this.jugadores.add(segundoJugador);
+		this.ronda = new Ronda();
+		this.listadoCantosDelTanto = null;
 	}
 	
 	/*************************************************
@@ -26,19 +34,57 @@ public class Mesa {
 	public int cantidadDeJugadores() {
 		return this.jugadores.size();
 	}
-
-	public Jugador resultadoEnvido() {
-		if ( this.jugadores.get(0).puntajeEnvido() < this.jugadores.get(1).puntajeEnvido() )
-			return this.jugadores.get(1);
-		else
-			return this.jugadores.get(0);
+	
+	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
+		
+		this.ronda.jugarCarta(unJugador,unaCarta);
+	}
+			
+	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
+				
+		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
 	}
 	
-	public Jugador resultadoFlor() {
-		if ( this.jugadores.get(0).puntajeFlor() < this.jugadores.get(1).puntajeFlor() )
-			return this.jugadores.get(1);
-		else
-			return this.jugadores.get(0);
+	public void cantarEnvido(Jugador unJugador) {
+		if (this.listadoCantosDelTanto != null)
+			throw new NoSePuedeCantarTantoDosVecesEnUnaRonda();
+		this.listadoCantosDelTanto = new LinkedList<Canto>();
+		Canto envido = new Envido();
+		this.listadoCantosDelTanto.addLast(envido);
+	}
+
+	public void cantarQuiero(Jugador unJugador) {
+		this.jugadorConMayorTanto = null;
+	}
+
+	public void cantarTantoDeEnvido(Jugador unJugador) {
+		if (this.jugadorConMayorTanto == null){
+			this.jugadorConMayorTanto = unJugador;
+			return;
+		}
+		if (this.jugadorConMayorTanto.puntajeEnvido() < unJugador.puntajeEnvido() )
+			this.jugadorConMayorTanto = unJugador;
+	}
+
+	public Jugador ganadorDelTantoDeLaRondaActual() {
+		return this.jugadorConMayorTanto;
+	}
+
+	public void cantarFlor(Jugador unJugador) {
+		if (this.listadoCantosDelTanto != null)
+			throw new NoSePuedeCantarTantoDosVecesEnUnaRonda();
+		this.listadoCantosDelTanto = new LinkedList<Canto>();
+		Canto flor = new Flor();
+		this.listadoCantosDelTanto.addLast(flor);	
+	}
+
+	public void cantarTantoDeFlor(Jugador unJugador) {
+		if (this.jugadorConMayorTanto == null){
+			this.jugadorConMayorTanto = unJugador;
+			return;
+		}
+		if (this.jugadorConMayorTanto.puntajeFlor() < unJugador.puntajeFlor() )
+			this.jugadorConMayorTanto = unJugador;	
 	}
 
 	/*************************************************
