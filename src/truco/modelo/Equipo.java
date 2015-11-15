@@ -43,6 +43,10 @@ public class Equipo {
 	public int cantidadJugadores() {
 		return this.jugadores.size();
 	}
+
+	public boolean estaJugador(Jugador unJugador) {
+		return this.jugadorExiste(unJugador);
+	}
 	
 	
 	

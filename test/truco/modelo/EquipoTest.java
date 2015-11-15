@@ -1,6 +1,6 @@
 package truco.modelo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,13 +26,32 @@ public class EquipoTest {
 	}
 	
 	@Test
-	public void testDevuelvaCantidadCorrectaDeJugadoresEnEquipo() {
+	public void testEquipoDevuelvaCantidadCorrectaDeJugadores() {
 		
 		Equipo equipo = new Equipo();
 		equipo.agregarJugador(this.unJugador);
 		equipo.agregarJugador(this.otroJugador);
 		
 		assertEquals(equipo.cantidadJugadores(),2);
+		
+	}
+	
+	@Test
+	public void testSiElJugadorEstaEnElEquipoDevuelveTrue() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		
+		assertTrue(equipo.estaJugador(this.unJugador));
+		
+	}
+	
+	@Test
+	public void testSiElJugadorNoEstaEnElEquipoDevuelveFalse() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		
+		assertFalse(equipo.estaJugador(this.otroJugador));
+		
 	}
 
 }
