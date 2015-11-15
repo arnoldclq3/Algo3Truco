@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Mano {
 
-	HashMap<Jugador,Carta> cartasJugadas;
+	private HashMap<Jugador,Carta> cartasJugadas;
 	
 	public Mano() {
 		

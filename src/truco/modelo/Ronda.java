@@ -3,21 +3,21 @@ package truco.modelo;
 public class Ronda {
 
 	private Mano miMano;
+	private boolean manoTerminada;
 	
 	public Ronda() {
 		
-		this.miMano = null;
+		this.miMano = new ManoPrincipal();
+		this.manoTerminada = false;
 	}
 	
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
-		if ( miMano == null ) {
-			this.miMano = new ManoPrincipal();
-		} else {
+		if ( this.manoTerminada ) {
 			this.miMano = new ManoSecundaria();
 		}
 		
-		miMano.jugarCarta(unJugador,unaCarta);
+		this.miMano.jugarCarta(unJugador,unaCarta);
 	}
 
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
