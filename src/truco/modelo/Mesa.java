@@ -1,6 +1,7 @@
 package truco.modelo;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Mesa {
 
@@ -10,6 +11,8 @@ public class Mesa {
 	
 	private ArrayList<Jugador> jugadores;
 	private Ronda ronda;
+	private LinkedList<Canto> listadoCantosDelTanto;
+	private Jugador jugadorConMayorTanto;
 	
 	/*************************************************
 	 ** 			   Constructores				**
@@ -34,18 +37,42 @@ public class Mesa {
 		ronda.jugarCarta(unJugador,unaCarta);
 	}
 
-	public Jugador resultadoEnvido() {
-		if ( this.jugadores.get(0).puntajeEnvido() < this.jugadores.get(1).puntajeEnvido() )
-			return this.jugadores.get(1);
-		else
-			return this.jugadores.get(0);
+	public void cantarEnvido(Jugador unJugador) {
+		this.listadoCantosDelTanto = new LinkedList<Canto>();
+		Canto envido = new Envido();
+		this.listadoCantosDelTanto.addLast(envido);
 	}
-	
-	public Jugador resultadoFlor() {
-		if ( this.jugadores.get(0).puntajeFlor() < this.jugadores.get(1).puntajeFlor() )
-			return this.jugadores.get(1);
-		else
-			return this.jugadores.get(0);
+
+	public void cantarQuiero(Jugador unJugador) {
+		this.jugadorConMayorTanto = null;
+	}
+
+	public void cantarTantoDeEnvido(Jugador unJugador) {
+		if (this.jugadorConMayorTanto == null){
+			this.jugadorConMayorTanto = unJugador;
+			return;
+		}
+		if (this.jugadorConMayorTanto.puntajeEnvido() < unJugador.puntajeEnvido() )
+			this.jugadorConMayorTanto = unJugador;
+	}
+
+	public Jugador ganadorDelTantoDeLaRondaActual() {
+		return this.jugadorConMayorTanto;
+	}
+
+	public void cantarFlor(Jugador unJugador) {
+		this.listadoCantosDelTanto = new LinkedList<Canto>();
+		Canto flor = new Flor();
+		this.listadoCantosDelTanto.addLast(flor);	
+	}
+
+	public void cantarTantoDeFlor(Jugador unJugador) {
+		if (this.jugadorConMayorTanto == null){
+			this.jugadorConMayorTanto = unJugador;
+			return;
+		}
+		if (this.jugadorConMayorTanto.puntajeFlor() < unJugador.puntajeFlor() )
+			this.jugadorConMayorTanto = unJugador;	
 	}
 
 	/*************************************************

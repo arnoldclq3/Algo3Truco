@@ -33,16 +33,23 @@ public class MesaTest {
 	}
 	
 	@Test
-	public void testElJugadorConMayorEnvidoEsDevueltoComoGanador(){
-		Jugador jugadorGanador = this.mesa.resultadoEnvido();
+	public void testAlInciarseUnProcesoDeEnvidoElJugadorConMayorTantoEsElGanador(){
+		this.mesa.cantarEnvido(primerJugador);
+		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.cantarTantoDeEnvido(primerJugador);
+		this.mesa.cantarTantoDeEnvido(segundoJugador);
 		
-		assertEquals(jugadorGanador,this.segundoJugador);
+		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
 	}
 	
 	@Test
-	public void testElJugadorConMayorFlorEsDevueltoComoGanador(){
-		Jugador jugadorGanador = this.mesa.resultadoFlor();
+	public void testAlInciarseUnProcesoDeFlorElJugadorConMayorTantoEsElGanador(){
+		this.mesa.cantarFlor(primerJugador);
+		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.cantarTantoDeFlor(primerJugador);
+		this.mesa.cantarTantoDeFlor(segundoJugador);
 		
-		assertEquals(jugadorGanador,this.primerJugador);
+		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , primerJugador);
 	}
+	
 }
