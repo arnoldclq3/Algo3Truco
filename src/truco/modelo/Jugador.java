@@ -3,9 +3,9 @@ package truco.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import truco.excepciones.jugador.ElJugadorNoTieneFlor;
-import truco.excepciones.jugador.CartaEnManoInexistente;
-import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnMano;
+import truco.excepciones.jugador.CartaEnManoInexistenteException;
+import truco.excepciones.jugador.ElJugadorNoTieneFlorException;
+import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnManoException;
 
 public class Jugador {
 	
@@ -87,7 +87,7 @@ public class Jugador {
 	public int puntajeFlor() {
 		/*	Posiblemente necesite refactoring cuando jugador juegue cartas a la mesa */
 		if (! this.tieneFlor() )
-			throw new ElJugadorNoTieneFlor();
+			throw new ElJugadorNoTieneFlorException();
 		int valorRetorno = 20;
 		for (Carta unaCarta : this.manoDelJugador){
 			valorRetorno = valorRetorno + this.valorCartaParaElTanto(unaCarta);
@@ -111,12 +111,12 @@ public class Jugador {
 				return otraCarta;
 			}
 		}
-		throw new CartaEnManoInexistente();
+		throw new CartaEnManoInexistenteException();
 	}
 	
 	public void tomarCarta(Carta unaCarta) {
 		if(this.manoDelJugador.size() >= 3){
-			throw new JugadorNoPuedeTenerMasDeTresCartasEnMano();
+			throw new JugadorNoPuedeTenerMasDeTresCartasEnManoException();
 		}
 		this.manoDelJugador.add(unaCarta);
 	}

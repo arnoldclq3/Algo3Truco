@@ -1,6 +1,6 @@
 package truco.excepciones.mesa;
 
-public class NoSePuedeCantarTantoDosVecesEnUnaRonda extends RuntimeException {
+public class NoSePuedeCantarTantoDosVecesEnUnaRondaException extends RuntimeException {
 
 	/**
 	 * 

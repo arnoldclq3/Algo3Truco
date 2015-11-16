@@ -1,6 +1,6 @@
 package truco.excepciones.jugador;
 
-public class CartaEnManoInexistente extends RuntimeException {
+public class ElJugadorNoTieneFlorException extends RuntimeException {
 
 	/**
 	 * 

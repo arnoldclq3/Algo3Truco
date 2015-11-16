@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRonda;
-import truco.excepciones.mesa.RespuestaInconrrecta;
+import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRondaException;
+import truco.excepciones.mesa.RespuestaInconrrectaException;
 
 public class MesaTest {
 
@@ -19,7 +19,12 @@ public class MesaTest {
 	public void setup(){
 		this.primerJugador = new Jugador("Jugador 1");
 		this.segundoJugador = new Jugador("Jugador 2");
-		this.mesa = new Mesa(primerJugador,segundoJugador);
+		Equipo nosotros = new Equipo();
+		nosotros.agregarJugador(this.primerJugador);
+		Equipo ellos = new Equipo();
+		ellos.agregarJugador(this.segundoJugador);
+		
+		this.mesa = new Mesa(nosotros,ellos);
 		
 		primerJugador.tomarCarta( new Carta(5,Palo.ESPADA) );
 		primerJugador.tomarCarta( new Carta(3,Palo.ESPADA) );
@@ -55,7 +60,7 @@ public class MesaTest {
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , primerJugador);
 	}
 	
-	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRonda.class)
+	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnEnvidoNoPuedeVolverseACantarOtroEnvido(){
 		this.mesa.cantarEnvido(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
@@ -65,7 +70,7 @@ public class MesaTest {
 		this.mesa.cantarEnvido(primerJugador);
 	}
 	
-	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRonda.class)
+	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoPuedeCantarseEnvido(){
 		this.mesa.cantarFlor(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
@@ -75,7 +80,7 @@ public class MesaTest {
 		this.mesa.cantarEnvido(primerJugador);
 	}
 	
-	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRonda.class)
+	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoSePuedeVolverACantarFlor(){
 		this.mesa.cantarFlor(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
@@ -95,7 +100,7 @@ public class MesaTest {
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
 	}
 	
-	@Test (expected = RespuestaInconrrecta.class)
+	@Test (expected = RespuestaInconrrectaException.class)
 	public void testNoSePuedeResponderEnvidoAUnRealEnvido(){
 		this.mesa.cantarRealEnvido(segundoJugador);
 		
@@ -110,7 +115,7 @@ public class MesaTest {
 		this.mesa.cantarTantoDeEnvido(primerJugador);
 		this.mesa.cantarTantoDeEnvido(segundoJugador);
 		
-		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
+		assertEquals(5,this.mesa.mostrarPuntajeEquipoEllos());
 	}
 	
 	@Test
