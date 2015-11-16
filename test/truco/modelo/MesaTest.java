@@ -113,4 +113,17 @@ public class MesaTest {
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
 	}
 	
+	@Test
+	public void testSeJuegaUnTrucoQuiero() {
+		
+		this.mesa.cantaTrucoElJugador(primerJugador);
+		this.mesa.cantaQuieroElJugador(segundoJugador);
+		this.mesa.jugarCarta(primerJugador, new Carta(1, Palo.ESPADA));
+		this.mesa.jugarCarta(segundoJugador, new Carta(1, Palo.ORO));
+		
+		Jugador ganador = this.mesa.enfrentarTodasLasCartasJugadas();
+		
+		assertEquals(ganador,primerJugador);
+	}
+	
 }

@@ -25,4 +25,10 @@ public class Ronda {
 		return ( this.miMano.mostrarUltimaCartaJugadaPor(unJugador) );
 	}
 
+	public Jugador enfrentarTodasLasCartas() {
+		
+		return this.miMano.enfrentarTodasLasCartas();
+		
+	}
+
 }

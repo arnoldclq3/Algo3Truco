@@ -1,5 +1,5 @@
 package truco.modelo;
 
-public class Truco {
+public class Truco extends Canto {
 
 }
