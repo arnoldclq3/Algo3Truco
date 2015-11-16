@@ -14,6 +14,10 @@ public class Mesa {
 	
 	private ArrayList<Jugador> jugadores;
 	private Ronda ronda;
+	//	El Listado de cantos del tanto tiene 3 estados posibles
+	// 1º) Cuando es NULL jamas en la ronda se canto envido o flor
+	// 2º) Cuando el listado esta con elementos, hay un envido o flor en progreso
+	// 3º) Cuando hay un listado vacio, ya se canto envido y se calculo el puntaje
 	private LinkedList<Canto> listadoCantosDelTanto;
 	private Jugador jugadorConMayorTanto;
 	
