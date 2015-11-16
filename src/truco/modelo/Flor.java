@@ -1,5 +1,5 @@
 package truco.modelo;
 
-public class Flor implements Canto {
+public class Flor extends Canto {
 
 }

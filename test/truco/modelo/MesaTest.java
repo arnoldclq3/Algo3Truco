@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRonda;
+import truco.excepciones.mesa.RespuestaInconrrecta;
 
 public class MesaTest {
 
@@ -82,6 +83,22 @@ public class MesaTest {
 		this.mesa.cantarTantoDeFlor(segundoJugador);
 		
 		this.mesa.cantarFlor(primerJugador);
+	}
+	
+	@Test
+	public void testElPrimerCantoPuedeSerUnRealEnvidoDandoComoGanadorAlQuePoseaMejorTanto(){
+		this.mesa.cantarRealEnvido(primerJugador);
+		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.cantarTantoDeEnvido(primerJugador);
+		this.mesa.cantarTantoDeEnvido(segundoJugador);
+		
+	}
+	
+	@Test (expected = RespuestaInconrrecta.class)
+	public void testNoSePuedeResponderRealEnvidoAUnEnvido(){
+		this.mesa.cantarEnvido(primerJugador);
+		
+		this.mesa.cantarRealEnvido(segundoJugador);
 	}
 	
 }
