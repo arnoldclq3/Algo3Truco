@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import truco.excepciones.equipo.EquipoGanoException;
 import truco.excepciones.equipo.ExisteJugadorEnEquipoException;
+import truco.excepciones.equipo.JugadorInexistenteException;
 
 public class EquipoTest {
 	
@@ -105,6 +107,110 @@ public class EquipoTest {
 		
 		nuevoJugador = equipo.siguienteTurno();
 		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+	}
+	
+	@Test
+	public void testRotarManoEnEquipoDeDosJugadoresDevuelveAlOtroJugadorComoMano() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		equipo.agregarJugador(this.otroJugador);
+		
+		Jugador nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.otroJugador));
+		
+		equipo.rotarPosicionesMano();
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.otroJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+	}
+	
+	@Test
+	public void testRotarManoEnEquipoDeTresJugadoresDevuelveAlOtroJugadorComoMano() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		equipo.agregarJugador(this.otroJugador);
+		equipo.agregarJugador(this.tercerJugador);
+		
+		Jugador nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.otroJugador));
+		
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.tercerJugador));
+		
+		equipo.rotarPosicionesMano();
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.otroJugador));
+		
+		equipo.rotarPosicionesMano();
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.tercerJugador));
+		
+	}
+	
+	@Test
+	public void testRotarManoEnEquipoYElEquipoNoEsMasMano() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		equipo.agregarJugador(this.otroJugador);
+		equipo.agregarJugador(this.tercerJugador);
+		
+		assertTrue(equipo.esMano());
+		
+		Jugador nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.unJugador));
+		
+		equipo.rotarPosicionesMano();
+		assertFalse(equipo.esMano());
+		nuevoJugador = equipo.siguienteTurno();
+		assertTrue(nuevoJugador.equals(this.otroJugador));
+		
+		equipo.rotarPosicionesMano();
+		assertTrue(equipo.esMano());
+		
+	}
+	
+	@Test
+	public void testEquipoSumaPuntosCorrectamenteSiElJugadorExiste() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		int puntos = 2;
+		
+		equipo.agregarJugador(this.otroJugador);
+		
+		equipo.sumarPuntosAJugador(this.unJugador,puntos);
+		assertEquals(equipo.obtenerCantidadDePuntos(),2);
+		
+	}
+	
+	@Test (expected = JugadorInexistenteException.class)
+	public void testEquipoSumarPuntosLanzaExcepecionSiJugadorNoExisteEnElEquipo() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		int puntos = 2;
+		
+		equipo.sumarPuntosAJugador(this.otroJugador,puntos);
+		
+	}
+	
+	@Test (expected = EquipoGanoException.class)
+	public void testEquipoLanzaExcepcionSiAlcanzaLosTreintaPuntos() {
+		
+		Equipo equipo = new Equipo(this.unJugador);
+		int puntos = 30;
+		
+		equipo.agregarJugador(this.otroJugador);
+		
+		equipo.sumarPuntosAJugador(this.unJugador,puntos);
 		
 	}
 	

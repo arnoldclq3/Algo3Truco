@@ -1,13 +1,18 @@
 package truco.modelo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+import truco.excepciones.equipo.EquipoGanoException;
 import truco.excepciones.equipo.ExisteJugadorEnEquipoException;
+import truco.excepciones.equipo.JugadorInexistenteException;
 
 public class Equipo {
 
 	private ArrayList<Jugador> jugadores;
 	private Jugador jugadorTurno;
+	private boolean esMano = true; //para saber cual es la mano real: si este atributo es true y si el jugador es mano
+	private int puntaje = 0;
 
 	public Equipo() {
 		this.jugadores = new ArrayList<Jugador>();
@@ -77,7 +82,7 @@ public class Equipo {
 				unJugador = this.jugadores.get(2);
 				unJugador.setEsMano(false);
 				unJugador.setEsPie(true);
-				this.jugadores.set(2, unJugador);System.out.println("das");
+				this.jugadores.set(2, unJugador);
 				break;
 			default:
 				//no hago nada
@@ -124,8 +129,36 @@ public class Equipo {
 		
 	}
 	
+	public void rotarPosicionesMano(){
+		this.esMano = !this.esMano;
+		Collections.rotate(this.jugadores, -1);
+		this.reconfigurarPosiciones();
+	}
 	
-	
-	//reconfigurarPosiciones
+	public void setEsMano(boolean esMano){
+		this.esMano = esMano;
+	}
+
+	public boolean sumarPuntosAJugador(Jugador unJugador, int puntos) {
+		
+		if(this.jugadorExiste(unJugador)){
+			this.puntaje  += puntos;
+			if(this.puntaje>=30){
+				throw new EquipoGanoException();
+			}
+			return true;
+		} else{
+			throw new JugadorInexistenteException();
+		}
+		
+	}
+
+	public int obtenerCantidadDePuntos() {
+		return this.puntaje;
+	}
+
+	public boolean esMano() {
+		return this.esMano;
+	}
 		
 }
