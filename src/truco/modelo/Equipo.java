@@ -1,13 +1,18 @@
 package truco.modelo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+import truco.excepciones.equipo.EquipoGanoException;
 import truco.excepciones.equipo.ExisteJugadorEnEquipoException;
-import truco.excepciones.jugador.CartaEnManoInexistente;
+import truco.excepciones.equipo.JugadorInexistenteException;
 
 public class Equipo {
 
 	private ArrayList<Jugador> jugadores;
+	private Jugador jugadorTurno;
+	private boolean esMano = true; //para saber cual es la mano real: si este atributo es true y si el jugador es mano
+	private int puntaje = 0;
 
 	public Equipo() {
 		this.jugadores = new ArrayList<Jugador>();
@@ -15,18 +20,73 @@ public class Equipo {
 	
 	public Equipo(Jugador unJugador) {
 		this.jugadores = new ArrayList<Jugador>();
+		
+		unJugador.setEsMano(true);
+		unJugador.setEsPie(true);
 		this.jugadores.add(unJugador);
+		
+		this.jugadorTurno = unJugador;
 	}
 
 	public boolean agregarJugador(Jugador unJugador) {
 
 		if(!this.jugadorExiste(unJugador)){
 			this.jugadores.add(unJugador);
+			this.reconfigurarPosiciones();
 			return true;
 		}
 		
 		throw new ExisteJugadorEnEquipoException();
 		
+	}
+	
+	private void reconfigurarPosiciones(){
+		
+		int cantidadJugadores = this.cantidadJugadores();
+		Jugador unJugador;
+		
+		switch(cantidadJugadores){
+			case 1:
+				unJugador = this.jugadores.get(0);
+				unJugador.setEsMano(true);
+				unJugador.setEsPie(true);
+				this.jugadores.set(0, unJugador);
+				this.jugadorTurno = unJugador;
+				break;
+			
+			case 2:
+				unJugador = this.jugadores.get(0);
+				unJugador.setEsMano(true);
+				unJugador.setEsPie(false);
+				this.jugadores.set(0, unJugador);
+				this.jugadorTurno = unJugador;
+				
+				unJugador = this.jugadores.get(1);
+				unJugador.setEsMano(false);
+				unJugador.setEsPie(true);
+				this.jugadores.set(1, unJugador);
+				break;
+				
+			case 3:
+				unJugador = this.jugadores.get(0);
+				unJugador.setEsMano(true);
+				unJugador.setEsPie(false);
+				this.jugadores.set(0, unJugador);
+				this.jugadorTurno = unJugador;
+				
+				unJugador = this.jugadores.get(1);
+				unJugador.setEsMano(false);
+				unJugador.setEsPie(false);
+				this.jugadores.set(1, unJugador);
+				
+				unJugador = this.jugadores.get(2);
+				unJugador.setEsMano(false);
+				unJugador.setEsPie(true);
+				this.jugadores.set(2, unJugador);
+				break;
+			default:
+				//no hago nada
+		}
 	}
 
 	private boolean jugadorExiste(Jugador unJugador) {
@@ -48,8 +108,57 @@ public class Equipo {
 		return this.jugadorExiste(unJugador);
 	}
 	
+	public Jugador siguienteTurno() {
+		Jugador jugadorTurno = this.jugadorTurno;
+		
+		for(int i=0;i<this.jugadores.size();i++){
+			
+			if(this.jugadores.get(i).equals(jugadorTurno)){
+				
+				if(i==this.jugadores.size()-1){
+					this.jugadorTurno = this.jugadores.get(0);
+				} else{
+					this.jugadorTurno = this.jugadores.get(i+1);
+				}
+				
+			}
+			
+		}
 	
+		return jugadorTurno;
+		
+	}
 	
+	public void rotarPosicionesMano(){
+		this.esMano = !this.esMano;
+		Collections.rotate(this.jugadores, -1);
+		this.reconfigurarPosiciones();
+	}
 	
+	public void setEsMano(boolean esMano){
+		this.esMano = esMano;
+	}
+
+	public boolean sumarPuntosAJugador(Jugador unJugador, int puntos) {
+		
+		if(this.jugadorExiste(unJugador)){
+			this.puntaje  += puntos;
+			if(this.puntaje>=30){
+				throw new EquipoGanoException();
+			}
+			return true;
+		} else{
+			throw new JugadorInexistenteException();
+		}
+		
+	}
+
+	public int obtenerCantidadDePuntos() {
+		return this.puntaje;
+	}
+
+	public boolean esMano() {
+		return this.esMano;
+	}
 		
 }
