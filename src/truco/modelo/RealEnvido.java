@@ -7,4 +7,9 @@ public class RealEnvido extends Canto {
 		this.cantosValidosDeRespuesta.add( new FaltaEnvido() );
 	}
 
+	@Override
+	public int puntosPorGanar() {
+		return 3;
+	}
+
 }

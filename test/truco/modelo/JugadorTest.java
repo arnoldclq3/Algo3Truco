@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import truco.excepciones.jugador.CartaEnManoInexistente;
-import truco.excepciones.jugador.ElJugadorNoTieneFlor;
-import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnMano;
+import truco.excepciones.jugador.CartaEnManoInexistenteException;
+import truco.excepciones.jugador.ElJugadorNoTieneFlorException;
+import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnManoException;
 
 public class JugadorTest {
 	
@@ -108,7 +108,7 @@ public class JugadorTest {
 		assertEquals(valorFlorEsperado,valorDeLaFlor);
 	}
 	
-	@Test (expected = ElJugadorNoTieneFlor.class)
+	@Test (expected = ElJugadorNoTieneFlorException.class)
 	public void testUnJugadorSinFlorDevuelveUnaExcepcionCuandoSeLePideSuPuntajeFlor() {
 		// Se le pasa el 1 de Espada, el 7 de Esapda y el 6 de Oro. NO TIENE FLOR
 		this.jugador.tomarCarta( new Carta(1,Palo.ESPADA) );
@@ -118,7 +118,7 @@ public class JugadorTest {
 		this.jugador.puntajeFlor();
 	}
 	
-	@Test (expected = CartaEnManoInexistente.class)
+	@Test (expected = CartaEnManoInexistenteException.class)
 	public void testUnJugadorNoPuedeTirarDosVecesLaMismaCarta() {
 
 		this.jugador.tomarCarta( new Carta(10,Palo.COPA) );
@@ -129,7 +129,7 @@ public class JugadorTest {
 		this.jugador.tirarCarta( new Carta(10,Palo.COPA));
 	}
 	
-	@Test (expected = CartaEnManoInexistente.class)
+	@Test (expected = CartaEnManoInexistenteException.class)
 	public void testUnJugadorQuiereTiraUnaCartaQueNoTieneLanzaExcepcion() {
 
 		this.jugador.tomarCarta( new Carta(10,Palo.COPA) );
@@ -139,7 +139,7 @@ public class JugadorTest {
 		this.jugador.tirarCarta( new Carta(1,Palo.ORO));
 	}
 	
-	@Test (expected = JugadorNoPuedeTenerMasDeTresCartasEnMano.class)
+	@Test (expected = JugadorNoPuedeTenerMasDeTresCartasEnManoException.class)
 	public void testJugadorQuiereAgarrarMasDeTresCartasYLanzaExcepcion() {
 		
 		this.jugador.tomarCarta( new Carta(1,Palo.ESPADA) );

@@ -18,4 +18,6 @@ public abstract class Canto {
 		return ( this.getClass() == objeto.getClass());
 	}
 
+	public abstract int puntosPorGanar();
+
 }
