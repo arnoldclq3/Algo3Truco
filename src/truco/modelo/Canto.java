@@ -13,5 +13,9 @@ public abstract class Canto {
 	public boolean esUnaRespuestaValidaElCanto(Canto unCanto) {
 		return this.cantosValidosDeRespuesta.contains(unCanto);
 	}
+	
+	public boolean equals(Object objeto){
+		return ( this.getClass() == objeto.getClass());
+	}
 
 }

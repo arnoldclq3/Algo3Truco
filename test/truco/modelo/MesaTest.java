@@ -92,13 +92,25 @@ public class MesaTest {
 		this.mesa.cantarTantoDeEnvido(primerJugador);
 		this.mesa.cantarTantoDeEnvido(segundoJugador);
 		
+		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
 	}
 	
 	@Test (expected = RespuestaInconrrecta.class)
-	public void testNoSePuedeResponderRealEnvidoAUnEnvido(){
-		this.mesa.cantarEnvido(primerJugador);
-		
+	public void testNoSePuedeResponderEnvidoAUnRealEnvido(){
 		this.mesa.cantarRealEnvido(segundoJugador);
+		
+		this.mesa.cantarEnvido(primerJugador);
+	}
+	
+	@Test
+	public void testSePuedeResponderRealEnvidoAUnEnvidoYGanaElJugadorQueTengaMayorTanto(){
+		this.mesa.cantarEnvido(segundoJugador);
+		this.mesa.cantarRealEnvido(primerJugador);
+		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.cantarTantoDeEnvido(primerJugador);
+		this.mesa.cantarTantoDeEnvido(segundoJugador);
+		
+		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
 	}
 	
 }

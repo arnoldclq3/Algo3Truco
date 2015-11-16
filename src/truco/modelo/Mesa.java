@@ -20,6 +20,8 @@ public class Mesa {
 	// 3º) Cuando hay un listado vacio, ya se canto envido y se calculo el puntaje
 	private LinkedList<Canto> listadoCantosDelTanto;
 	private Jugador jugadorConMayorTanto;
+	private Equipo equipoNosotros;
+	private Equipo equipoEllos;
 	
 	/*************************************************
 	 ** 			   Constructores				**
@@ -36,9 +38,19 @@ public class Mesa {
 	/*************************************************
 	 ** 			  Metodos Publicos				**
 	 *************************************************/
+	
 	public int cantidadDeJugadores() {
 		return this.jugadores.size();
 	}
+	
+	public int mostrarPuntajeEquipoNosotros(){
+		return this.equipoNosotros.obtenerCantidadDePuntos();
+	}
+	
+	public int mostrarPuntajeEquipoEllos(){
+		return this.equipoEllos.obtenerCantidadDePuntos();
+	}
+
 	
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
@@ -48,6 +60,59 @@ public class Mesa {
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
 				
 		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
+	}
+	
+	
+	
+	
+	/*************************************************
+	 ** 		    CANTOS GENERALES			    **
+	 *************************************************/
+
+	public void cantarQuiero(Jugador unJugador) {
+		if (this.listadoCantosDelTanto != null)
+			this.cantarQuieroAlEnvido(unJugador);
+		
+	}
+
+	
+	public void cantarNoQuiero(Jugador unJugador) {
+		// TODO
+	}
+	
+	/*************************************************
+	 ** 		 	  ENVIDO y FLOR					**
+	 *************************************************/
+	
+	private void cantarQuieroAlEnvido(Jugador unJugador){
+		this.jugadorConMayorTanto = null;
+	}
+	
+	public void cantarTantoDeEnvido(Jugador unJugador) {
+		if (this.jugadorConMayorTanto == null){
+			this.jugadorConMayorTanto = unJugador;
+			return;
+		}
+		if (this.jugadorConMayorTanto.puntajeEnvido() < unJugador.puntajeEnvido() )
+			this.jugadorConMayorTanto = unJugador;
+		// Por ahora vacio la lista, pero deberia hacer el caculo cuando cantaron todos los jugadores
+		this.listadoCantosDelTanto.clear();
+	}
+
+	public Jugador ganadorDelTantoDeLaRondaActual() {
+		return this.jugadorConMayorTanto;
+	}
+
+
+	public void cantarTantoDeFlor(Jugador unJugador) {
+		if (this.jugadorConMayorTanto == null){
+			this.jugadorConMayorTanto = unJugador;
+			return;
+		}
+		if (this.jugadorConMayorTanto.puntajeFlor() < unJugador.puntajeFlor() )
+			this.jugadorConMayorTanto = unJugador;	
+		// Por ahora vacio la lista, pero deberia hacer el caculo cuando cantaron todos los jugadores
+		this.listadoCantosDelTanto.clear();
 	}
 	
 	public void cantarEnvido(Jugador unJugador) {
@@ -80,40 +145,6 @@ public class Mesa {
 		Canto flor = new Flor();
 		this.listadoCantosDelTanto.addLast(flor);	
 	}
-
-
-	public void cantarQuiero(Jugador unJugador) {
-		this.jugadorConMayorTanto = null;
-	}
-
-	public void cantarTantoDeEnvido(Jugador unJugador) {
-		if (this.jugadorConMayorTanto == null){
-			this.jugadorConMayorTanto = unJugador;
-			return;
-		}
-		if (this.jugadorConMayorTanto.puntajeEnvido() < unJugador.puntajeEnvido() )
-			this.jugadorConMayorTanto = unJugador;
-		// Por ahora vacio la lista, pero deberia hacer el caculo cuando cantaron todos los jugadores
-		this.listadoCantosDelTanto.clear();
-	}
-
-	public Jugador ganadorDelTantoDeLaRondaActual() {
-		return this.jugadorConMayorTanto;
-	}
-
-
-	public void cantarTantoDeFlor(Jugador unJugador) {
-		if (this.jugadorConMayorTanto == null){
-			this.jugadorConMayorTanto = unJugador;
-			return;
-		}
-		if (this.jugadorConMayorTanto.puntajeFlor() < unJugador.puntajeFlor() )
-			this.jugadorConMayorTanto = unJugador;	
-		// Por ahora vacio la lista, pero deberia hacer el caculo cuando cantaron todos los jugadores
-		this.listadoCantosDelTanto.clear();
-	}
-
-	
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**
 	 *************************************************/
