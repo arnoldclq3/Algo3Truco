@@ -35,7 +35,7 @@ public class Mano {
 		while (iteradorCarta.hasNext() ) {
 			
 			Carta carta = iteradorCarta.next();
-			if ( cartaGanadora.compararCon(carta) == -1 ) {
+			if ( cartaGanadora.compararCon(carta) == -1) {
 				cartaGanadora = carta;
 			}
 		}

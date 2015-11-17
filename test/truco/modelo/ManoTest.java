@@ -26,5 +26,37 @@ public class ManoTest {
 		
 		assertEquals(unaCarta,this.mimano.mostrarUltimaCartaJugadaPor(unJugador));
 	}
+	
+	@Test
+	public void testMostrarJugadorQueGanoLaManoConUnaCartaMasAltaQueElOtroJugador() {
+		Jugador jugador1 = new Jugador();
+		Carta cartaJugador1 = new Carta(1,Palo.ESPADA);
+		jugador1.tomarCarta(cartaJugador1);
+		
+		Jugador jugador2 = new Jugador();
+		Carta cartaJugador2 = new Carta(1,Palo.ESPADA);
+		jugador2.tomarCarta(cartaJugador2);
+		
+		this.mimano.jugarCarta(jugador1, cartaJugador1);
+		this.mimano.jugarCarta(jugador2, cartaJugador2);
+		
+		assertEquals(jugador1,this.mimano.enfrentarTodasLasCartas());
+	}
+	
+	@Test
+	public void testMostrarJugadorQueGanoLaManoConUnaCartaDelMismoValorQueElOtroJugadorPeroEsMano() {
+		Jugador jugador1 = new Jugador();
+		Carta cartaJugador1 = new Carta(1,Palo.ESPADA);
+		jugador1.tomarCarta(cartaJugador1);
+		
+		Jugador jugador2 = new Jugador();
+		Carta cartaJugador2 = new Carta(1,Palo.ESPADA);
+		jugador2.tomarCarta(cartaJugador2);
+		
+		this.mimano.jugarCarta(jugador1, cartaJugador1);
+		this.mimano.jugarCarta(jugador2, cartaJugador2);
+		
+		assertEquals(jugador1,this.mimano.enfrentarTodasLasCartas());
+	}
 
 }
