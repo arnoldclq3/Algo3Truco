@@ -17,7 +17,7 @@ public class Ronda {
 		this.cantidadJugadores = this.equipo1.cantidadJugadores()+this.equipo2.cantidadJugadores();
 		this.manos.add(new Mano(cantidadJugadores));
 	}
-	
+
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
 		if ( this.manos.getLast().manoTerminada() ) {
@@ -51,10 +51,11 @@ public class Ronda {
 				if ( this.equipo1.estaJugador(jugador) ) manosGanadasEquipo1++;
 				if ( this.equipo2.estaJugador(jugador) ) manosGanadasEquipo2++;
 			}
+		} else {
+			
+			return null;
 		}
 		
 		return ( ( manosGanadasEquipo1 > manosGanadasEquipo2 )? this.equipo1 : this.equipo2 );
 	}
-
-	
 }

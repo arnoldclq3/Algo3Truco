@@ -103,8 +103,8 @@ public class Jugador {
 		}
 		return true;
 	}
-	
-	public Carta tirarCarta(Carta carta){
+
+	public Carta tirarCarta(Carta carta) { 
 		for (Carta otraCarta : this.manoDelJugador){
 			if(otraCarta.equals(carta)){
 				this.manoDelJugador.remove(otraCarta);
