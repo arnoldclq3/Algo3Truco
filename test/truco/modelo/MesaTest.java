@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRondaException;
-import truco.excepciones.mesa.RespuestaInconrrectaException;
+import truco.excepciones.mesa.RespuestaIncorrectaException;
 
 public class MesaTest {
 
@@ -100,7 +100,7 @@ public class MesaTest {
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
 	}
 	
-	@Test (expected = RespuestaInconrrectaException.class)
+	@Test (expected = RespuestaIncorrectaException.class)
 	public void testNoSePuedeResponderEnvidoAUnRealEnvido(){
 		this.mesa.cantarRealEnvido(segundoJugador);
 		

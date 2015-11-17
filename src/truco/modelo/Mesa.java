@@ -3,7 +3,7 @@ package truco.modelo;
 import java.util.LinkedList;
 
 import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRondaException;
-import truco.excepciones.mesa.RespuestaInconrrectaException;
+import truco.excepciones.mesa.RespuestaIncorrectaException;
 
 public class Mesa {
 
@@ -149,7 +149,7 @@ public class Mesa {
 			this.listadoCantosDelTanto = new LinkedList<Canto>();
 		// Si existe un canto debo verificar que tengo una respuesta valida para dicho canto
 		if (!this.listadoCantosDelTanto.isEmpty() && !this.listadoCantosDelTanto.getLast().esUnaRespuestaValidaElCanto(unCanto))
-			throw new RespuestaInconrrectaException();
+			throw new RespuestaIncorrectaException();
 		this.listadoCantosDelTanto.addLast(unCanto);
 	}
 	

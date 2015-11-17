@@ -56,6 +56,7 @@ public class ManoTest {
 		Carta cartaJugador3 = new Carta(7,Palo.ESPADA);
 		Jugador jugador4 = new Jugador();
 		Carta cartaJugador4 = new Carta(7,Palo.ORO);
+
 		
 		this.manoDeCuatro.jugarCarta(jugador1, cartaJugador1);
 		this.manoDeCuatro.jugarCarta(jugador2, cartaJugador2);
@@ -99,17 +100,17 @@ public class ManoTest {
 	@Test
 	public void testMostrarJugadorQueGanoLaManoConUnaCartaDelMismoValorQueElOtroJugadorPeroEsMano() {
 		Jugador jugador1 = new Jugador();
-		Carta cartaJugador1 = new Carta(1,Palo.ESPADA);
+		Carta cartaJugador1 = new Carta(7,Palo.COPA);
 		jugador1.tomarCarta(cartaJugador1);
 		
-		Jugador jugador2 = new Jugador();
-		Carta cartaJugador2 = new Carta(1,Palo.ESPADA);
+		Jugador jugador2 = new Jugador("jugador2",true,false);
+		Carta cartaJugador2 = new Carta(7,Palo.BASTO);
 		jugador2.tomarCarta(cartaJugador2);
 		
 		this.mimano.jugarCarta(jugador1, cartaJugador1);
 		this.mimano.jugarCarta(jugador2, cartaJugador2);
 		
-		assertEquals(jugador1,this.mimano.enfrentarTodasLasCartas());
+		assertEquals(jugador2,this.mimano.enfrentarTodasLasCartas());
 	}
 	*/
 

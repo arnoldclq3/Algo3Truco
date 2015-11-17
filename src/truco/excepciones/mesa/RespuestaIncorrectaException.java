@@ -1,6 +1,6 @@
 package truco.excepciones.mesa;
 
-public class RespuestaInconrrectaException extends RuntimeException {
+public class RespuestaIncorrectaException extends RuntimeException {
 
 	/**
 	 * 
