@@ -25,5 +25,9 @@ public abstract class CantosEnProceso {
 		// Se desarrolla el metodo por si existen casos como Flor+Flor+Quiero
 		return 0;
 	}
+	
+	public Jugador jugadorGanador(){
+		return this.jugadorGanadorDelProceso;
+	}
 
 }
