@@ -2,7 +2,7 @@ package truco.modelo;
 
 import truco.excepciones.canto.PuntosQueLeFaltanAlOtroEquipoParaGanarException;
 
-public class FaltaEnvido extends Canto {
+public class ContraFlorAResto extends Canto {
 
 	@Override
 	public int puntosPorGanar() {

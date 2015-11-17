@@ -20,4 +20,5 @@ public abstract class Canto {
 
 	public abstract int puntosPorGanar();
 
+
 }
