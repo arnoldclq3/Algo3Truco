@@ -30,7 +30,7 @@ public class Mesa {
 	public Mesa(Equipo nosotros, Equipo ellos) {
 		this.nosotros = nosotros;
 		this.ellos = ellos;
-		this.ronda = new Ronda();
+		this.ronda = new Ronda(nosotros, ellos);
 		this.listadoCantosDelTanto = null;
 		this.cantosTruco = new LinkedList<Canto>();
 	}
