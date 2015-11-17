@@ -13,7 +13,7 @@ public class RondaTest {
 	public void setup() {
 		Jugador jugador1 = new Jugador("jugador1", true, false);
 		Jugador jugador2 = new Jugador("jugador2", false, false);
-		Jugador jugador3 = new Jugador("jugador3", false, false);
+		Jugador jugador3 = new Jugador("jugador3", false, true);
 		Jugador jugador4 = new Jugador("jugador4", false, false);
 		Equipo equipo1 = new Equipo(jugador1);
 		equipo1.agregarJugador(jugador2);
