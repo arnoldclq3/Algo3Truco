@@ -6,6 +6,10 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 
 	private boolean existeGanador = false;
 	
+	/*************************************************
+	 **  Sobrecarga de Metodos en CantosEnProceso	**
+	 *************************************************/
+	
 	@Override
 	public void quiero(Jugador jugadorQueCanta) {
 		// En el truco, aceptar no implica mas nada que seguir jugando
@@ -32,7 +36,10 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 		return null;
 	}
 
-
+	/*************************************************
+	 ** 			 VERIFICACIONES					**
+	 *************************************************/
+	
 	private void verificarCantoValido(Canto unCanto) {
 		if (this.cantosAceptados.isEmpty() || !this.cantosAceptados.getLast().esUnaRespuestaValidaElCanto(unCanto) )
 			throw new RespuestaIncorrectaException(); 
@@ -47,6 +54,10 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 		this.cantosAceptados.addLast(unCanto);
 		this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
+	
+	/*************************************************
+	 **       Implementacion Cantos Truco			**
+	 *************************************************/
 	
 	@Override
 	public void truco(Jugador jugadorQueCanta) {

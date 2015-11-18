@@ -18,7 +18,10 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		this.sePuedenRealizarCantosNuevos = true;
 		this.cantidadDeJugadoresQueCantaronSuTanto = 0;
 	}
-
+	
+	/*************************************************
+	 **  Sobrecarga de Metodos en CantosEnProceso	**
+	 *************************************************/
 	@Override
 	public Jugador jugadorGanador() {
 		return this.jugadorGanadorDelProceso;
@@ -36,6 +39,13 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		return puntaje;
 	}
 
+	@Override
+	public void quiero(Jugador jugadorQueCanta) {
+		// Despues de un quiero no se pueden agregar mas cantos en el proceso
+		this.sePuedenRealizarCantosNuevos = false;
+	}
+
+	
 	private int puntosParaElGanadorPorEnvido(){
 		// Tener en cuenta que si el ultimo aceptado fue un Falta Envido igual recorre toda la lista.
 		int puntajeGanador = 0;
@@ -50,18 +60,17 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		return this.cantosAceptados.getLast().puntosPorGanar();
 	}
 	
-	@Override
-	public void quiero(Jugador jugadorQueCanta) {
-		// Despues de un quiero no se pueden agregar mas cantos en el proceso
-		this.sePuedenRealizarCantosNuevos = false;
-	}
 
 	public boolean terminoElProcesoDeCanto(int cantidadJugadoresQueDeberianHaberCantadoSuTanto){
 		if ( cantidadJugadoresQueDeberianHaberCantadoSuTanto == this.cantidadDeJugadoresQueCantaronSuTanto )
 			return true;
 		return false;
 	}
-
+	
+	/*************************************************
+	 ** 			 VERIFICACIONES					**
+	 *************************************************/
+	
 	private void verificacionDeCantoRepetido(Canto elCantoABuscar,int maximaVecesQuePuedeEstarElCanto){
 		/*	Post:	Si el canto pasado se encuentra mas de 1 vez se lanza Excepcion
 		 * 			Excepcion = RespuestaIncorrecta */
@@ -93,12 +102,6 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		this.verificacionDeRespuestaCorrecta(unCanto);	
 	}
 	
-	private void agregarCanto(Canto unCanto , Jugador jugadorQueLoCanto){
-		this.cantosAceptados.addLast(unCanto);
-		// Guardo temporalmente como ganador al jugador que esta cantando
-		this.jugadorGanadorDelProceso = jugadorQueLoCanto;
-	}
-	
 	private void verificarQueSeHayaCantadoFlorPreviamente(){
 		if ( ! this.seCantoFlor )
 			throw new NoSePuedeCantarContraFlorSinHaberCantadoFlorPrimeroException();
@@ -125,7 +128,15 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		this.verificacionesGeneralesDelTanto(unCanto, maximaVecesQuePuedeEstarElCanto);
 	}
 	
-	/**	Cantos Envido **/
+	private void agregarCanto(Canto unCanto , Jugador jugadorQueLoCanto){
+		this.cantosAceptados.addLast(unCanto);
+		// Guardo temporalmente como ganador al jugador que esta cantando
+		this.jugadorGanadorDelProceso = jugadorQueLoCanto;
+	}
+	
+	/*************************************************
+	 **       Implementacion Cantos Envido			**
+	 *************************************************/
 	
 	@Override
 	public void envido(Jugador jugadorQueCanta) {
@@ -162,7 +173,9 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
 
-	/**	Cantos Flor **/
+	/*************************************************
+	 **       Implementacion Cantos Flor			**
+	 *************************************************/
 	
 	@Override
 	public void flor(Jugador jugadorQueCanta) {
@@ -206,13 +219,4 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		if ( jugadorQueCanta.puntajeFlor() > this.jugadorGanadorDelProceso.puntajeFlor() )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
-
-
-
-
-
-	/*	Casos que faltan verificar:
-	 *  	Envido + Flor (Es posible)
-	 *  	Flor + Flor + Quiero (El tema de los puntajes)
-	 */
 }
