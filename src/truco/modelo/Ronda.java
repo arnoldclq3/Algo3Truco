@@ -2,13 +2,17 @@ package truco.modelo;
 
 import java.util.LinkedList;
 
-public class Ronda implements CantosEnvido , CantosFlor{
+import truco.excepciones.cantos.RespuestaIncorrectaException;
+
+public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 
 	private LinkedList<Mano> manos;
 	private Equipo equipo1;
 	private Equipo equipo2;
 	private int cantidadJugadores;
+	
 	private CantoEnProcesoParaElTanto cantoEnProcesoParaElTanto;
+	private CantosEnProcesoParaElTruco cantoEnProcesoParaElTruco;
 	
 	public Ronda(Equipo equipo1, Equipo equipo2 ) {
 		
@@ -63,19 +67,27 @@ public class Ronda implements CantosEnvido , CantosFlor{
 	}
 
 	/*************************************************
-	 ** 	    Cantos Generales			  		**
+	 ** 	   		 Cantos Generales			    **
 	 *************************************************/
 	
 	public void quiero(Jugador jugadorQueCanta) {
-		if (this.cantoEnProcesoParaElTanto != null)
+		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
 			this.cantoEnProcesoParaElTanto.quiero(jugadorQueCanta);
-		
+		else
+			if (this.cantoEnProcesoParaElTruco != null)
+				this.cantoEnProcesoParaElTruco.quiero(jugadorQueCanta);
+			else 
+				throw new RespuestaIncorrectaException();
 	}
 	
 	public void noQuiero(Jugador jugadorQueCanta) {
-		if (this.cantoEnProcesoParaElTanto != null)
+		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
 			this.cantoEnProcesoParaElTanto.noQuiero(jugadorQueCanta);
-		
+		else
+			if (this.cantoEnProcesoParaElTruco != null)
+				this.cantoEnProcesoParaElTruco.noQuiero(jugadorQueCanta);
+			else 
+				throw new RespuestaIncorrectaException();
 	}
 	
 	
@@ -162,6 +174,41 @@ public class Ronda implements CantosEnvido , CantosFlor{
 		this.iniciarProcesoDeTanto();
 		this.cantoEnProcesoParaElTanto.cantarTantoDeLaFlor(jugadorQueCanta);	
 		this.controlarSiElCantoDelTantoFinalizo();
+	}
+	
+	/*************************************************
+	 ** 	    Cantos Generales del Tanto	  		**
+	 *************************************************/
+
+	private void iniciarProcesoDelTruco(){
+		if (this.cantoEnProcesoParaElTruco == null)
+			this.cantoEnProcesoParaElTruco = new CantosEnProcesoParaElTruco();
+	}
+	
+	
+	/*************************************************
+	 ** 			   Cantos Truco   				**
+	 *************************************************/
+	
+	@Override
+	public void truco(Jugador jugadorQueCanta) {
+		this.iniciarProcesoDelTruco();
+		this.cantoEnProcesoParaElTruco.truco(jugadorQueCanta);
+		
+	}
+
+	@Override
+	public void reTruco(Jugador jugadorQueCanta) {
+		this.iniciarProcesoDelTruco();
+		this.cantoEnProcesoParaElTruco.reTruco(jugadorQueCanta);
+		
+	}
+
+	@Override
+	public void valeCuatro(Jugador jugadorQueCanta) {
+		this.iniciarProcesoDelTruco();
+		this.cantoEnProcesoParaElTruco.valeCuatro(jugadorQueCanta);
+		
 	}
 
 
