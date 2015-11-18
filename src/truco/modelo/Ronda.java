@@ -2,6 +2,8 @@ package truco.modelo;
 
 import java.util.Collections;
 import java.util.LinkedList;
+
+import truco.excepciones.mano.NoHayGanadorHuboEmpateException;
 import truco.excepciones.ronda.NoEsElTurnoDeEsteJugadorException;
 import truco.excepciones.ronda.NoSePuedeJugarMasCartasRondaTerminadaException;
 import truco.excepciones.cantos.RespuestaIncorrectaException;
@@ -68,6 +70,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	public Equipo obtenerEquipoGanador() {
 		
+		if ( this.equipoGanador == null ) throw new NoHayEquipoGanadorHastaQueLaRondaTermineException();
 		return this.equipoGanador;
 	}
 	
@@ -75,27 +78,40 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		
 		int manosGanadasEquipo1 = 0;
 		int manosGanadasEquipo2 = 0;
+		Jugador ganador;
 		
 		if ( this.manos.size() >= 2 ) {
 			
-			for (Mano mano : this.manos ) {
-				
-				Jugador jugador = mano.obtenerGanador();
-				
-				if ( this.equipo1.estaJugador(jugador) ) manosGanadasEquipo1++;
-				if ( this.equipo2.estaJugador(jugador) ) manosGanadasEquipo2++;
+			for ( Mano unaMano : this.manos ) {
+		
+				try { 
+					ganador = unaMano.obtenerGanador();
+					if ( this.equipo1.estaJugador(ganador) ) manosGanadasEquipo1++;
+					if ( this.equipo2.estaJugador(ganador) ) manosGanadasEquipo2++;
+				} catch(NoHayGanadorHuboEmpateException e) { }
 			}
-		}
-		
-		if ( manosGanadasEquipo1 > manosGanadasEquipo2 ) {
-		
-			this.equipoGanador = equipo1;
-			this.hayEquipoGanador = true;
-		
-		} else if ( manosGanadasEquipo1 < manosGanadasEquipo2 ) {
+	
+			if ( manosGanadasEquipo1 > manosGanadasEquipo2 ) {
+				
+				this.equipoGanador = this.equipo1;
 			
-			this.equipoGanador = equipo2;
-			this.hayEquipoGanador = true;
+			} else if ( manosGanadasEquipo1 < manosGanadasEquipo2 ) {
+				
+				this.equipoGanador = this.equipo2;
+			
+			} else if ( manosGanadasEquipo1 == 1 && manosGanadasEquipo2 == 1 && this.manos.size() == 3 ) {
+				
+				ganador = this.manos.getFirst().obtenerGanador();
+				if ( this.equipo1.estaJugador(ganador) ) this.equipoGanador = this.equipo1;
+				if ( this.equipo2.estaJugador(ganador) ) this.equipoGanador = this.equipo2;
+				
+			} else if ( manosGanadasEquipo1 == 0 && manosGanadasEquipo2 == 0 && this.manos.size() == 3 ) {
+				
+				if ( this.equipo1.esMano() ) this.equipoGanador = this.equipo1;
+				if ( this.equipo2.esMano() ) this.equipoGanador = this.equipo2;
+			}
+				
+			this.hayEquipoGanador = ( this.equipoGanador != null );
 		}
 	}
 	
@@ -113,10 +129,14 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	private void actualizarJugadorQueDebeJugar() {
 		
-		Jugador jugador = this.manoActual.obtenerGanador();
-		int posicion = this.ordenJugadores.indexOf(jugador);
-		Collections.rotate(ordenJugadores, -posicion);
-		this.jugadorQueDebeJugar = this.ordenJugadores.getFirst();
+		try {
+			Jugador jugador = this.manoActual.obtenerGanador();
+			int posicion = this.ordenJugadores.indexOf(jugador);
+			Collections.rotate(ordenJugadores, -posicion);
+			this.jugadorQueDebeJugar = this.ordenJugadores.getFirst();
+		} catch(NoHayGanadorHuboEmpateException e) {
+			this.actualizarTurnos();
+		}
 	}
 
 	/*************************************************

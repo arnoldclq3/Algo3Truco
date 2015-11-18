@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import truco.excepciones.mano.NoHayGanadorHastaQueLaManoTermineException;
+import truco.excepciones.mano.NoHayGanadorHuboEmpateException;
 import truco.excepciones.mano.NoSePuedeJugarMasCartasManoTerminadaException;
 
 public class Mano {
@@ -13,7 +14,8 @@ public class Mano {
 	private int cantidadMaximaCartasAJugar;
 	private int cantidadCartasJugadas;
 	private Jugador ganador;
-	private boolean estaTerminada;
+	private boolean manoTerminada;
+	private boolean huboEmpate;
 	
 	public Mano(int cantidad) {
 		
@@ -21,13 +23,14 @@ public class Mano {
 		this.cantidadMaximaCartasAJugar = cantidad;
 		this.cantidadCartasJugadas = 0;
 		this.ganador = null;
-		this.estaTerminada = false;
+		this.manoTerminada = false;
+		this.huboEmpate = false;
 		
 	}
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 			
-		if ( this.estaTerminada ) throw new NoSePuedeJugarMasCartasManoTerminadaException();
+		if ( this.manoTerminada ) throw new NoSePuedeJugarMasCartasManoTerminadaException();
 		
 		if ( this.cantidadCartasJugadas < this.cantidadMaximaCartasAJugar ) {
 			
@@ -38,7 +41,7 @@ public class Mano {
 		if ( this.cantidadCartasJugadas == this.cantidadMaximaCartasAJugar ) {
 
 			this.enfrentarTodasLasCartas();
-			this.estaTerminada = true;
+			this.manoTerminada = true;
 		}
 	}
 
@@ -49,12 +52,14 @@ public class Mano {
 
 	public boolean estaTerminada() {
 		
-		return this.estaTerminada;
+		return this.manoTerminada;
 	}
 
 	public Jugador obtenerGanador() {
 		
-		if ( this.ganador == null ) throw new NoHayGanadorHastaQueLaManoTermineException();
+		if ( this.huboEmpate ) throw new NoHayGanadorHuboEmpateException();
+		
+		if ( !this.manoTerminada ) throw new NoHayGanadorHastaQueLaManoTermineException();
 		
 		return this.ganador;
 	}
@@ -71,15 +76,24 @@ public class Mano {
 			
 			Carta carta = iteradorCarta.next();
 			if ( cartaGanadora.compararCon(carta) == -1) {
+				
 				cartaGanadora = carta;
+				this.huboEmpate = false;
+			
+			} else if ( cartaGanadora.compararCon(carta) == 0 ){
+				
+				this.huboEmpate = true;
 			}
 		}
 		
-		for ( Jugador jugador : cartasJugadas.keySet() ) {
+		if ( !this.huboEmpate ) {
+		
+			for ( Jugador jugador : cartasJugadas.keySet() ) {
 			
-			Carta carta = cartasJugadas.get(jugador);
-			if ( carta.equals(cartaGanadora) ) {
-				this.ganador = jugador;
+				Carta carta = cartasJugadas.get(jugador);
+				if ( carta.equals(cartaGanadora) ) {
+					this.ganador = jugador;
+				}
 			}
 		}
 	}
