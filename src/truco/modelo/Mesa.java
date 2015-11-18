@@ -94,7 +94,7 @@ public class Mesa implements CantosEnvido , CantosFlor{
 		this.verificarSiPuedeJugarElJugador(unJugador);
 		
 		if ( !this.cantosTruco.isEmpty() ) {
-			Canto unReTruco = new ReTruco();
+			Canto unReTruco = new Retruco();
 			Canto ultimoCanto = this.cantosTruco.getLast();
 			
 			if ( ultimoCanto.esUnaRespuestaValidaElCanto(unReTruco) ) {

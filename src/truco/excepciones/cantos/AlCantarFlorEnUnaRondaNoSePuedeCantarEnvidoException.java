@@ -1,4 +1,4 @@
-package truco.excepciones.mesa;
+package truco.excepciones.cantos;
 
 public class AlCantarFlorEnUnaRondaNoSePuedeCantarEnvidoException extends
 		RuntimeException {

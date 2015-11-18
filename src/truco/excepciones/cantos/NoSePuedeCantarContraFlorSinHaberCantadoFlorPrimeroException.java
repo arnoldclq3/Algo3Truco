@@ -1,4 +1,4 @@
-package truco.excepciones.canto;
+package truco.excepciones.cantos;
 
 public class NoSePuedeCantarContraFlorSinHaberCantadoFlorPrimeroException
 		extends RuntimeException {

@@ -1,11 +1,11 @@
 package truco.modelo;
 
-import truco.excepciones.canto.NoSePuedeCantarContraFlorSinHaberCantadoFlorPrimeroException;
-import truco.excepciones.canto.NoSePuedeCantarElTantoDeLaFlorAntesDeAceptarUnCantoDeFormaPreviaException;
-import truco.excepciones.canto.NoSePuedeCantarElTantoDelEnvidoAntesDeAceptarUnCantoDeFormaPreviaException;
-import truco.excepciones.mesa.AlCantarFlorEnUnaRondaNoSePuedeCantarEnvidoException;
-import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRondaException;
-import truco.excepciones.mesa.RespuestaIncorrectaException;
+import truco.excepciones.cantos.AlCantarFlorEnUnaRondaNoSePuedeCantarEnvidoException;
+import truco.excepciones.cantos.NoSePuedeCantarContraFlorSinHaberCantadoFlorPrimeroException;
+import truco.excepciones.cantos.NoSePuedeCantarElTantoDeLaFlorAntesDeAceptarUnCantoDeFormaPreviaException;
+import truco.excepciones.cantos.NoSePuedeCantarElTantoDelEnvidoAntesDeAceptarUnCantoDeFormaPreviaException;
+import truco.excepciones.cantos.NoSePuedeCantarTantoDosVecesEnUnaRondaException;
+import truco.excepciones.cantos.RespuestaIncorrectaException;
 
 public class CantoEnProcesoParaElTanto extends CantosEnProceso implements CantosEnvido , CantosFlor{
 
@@ -19,6 +19,10 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		this.cantidadDeJugadoresQueCantaronSuTanto = 0;
 	}
 
+	@Override
+	public Jugador jugadorGanador() {
+		return this.jugadorGanadorDelProceso;
+	}
 
 	@Override
 	public int puntosParaElGanador() {
@@ -202,6 +206,8 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		if ( jugadorQueCanta.puntajeFlor() > this.jugadorGanadorDelProceso.puntajeFlor() )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
+
+
 
 
 

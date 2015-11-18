@@ -1,6 +1,6 @@
 package truco.modelo;
 
-import truco.excepciones.canto.PuntosQueLeFaltanAlOtroEquipoParaGanarException;
+import truco.excepciones.cantos.PuntosQueLeFaltanAlOtroEquipoParaGanarException;
 
 public class FaltaEnvido extends Canto {
 

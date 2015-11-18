@@ -26,8 +26,5 @@ public abstract class CantosEnProceso {
 		return 0;
 	}
 	
-	public Jugador jugadorGanador(){
-		return this.jugadorGanadorDelProceso;
-	}
-
+	public abstract Jugador jugadorGanador();
 }
