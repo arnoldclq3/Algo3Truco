@@ -44,7 +44,7 @@ public class MesaTest {
 	@Test
 	public void testAlInciarseUnProcesoDeEnvidoElJugadorConMayorTantoEsElGanador(){
 		this.mesa.envido(primerJugador);
-		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.quiero(segundoJugador);
 		this.mesa.cantarTantoDelEnvido(primerJugador);
 		this.mesa.cantarTantoDelEnvido(segundoJugador);
 		
@@ -54,7 +54,7 @@ public class MesaTest {
 	@Test
 	public void testAlInciarseUnProcesoDeFlorElJugadorConMayorTantoEsElGanador(){
 		this.mesa.flor(primerJugador);
-		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.quiero(segundoJugador);
 		this.mesa.cantarTantoDeLaFlor(primerJugador);
 		this.mesa.cantarTantoDeLaFlor(segundoJugador);
 		
@@ -64,7 +64,7 @@ public class MesaTest {
 	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnEnvidoNoPuedeVolverseACantarOtroEnvido(){
 		this.mesa.envido(primerJugador);
-		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.quiero(segundoJugador);
 		this.mesa.cantarTantoDelEnvido(primerJugador);
 		this.mesa.cantarTantoDelEnvido(segundoJugador);
 		
@@ -74,7 +74,7 @@ public class MesaTest {
 	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoPuedeCantarseEnvido(){
 		this.mesa.flor(primerJugador);
-		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.quiero(segundoJugador);
 		this.mesa.cantarTantoDeLaFlor(primerJugador);
 		this.mesa.cantarTantoDeLaFlor(segundoJugador);
 		
@@ -84,7 +84,7 @@ public class MesaTest {
 	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoSePuedeVolverACantarFlor(){
 		this.mesa.flor(primerJugador);
-		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.quiero(segundoJugador);
 		this.mesa.cantarTantoDeLaFlor(primerJugador);
 		this.mesa.cantarTantoDeLaFlor(segundoJugador);
 		
@@ -94,7 +94,7 @@ public class MesaTest {
 	@Test
 	public void testElPrimerCantoPuedeSerUnRealEnvidoDandoComoGanadorAlQuePoseaMejorTanto(){
 		this.mesa.realEnvido(primerJugador);
-		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.quiero(segundoJugador);
 		this.mesa.cantarTantoDelEnvido(primerJugador);
 		this.mesa.cantarTantoDelEnvido(segundoJugador);
 		
@@ -112,25 +112,10 @@ public class MesaTest {
 	public void testSePuedeResponderRealEnvidoAUnEnvidoYGanaElJugadorQueTengaMayorTanto(){
 		this.mesa.envido(segundoJugador);
 		this.mesa.realEnvido(primerJugador);
-		this.mesa.cantarQuiero(segundoJugador);
+		this.mesa.quiero(segundoJugador);
 		this.mesa.cantarTantoDelEnvido(primerJugador);
 		this.mesa.cantarTantoDelEnvido(segundoJugador);
 		
 		assertEquals(5,this.mesa.mostrarPuntajeEquipoEllos());
 	}
-	
-	/*
-	@Test
-	public void testSeJuegaUnTrucoQuiero() {
-		
-		this.mesa.cantaTrucoElJugador(primerJugador);
-		this.mesa.cantaQuieroElJugador(segundoJugador);
-		this.mesa.jugarCarta(primerJugador, new Carta(1, Palo.ESPADA));
-		this.mesa.jugarCarta(segundoJugador, new Carta(1, Palo.ORO));
-		
-		Jugador ganador = this.mesa.enfrentarTodasLasCartasJugadas();
-		
-		assertEquals(ganador,primerJugador);
-	}*/
-	
 }

@@ -68,7 +68,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 	}
 
 	@Override
-	public void reTruco(Jugador jugadorQueCanta) {
+	public void retruco(Jugador jugadorQueCanta) {
 		Retruco reTruco = new Retruco();
 		this.verificarCantoValido(reTruco);
 		

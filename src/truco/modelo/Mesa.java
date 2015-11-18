@@ -3,15 +3,13 @@ package truco.modelo;
 import java.util.LinkedList;
 
 
-public class Mesa implements CantosEnvido , CantosFlor{
+public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 
 	/*************************************************
 	 ** 				Atributos					**
 	 *************************************************/
 	
 	private Ronda ronda;
-
-	private LinkedList<Canto> cantosTruco;
 
 	private Equipo nosotros;
 	private Equipo ellos;
@@ -40,7 +38,6 @@ public class Mesa implements CantosEnvido , CantosFlor{
 		}
 		
 		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
-		this.cantosTruco = new LinkedList<Canto>();
 	}
 	
 	/*************************************************
@@ -59,12 +56,6 @@ public class Mesa implements CantosEnvido , CantosFlor{
 		return this.ellos.obtenerCantidadDePuntos();
 	}
 
-	
-	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
-		
-		this.ronda.jugarCarta(unJugador,unaCarta);
-	}
-			
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
 				
 		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
@@ -77,12 +68,17 @@ public class Mesa implements CantosEnvido , CantosFlor{
 	 ** 		    CANTOS GENERALES			    **
 	 *************************************************/
 
-	public void cantarQuiero(Jugador unJugador) {
+	public void quiero(Jugador unJugador) {
 		this.ronda.quiero(unJugador);
 	}
 	
-	public void cantarNoQuiero(Jugador unJugador) {
+	public void noQuiero(Jugador unJugador) {
 		this.ronda.noQuiero(unJugador);
+	}
+	
+	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
+		
+		this.ronda.jugarCarta(unJugador,unaCarta);
 	}
 	
 	public Jugador ganadorDelTantoDeLaRondaActual(){
@@ -91,60 +87,24 @@ public class Mesa implements CantosEnvido , CantosFlor{
 	
 	
 	/*************************************************
-	 ** 		 	     TRUCO					    **
+	 ** 		 	   Cantos Truco				    **
 	 *************************************************/
 	
-	public void cantaTrucoElJugador(Jugador unJugador) {
+	@Override
+	public void truco(Jugador jugadorQueCanta) {
+		this.ronda.truco(jugadorQueCanta);
 		
-		this.verificarSiPuedeJugarElJugador(unJugador);
-		
-		if ( this.cantosTruco.isEmpty() ) {
-			Truco unTruco = new Truco();
-			this.cantosTruco.add(unTruco);
-		}
 	}
+
+	@Override
+	public void retruco(Jugador jugadorQueCanta) {
+		this.ronda.retruco(jugadorQueCanta);
 		
-	
-	public void cantaReTrucoElJugador(Jugador unJugador) {
-		
-		this.verificarSiPuedeJugarElJugador(unJugador);
-		
-		if ( !this.cantosTruco.isEmpty() ) {
-			Canto unReTruco = new Retruco();
-			Canto ultimoCanto = this.cantosTruco.getLast();
-			
-			if ( ultimoCanto.esUnaRespuestaValidaElCanto(unReTruco) ) {
-				this.cantosTruco.add(unReTruco);
-			}
-		}
 	}
-	
-	public void cantaValeCuatroElJugador(Jugador unJugador) {
-		
-		this.verificarSiPuedeJugarElJugador(unJugador);
-		
-		if ( !this.cantosTruco.isEmpty() ) {
-			Canto unValeCuatro = new ValeCuatro();
-			Canto ultimoCanto = this.cantosTruco.getLast();
-			
-			if ( ultimoCanto.esUnaRespuestaValidaElCanto(unValeCuatro) ) {
-				this.cantosTruco.add(unValeCuatro);
-			}
-		}
-	}
-	
-	public void cantaQuieroElJugador(Jugador unJugador) {
-		
-		this.verificarSiPuedeJugarElJugador(unJugador);
-		
-		if ( !this.cantosTruco.isEmpty() ) {
-			this.cantosTruco.clear();
-		}
-	}
-	
-	private void verificarSiPuedeJugarElJugador(Jugador unJugador) {
-		
-		/* metodo en construccion !!! */
+
+	@Override
+	public void valeCuatro(Jugador jugadorQueCanta) {
+		this.ronda.valeCuatro(jugadorQueCanta);
 	}
 	
 	/*************************************************
@@ -200,7 +160,7 @@ public class Mesa implements CantosEnvido , CantosFlor{
 		this.ronda.cantarTantoDeLaFlor(jugadorQueCanta);
 		
 	}
-	
+
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**
 	 *************************************************/

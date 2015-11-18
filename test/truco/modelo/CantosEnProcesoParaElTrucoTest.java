@@ -32,7 +32,7 @@ public class CantosEnProcesoParaElTrucoTest {
 	@Test
 	public void testGanarElRetrucoImplicaTresPuntos() {
 		this.cantosEnProcesoParaElTruco.truco(this.jugadorUno);
-		this.cantosEnProcesoParaElTruco.reTruco(this.jugadorDos);
+		this.cantosEnProcesoParaElTruco.retruco(this.jugadorDos);
 		this.cantosEnProcesoParaElTruco.quiero(this.jugadorUno);
 		
 		assertEquals(3,this.cantosEnProcesoParaElTruco.puntosParaElGanador() );
@@ -41,7 +41,7 @@ public class CantosEnProcesoParaElTrucoTest {
 	@Test
 	public void testGanarElValeCuatroImplicaCuatroPuntos() {
 		this.cantosEnProcesoParaElTruco.truco(this.jugadorUno);
-		this.cantosEnProcesoParaElTruco.reTruco(this.jugadorDos);
+		this.cantosEnProcesoParaElTruco.retruco(this.jugadorDos);
 		this.cantosEnProcesoParaElTruco.valeCuatro(this.jugadorUno);
 		this.cantosEnProcesoParaElTruco.quiero(this.jugadorDos);
 		
@@ -60,7 +60,7 @@ public class CantosEnProcesoParaElTrucoTest {
 	@Test
 	public void testNoQuieroAlRetrucoImplicaQueElOtroJugadorGanaDosPuntos() {
 		this.cantosEnProcesoParaElTruco.truco(this.jugadorUno);
-		this.cantosEnProcesoParaElTruco.reTruco(this.jugadorDos);
+		this.cantosEnProcesoParaElTruco.retruco(this.jugadorDos);
 		this.cantosEnProcesoParaElTruco.noQuiero(this.jugadorUno);
 		
 		assertEquals(2,this.cantosEnProcesoParaElTruco.puntosParaElGanador() );
@@ -69,7 +69,7 @@ public class CantosEnProcesoParaElTrucoTest {
 	@Test
 	public void testNoQuieroAlValeCuatroImplicaQueElOtroJugadorGanaTresPunto() {
 		this.cantosEnProcesoParaElTruco.truco(this.jugadorUno);
-		this.cantosEnProcesoParaElTruco.reTruco(this.jugadorDos);
+		this.cantosEnProcesoParaElTruco.retruco(this.jugadorDos);
 		this.cantosEnProcesoParaElTruco.valeCuatro(this.jugadorUno);
 		this.cantosEnProcesoParaElTruco.noQuiero(this.jugadorDos);
 		
@@ -78,7 +78,7 @@ public class CantosEnProcesoParaElTrucoTest {
 	
 	@Test (expected = RespuestaIncorrectaException.class)
 	public void testNoSePuedeCantarRetrucoSinHaberCantadoTrucoPrimero(){
-		this.cantosEnProcesoParaElTruco.reTruco(this.jugadorDos);
+		this.cantosEnProcesoParaElTruco.retruco(this.jugadorDos);
 	}
 	
 	@Test (expected = RespuestaIncorrectaException.class)

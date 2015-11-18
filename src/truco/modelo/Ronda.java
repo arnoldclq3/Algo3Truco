@@ -251,9 +251,9 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	}
 
 	@Override
-	public void reTruco(Jugador jugadorQueCanta) {
+	public void retruco(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDelTruco();
-		this.cantoEnProcesoParaElTruco.reTruco(jugadorQueCanta);
+		this.cantoEnProcesoParaElTruco.retruco(jugadorQueCanta);
 		
 	}
 
