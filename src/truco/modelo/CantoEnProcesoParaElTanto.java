@@ -4,6 +4,7 @@ import truco.excepciones.canto.NoSePuedeCantarContraFlorSinHaberCantadoFlorPrime
 import truco.excepciones.canto.NoSePuedeCantarElTantoDeLaFlorAntesDeAceptarUnCantoDeFormaPreviaException;
 import truco.excepciones.canto.NoSePuedeCantarElTantoDelEnvidoAntesDeAceptarUnCantoDeFormaPreviaException;
 import truco.excepciones.mesa.AlCantarFlorEnUnaRondaNoSePuedeCantarEnvidoException;
+import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRondaException;
 import truco.excepciones.mesa.RespuestaIncorrectaException;
 
 public class CantoEnProcesoParaElTanto extends CantosEnProceso implements CantosEnvido , CantosFlor{
@@ -109,14 +110,23 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 			throw new NoSePuedeCantarElTantoDeLaFlorAntesDeAceptarUnCantoDeFormaPreviaException();	
 	}
 	
+	private void verificacionDeCantoDeTantoUnicoPorLaRonda() {
+		if (!this.sePuedenRealizarCantosNuevos)
+			throw new NoSePuedeCantarTantoDosVecesEnUnaRondaException();
+	}
+
+	private void verificacionesDelEnvido(Canto unCanto,int maximaVecesQuePuedeEstarElCanto){
+		this.verificacionDeCantoDeTantoUnicoPorLaRonda();
+		this.verificacionDeNoHaberCantadoFlorAntesDeUnEnvido();
+		this.verificacionesGeneralesDelTanto(unCanto, maximaVecesQuePuedeEstarElCanto);
+	}
 	
 	/**	Cantos Envido **/
 	
 	@Override
 	public void envido(Jugador jugadorQueCanta) {
 		Canto envido = new Envido();
-		this.verificacionDeNoHaberCantadoFlorAntesDeUnEnvido();
-		this.verificacionesGeneralesDelTanto(envido, 1);
+		this.verificacionesDelEnvido(envido, 1);
 		
 		this.agregarCanto(envido, jugadorQueCanta);
 	}
@@ -124,8 +134,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	@Override
 	public void realEnvido(Jugador jugadorQueCanta) {
 		Canto realEnvido = new RealEnvido();
-		this.verificacionDeNoHaberCantadoFlorAntesDeUnEnvido();
-		this.verificacionesGeneralesDelTanto(realEnvido, 1);
+		this.verificacionesDelEnvido(realEnvido, 1);
 		
 		this.agregarCanto(realEnvido, jugadorQueCanta);
 	}
@@ -133,8 +142,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	@Override
 	public void faltaEnvido(Jugador jugadorQueCanta) {
 		Canto faltaEnvido = new FaltaEnvido();
-		this.verificacionDeNoHaberCantadoFlorAntesDeUnEnvido();
-		this.verificacionesGeneralesDelTanto(faltaEnvido, 0);
+		this.verificacionesDelEnvido(faltaEnvido, 0);
 		
 		this.agregarCanto(faltaEnvido, jugadorQueCanta);
 	}
@@ -146,7 +154,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		this.cantidadDeJugadoresQueCantaronSuTanto += 1;
 		if ( this.jugadorGanadorDelProceso.equals(jugadorQueCanta) )
 			return;
-		if ( this.jugadorGanadorDelProceso.puntajeEnvido() > jugadorQueCanta.puntajeEnvido() )
+		if ( jugadorQueCanta.puntajeEnvido() > this.jugadorGanadorDelProceso.puntajeEnvido()  )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
 
@@ -155,6 +163,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	@Override
 	public void flor(Jugador jugadorQueCanta) {
 		Canto flor = new Flor();
+		this.verificacionDeCantoDeTantoUnicoPorLaRonda();
 		this.verificacionesGeneralesDelTanto(flor, 1);
 		
 		this.agregarCanto(flor, jugadorQueCanta);
@@ -164,6 +173,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
 		Canto contraFlor = new ContraFlor();
+		this.verificacionDeCantoDeTantoUnicoPorLaRonda();
 		this.verificarQueSeHayaCantadoFlorPreviamente();
 		this.verificacionesGeneralesDelTanto(contraFlor, 0);
 		
@@ -174,6 +184,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
 		Canto contraFlorAResto = new ContraFlorAResto();
+		this.verificacionDeCantoDeTantoUnicoPorLaRonda();
 		this.verificarQueSeHayaCantadoFlorPreviamente();
 		this.verificacionesGeneralesDelTanto(contraFlorAResto, 0);
 		
@@ -188,7 +199,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		this.cantidadDeJugadoresQueCantaronSuTanto += 1;
 		if ( this.jugadorGanadorDelProceso.equals(jugadorQueCanta) )
 			return;
-		if ( this.jugadorGanadorDelProceso.puntajeFlor() > jugadorQueCanta.puntajeFlor() )
+		if ( jugadorQueCanta.puntajeFlor() > this.jugadorGanadorDelProceso.puntajeFlor() )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
 

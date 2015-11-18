@@ -42,78 +42,78 @@ public class MesaTest {
 	
 	@Test
 	public void testAlInciarseUnProcesoDeEnvidoElJugadorConMayorTantoEsElGanador(){
-		this.mesa.cantarEnvido(primerJugador);
+		this.mesa.envido(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
-		this.mesa.cantarTantoDeEnvido(primerJugador);
-		this.mesa.cantarTantoDeEnvido(segundoJugador);
+		this.mesa.cantarTantoDelEnvido(primerJugador);
+		this.mesa.cantarTantoDelEnvido(segundoJugador);
 		
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
 	}
 	
 	@Test
 	public void testAlInciarseUnProcesoDeFlorElJugadorConMayorTantoEsElGanador(){
-		this.mesa.cantarFlor(primerJugador);
+		this.mesa.flor(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
-		this.mesa.cantarTantoDeFlor(primerJugador);
-		this.mesa.cantarTantoDeFlor(segundoJugador);
+		this.mesa.cantarTantoDeLaFlor(primerJugador);
+		this.mesa.cantarTantoDeLaFlor(segundoJugador);
 		
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , primerJugador);
 	}
 	
 	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnEnvidoNoPuedeVolverseACantarOtroEnvido(){
-		this.mesa.cantarEnvido(primerJugador);
+		this.mesa.envido(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
-		this.mesa.cantarTantoDeEnvido(primerJugador);
-		this.mesa.cantarTantoDeEnvido(segundoJugador);
+		this.mesa.cantarTantoDelEnvido(primerJugador);
+		this.mesa.cantarTantoDelEnvido(segundoJugador);
 		
-		this.mesa.cantarEnvido(primerJugador);
+		this.mesa.envido(primerJugador);
 	}
 	
 	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoPuedeCantarseEnvido(){
-		this.mesa.cantarFlor(primerJugador);
+		this.mesa.flor(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
-		this.mesa.cantarTantoDeFlor(primerJugador);
-		this.mesa.cantarTantoDeFlor(segundoJugador);
+		this.mesa.cantarTantoDeLaFlor(primerJugador);
+		this.mesa.cantarTantoDeLaFlor(segundoJugador);
 		
-		this.mesa.cantarEnvido(primerJugador);
+		this.mesa.envido(primerJugador);
 	}
 	
 	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoSePuedeVolverACantarFlor(){
-		this.mesa.cantarFlor(primerJugador);
+		this.mesa.flor(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
-		this.mesa.cantarTantoDeFlor(primerJugador);
-		this.mesa.cantarTantoDeFlor(segundoJugador);
+		this.mesa.cantarTantoDeLaFlor(primerJugador);
+		this.mesa.cantarTantoDeLaFlor(segundoJugador);
 		
-		this.mesa.cantarFlor(primerJugador);
+		this.mesa.flor(primerJugador);
 	}
 	
 	@Test
 	public void testElPrimerCantoPuedeSerUnRealEnvidoDandoComoGanadorAlQuePoseaMejorTanto(){
-		this.mesa.cantarRealEnvido(primerJugador);
+		this.mesa.realEnvido(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
-		this.mesa.cantarTantoDeEnvido(primerJugador);
-		this.mesa.cantarTantoDeEnvido(segundoJugador);
+		this.mesa.cantarTantoDelEnvido(primerJugador);
+		this.mesa.cantarTantoDelEnvido(segundoJugador);
 		
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
 	}
 	
 	@Test (expected = RespuestaIncorrectaException.class)
 	public void testNoSePuedeResponderEnvidoAUnRealEnvido(){
-		this.mesa.cantarRealEnvido(segundoJugador);
+		this.mesa.realEnvido(segundoJugador);
 		
-		this.mesa.cantarEnvido(primerJugador);
+		this.mesa.envido(primerJugador);
 	}
 	
 	@Test
 	public void testSePuedeResponderRealEnvidoAUnEnvidoYGanaElJugadorQueTengaMayorTanto(){
-		this.mesa.cantarEnvido(segundoJugador);
-		this.mesa.cantarRealEnvido(primerJugador);
+		this.mesa.envido(segundoJugador);
+		this.mesa.realEnvido(primerJugador);
 		this.mesa.cantarQuiero(segundoJugador);
-		this.mesa.cantarTantoDeEnvido(primerJugador);
-		this.mesa.cantarTantoDeEnvido(segundoJugador);
+		this.mesa.cantarTantoDelEnvido(primerJugador);
+		this.mesa.cantarTantoDelEnvido(segundoJugador);
 		
 		assertEquals(5,this.mesa.mostrarPuntajeEquipoEllos());
 	}
