@@ -12,7 +12,7 @@ public class Mano {
 	private int cantidadMaximaCartasAJugar;
 	private int cantidadCartasJugadas;
 	private Jugador ganador;
-	private boolean manoTerminada;
+	private boolean estaTerminada;
 	
 	public Mano(int cantidad) {
 		
@@ -20,7 +20,7 @@ public class Mano {
 		this.cantidadMaximaCartasAJugar = cantidad;
 		this.cantidadCartasJugadas = 0;
 		this.ganador = null;
-		this.manoTerminada = false;
+		this.estaTerminada = false;
 		
 	}
 
@@ -31,7 +31,7 @@ public class Mano {
 		
 		if ( this.cantidadCartasJugadas == this.cantidadMaximaCartasAJugar ) {
 			ganador = this.enfrentarTodasLasCartas();
-			this.manoTerminada = true;
+			this.estaTerminada = true;
 		}
 	}
 
@@ -68,9 +68,9 @@ public class Mano {
 		return ganador;
 	}
 
-	public boolean manoTerminada() {
+	public boolean estaTerminada() {
 		
-		return this.manoTerminada;
+		return this.estaTerminada;
 	}
 
 	public Jugador obtenerGanador() {
