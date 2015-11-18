@@ -2,24 +2,17 @@ package truco.modelo;
 
 import java.util.LinkedList;
 
-import truco.excepciones.mesa.NoSePuedeCantarTantoDosVecesEnUnaRondaException;
-import truco.excepciones.mesa.RespuestaIncorrectaException;
 
-public class Mesa {
+public class Mesa implements CantosEnvido , CantosFlor{
 
 	/*************************************************
 	 ** 				Atributos					**
 	 *************************************************/
 	
 	private Ronda ronda;
-	//	El Listado de cantos del tanto tiene 3 estados posibles
-	// 1º) Cuando es NULL jamas en la ronda se canto envido o flor
-	// 2º) Cuando el listado esta con elementos, hay un envido o flor en progreso
-	// 3º) Cuando hay un listado vacio, ya se canto envido y se calculo el puntaje
-	private LinkedList<Canto> listadoCantosDelTanto;
+
 	private LinkedList<Canto> cantosTruco;
-	private Jugador jugadorConMayorTanto;
-	private int jugadoresQueCantaronTanto;
+
 	private Equipo nosotros;
 	private Equipo ellos;
 	
@@ -30,8 +23,23 @@ public class Mesa {
 	public Mesa(Equipo nosotros, Equipo ellos) {
 		this.nosotros = nosotros;
 		this.ellos = ellos;
-		this.ronda = new Ronda(nosotros, ellos,new LinkedList<Jugador>());
-		this.listadoCantosDelTanto = null;
+		
+		LinkedList<Jugador> ordenJugadores = new LinkedList<Jugador>();
+		
+		for ( int i = 0 ; i < this.nosotros.cantidadJugadores(); i++ ) {
+			
+			Jugador unJugador;
+			
+			unJugador = this.nosotros.siguienteTurno();
+			
+			ordenJugadores.add(unJugador);
+			
+			unJugador = this.ellos.siguienteTurno();
+			
+			ordenJugadores.add(unJugador);
+		}
+		
+		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
 		this.cantosTruco = new LinkedList<Canto>();
 	}
 	
@@ -70,96 +78,17 @@ public class Mesa {
 	 *************************************************/
 
 	public void cantarQuiero(Jugador unJugador) {
-		if (this.listadoCantosDelTanto != null)
-			this.cantarQuieroAlEnvido(unJugador);
-		
+		this.ronda.quiero(unJugador);
 	}
-
 	
 	public void cantarNoQuiero(Jugador unJugador) {
-		// TODO
+		this.ronda.noQuiero(unJugador);
 	}
 	
-	/*************************************************
-	 ** 		 	  ENVIDO y FLOR					**
-	 *************************************************/
-	
-	private void cantarQuieroAlEnvido(Jugador unJugador){
-		this.jugadorConMayorTanto = null;
+	public Jugador ganadorDelTantoDeLaRondaActual(){
+		return this.ronda.jugadorGanadorDelTanto();
 	}
 	
-	
-	public Jugador ganadorDelTantoDeLaRondaActual() {
-		return this.jugadorConMayorTanto;
-	}
-
-	public void cantarTantoDeEnvido(Jugador unJugador) {
-		this.jugadoresQueCantaronTanto += 1;
-		if (this.jugadorConMayorTanto == null){
-			this.jugadorConMayorTanto = unJugador;
-			return;
-		}
-		if (this.jugadorConMayorTanto.puntajeEnvido() < unJugador.puntajeEnvido() )
-			this.jugadorConMayorTanto = unJugador;
-		this.procesoDeAnalisisDelCalculoDePuntosDelTanto();
-		
-	}
-
-	public void cantarTantoDeFlor(Jugador unJugador) {
-		this.jugadoresQueCantaronTanto += 1;
-		if (this.jugadorConMayorTanto == null){
-			this.jugadorConMayorTanto = unJugador;
-			return;
-		}
-		if (this.jugadorConMayorTanto.puntajeFlor() < unJugador.puntajeFlor() )
-			this.jugadorConMayorTanto = unJugador;	
-		this.procesoDeAnalisisDelCalculoDePuntosDelTanto();
-		
-	}
-	
-	private void procesoDeAnalisisDelCalculoDePuntosDelTanto() {
-		if (this.cantidadDeJugadores() != this.jugadoresQueCantaronTanto)
-			return;
-		int puntosGanados = 0;
-		for (Canto unCanto : this.listadoCantosDelTanto)
-			puntosGanados += unCanto.puntosPorGanar();
-		if (nosotros.estaJugador(this.jugadorConMayorTanto))
-			nosotros.sumarPuntosAJugador(this.jugadorConMayorTanto, puntosGanados);
-		else
-			ellos.sumarPuntosAJugador(this.jugadorConMayorTanto, puntosGanados);
-		this.listadoCantosDelTanto.clear();	
-	}
-
-	public void cantarEnvido(Jugador unJugador) {
-		Canto envido = new Envido();
-		this.procesoDelCantoDelEnvido(envido);
-	}
-	
-	public void cantarRealEnvido(Jugador unJugador) {
-		Canto realEnvido = new RealEnvido();
-		this.procesoDelCantoDelEnvido(realEnvido);
-
-	}
-	
-	private void procesoDelCantoDelEnvido(Canto unCanto){
-		// Si la lista ya fue creada y esta vacia implica que se canto el tanto
-		if (this.listadoCantosDelTanto != null && this.listadoCantosDelTanto.isEmpty() )
-			throw new NoSePuedeCantarTantoDosVecesEnUnaRondaException();
-		if (this.listadoCantosDelTanto == null)
-			this.listadoCantosDelTanto = new LinkedList<Canto>();
-		// Si existe un canto debo verificar que tengo una respuesta valida para dicho canto
-		if (!this.listadoCantosDelTanto.isEmpty() && !this.listadoCantosDelTanto.getLast().esUnaRespuestaValidaElCanto(unCanto))
-			throw new RespuestaIncorrectaException();
-		this.listadoCantosDelTanto.addLast(unCanto);
-	}
-	
-	public void cantarFlor(Jugador unJugador) {
-		if (this.listadoCantosDelTanto != null)
-			throw new NoSePuedeCantarTantoDosVecesEnUnaRondaException();
-		this.listadoCantosDelTanto = new LinkedList<Canto>();
-		Canto flor = new Flor();
-		this.listadoCantosDelTanto.addLast(flor);	
-	}
 	
 	/*************************************************
 	 ** 		 	     TRUCO					    **
@@ -181,7 +110,7 @@ public class Mesa {
 		this.verificarSiPuedeJugarElJugador(unJugador);
 		
 		if ( !this.cantosTruco.isEmpty() ) {
-			Canto unReTruco = new ReTruco();
+			Canto unReTruco = new Retruco();
 			Canto ultimoCanto = this.cantosTruco.getLast();
 			
 			if ( ultimoCanto.esUnaRespuestaValidaElCanto(unReTruco) ) {
@@ -221,6 +150,60 @@ public class Mesa {
 	private void verificarSiPuedeJugarElJugador(Jugador unJugador) {
 		
 		/* metodo en construccion !!! */
+	}
+	
+	/*************************************************
+	 ** 			   Cantos Envido				**
+	 *************************************************/
+
+	@Override
+	public void envido(Jugador jugadorQueCanta) {
+		this.ronda.envido(jugadorQueCanta);	
+	}
+
+	@Override
+	public void realEnvido(Jugador jugadorQueCanta) {
+		this.ronda.realEnvido(jugadorQueCanta);	
+	}
+
+	@Override
+	public void faltaEnvido(Jugador jugadorQueCanta) {
+		this.ronda.faltaEnvido(jugadorQueCanta);	
+		
+	}
+
+	@Override
+	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
+		this.ronda.cantarTantoDelEnvido(jugadorQueCanta);	
+		
+	}
+
+	/*************************************************
+	 ** 			   Cantos Flor   				**
+	 *************************************************/
+	
+	@Override
+	public void flor(Jugador jugadorQueCanta) {
+		this.ronda.flor(jugadorQueCanta);
+		
+	}
+
+	@Override
+	public void contraFlor(Jugador jugadorQueCanta) {
+		this.ronda.contraFlor(jugadorQueCanta);
+		
+	}
+
+	@Override
+	public void contraFlorAResto(Jugador jugadorQueCanta) {
+		this.ronda.contraFlorAResto(jugadorQueCanta);
+		
+	}
+
+	@Override
+	public void cantarTantoDeLaFlor(Jugador jugadorQueCanta) {
+		this.ronda.cantarTantoDeLaFlor(jugadorQueCanta);
+		
 	}
 	
 	/*************************************************

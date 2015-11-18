@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import truco.excepciones.canto.NoSePuedeCantarContraFlorSinHaberCantadoFlorPrimeroException;
-import truco.excepciones.canto.NoSePuedeCantarElTantoDeLaFlorAntesDeAceptarUnCantoDeFormaPreviaException;
-import truco.excepciones.canto.NoSePuedeCantarElTantoDelEnvidoAntesDeAceptarUnCantoDeFormaPreviaException;
-import truco.excepciones.canto.PuntosQueLeFaltanAlOtroEquipoParaGanarException;
-import truco.excepciones.mesa.AlCantarFlorEnUnaRondaNoSePuedeCantarEnvidoException;
-import truco.excepciones.mesa.RespuestaIncorrectaException;
+import truco.excepciones.cantos.AlCantarFlorEnUnaRondaNoSePuedeCantarEnvidoException;
+import truco.excepciones.cantos.NoSePuedeCantarContraFlorSinHaberCantadoFlorPrimeroException;
+import truco.excepciones.cantos.NoSePuedeCantarElTantoDeLaFlorAntesDeAceptarUnCantoDeFormaPreviaException;
+import truco.excepciones.cantos.NoSePuedeCantarElTantoDelEnvidoAntesDeAceptarUnCantoDeFormaPreviaException;
+import truco.excepciones.cantos.PuntosQueLeFaltanAlOtroEquipoParaGanarException;
+import truco.excepciones.cantos.RespuestaIncorrectaException;
 
 public class CantosEnProcesoParaElTantoTest {
 
@@ -252,5 +252,32 @@ public class CantosEnProcesoParaElTantoTest {
 	@Test (expected = NoSePuedeCantarElTantoDeLaFlorAntesDeAceptarUnCantoDeFormaPreviaException.class)
 	public void testNoSePuedeCantarElTantoDeLaFlorSinHaberCantadoAlMenosFlorDeFormaPrevia() {
 		this.cantoEnProceso.cantarTantoDeLaFlor(this.jugadorConFlorGanadorEnFlor);
+	}
+	
+	@Test
+	public void testNoQuererUnEnvidoImplicaQueElJugadorQueCantoGanaUnPunto(){
+		this.cantoEnProceso.envido(jugadorConFlorGanadorEnEnvido);
+		this.cantoEnProceso.noQuiero(jugadorConFlorGanadorEnFlor);
+		
+		assertEquals(this.cantoEnProceso.puntosParaElGanador() , 1);
+		assertEquals(this.jugadorConFlorGanadorEnEnvido , this.cantoEnProceso.jugadorGanador() );
+	}
+	
+	@Test
+	public void testNoQuererUnRealEnvidoImplicaQueElJugadorQueCantoGanaUnPunto(){
+		this.cantoEnProceso.realEnvido(jugadorConFlorGanadorEnEnvido);
+		this.cantoEnProceso.noQuiero(jugadorConFlorGanadorEnFlor);
+		
+		assertEquals(this.cantoEnProceso.puntosParaElGanador() , 1);
+		assertEquals(this.jugadorConFlorGanadorEnEnvido , this.cantoEnProceso.jugadorGanador() );
+	}
+	
+	@Test
+	public void testNoQuererUnFaltaEnvidoImplicaQueElJugadorQueCantoGanaUnPunto(){
+		this.cantoEnProceso.faltaEnvido(jugadorConFlorGanadorEnEnvido);
+		this.cantoEnProceso.noQuiero(jugadorConFlorGanadorEnFlor);
+		
+		assertEquals(this.cantoEnProceso.puntosParaElGanador() , 1);
+		assertEquals(this.jugadorConFlorGanadorEnEnvido , this.cantoEnProceso.jugadorGanador() );
 	}
 }
