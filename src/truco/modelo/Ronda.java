@@ -2,8 +2,8 @@ package truco.modelo;
 
 import java.util.Collections;
 import java.util.LinkedList;
-
 import truco.excepciones.ronda.NoEsElTurnoDeEsteJugadorException;
+import truco.excepciones.ronda.NoSePuedeJugarMasCartasRondaTerminadaException;
 import truco.excepciones.cantos.RespuestaIncorrectaException;
 
 public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
@@ -13,8 +13,10 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	private Mano manoActual;
 	private Equipo equipo1;
 	private Equipo equipo2;
+	private Equipo equipoGanador;
 	private Jugador jugadorQueDebeJugar;
 	private int cantidadJugadores;
+	private boolean hayEquipoGanador;
 	
 	private CantoEnProcesoParaElTanto cantoEnProcesoParaElTanto;
 	private CantosEnProcesoParaElTruco cantoEnProcesoParaElTruco;
@@ -23,6 +25,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	
 		this.equipo1 = equipo1;
 		this.equipo2 = equipo2;
+		this.equipoGanador = null;
 		this.ordenJugadores = ordenJugadores;
 		this.jugadorQueDebeJugar = this.ordenJugadores.getFirst();
 		this.manos = new LinkedList<Mano>();
@@ -31,34 +34,44 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		this.manos.add(this.manoActual);
 		this.cantoEnProcesoParaElTanto = null;
 		this.cantoEnProcesoParaElTruco = null;
+		this.hayEquipoGanador = false;
 	}
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
-		if ( this.manoActual.estaTerminada() ) {
-			
-			this.actualizarJugadorQueDebeJugar();			
-			this.manoActual = new Mano(this.cantidadJugadores);
-			this.manos.add(this.manoActual);
-		
-		}
+		if ( this.hayEquipoGanador ) throw new NoSePuedeJugarMasCartasRondaTerminadaException();
 		
 		this.verificarSiEsteJugadorPuedeJugar(unJugador);
 		this.manoActual.jugarCarta(unJugador, unaCarta);
-		this.actualizarTurnos();
+		
+		if ( this.manoActual.estaTerminada() ) {
+			
+			this.verificarSiHayEquipoGanador();
+			
+			if ( !this.hayEquipoGanador ) {
+				
+				this.actualizarJugadorQueDebeJugar();			
+				this.manoActual = new Mano(this.cantidadJugadores);
+				this.manos.add(this.manoActual);
+			}
+			
+		} else {
+			
+			this.actualizarTurnos();
+		}
 	}
 
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
 		
 		return ( this.manos.getLast().mostrarUltimaCartaJugadaPor(unJugador) );
 	}
-
-	public Jugador enfrentarTodasLasCartas() {
-		
-		return ( this.manos.getLast().enfrentarTodasLasCartas() );
-	}
 	
 	public Equipo obtenerEquipoGanador() {
+		
+		return this.equipoGanador;
+	}
+	
+	private void verificarSiHayEquipoGanador() {
 		
 		int manosGanadasEquipo1 = 0;
 		int manosGanadasEquipo2 = 0;
@@ -72,12 +85,18 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 				if ( this.equipo1.estaJugador(jugador) ) manosGanadasEquipo1++;
 				if ( this.equipo2.estaJugador(jugador) ) manosGanadasEquipo2++;
 			}
-		} else {
-			
-			return null;
 		}
 		
-		return ( ( manosGanadasEquipo1 > manosGanadasEquipo2 )? this.equipo1 : this.equipo2 );
+		if ( manosGanadasEquipo1 > manosGanadasEquipo2 ) {
+		
+			this.equipoGanador = equipo1;
+			this.hayEquipoGanador = true;
+		
+		} else if ( manosGanadasEquipo1 < manosGanadasEquipo2 ) {
+			
+			this.equipoGanador = equipo2;
+			this.hayEquipoGanador = true;
+		}
 	}
 	
 	private void verificarSiEsteJugadorPuedeJugar(Jugador unJugador) {

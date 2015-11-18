@@ -142,11 +142,6 @@ public class Mesa implements CantosEnvido , CantosFlor{
 		}
 	}
 	
-	public Jugador enfrentarTodasLasCartasJugadas() {
-		
-		return this.ronda.enfrentarTodasLasCartas();
-	}
-	
 	private void verificarSiPuedeJugarElJugador(Jugador unJugador) {
 		
 		/* metodo en construccion !!! */

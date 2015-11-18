@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import truco.excepciones.mano.NoHayGanadorHastaQueLaManoTermineException;
+import truco.excepciones.mano.NoSePuedeJugarMasCartasManoTerminadaException;
 
 public class Mano {
 
@@ -25,12 +26,18 @@ public class Mano {
 	}
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
+			
+		if ( this.estaTerminada ) throw new NoSePuedeJugarMasCartasManoTerminadaException();
 		
-		this.cartasJugadas.put(unJugador, unaCarta);
-		this.cantidadCartasJugadas++;
+		if ( this.cantidadCartasJugadas < this.cantidadMaximaCartasAJugar ) {
+			
+			this.cartasJugadas.put(unJugador, unaCarta);
+			this.cantidadCartasJugadas++;
+		} 
 		
 		if ( this.cantidadCartasJugadas == this.cantidadMaximaCartasAJugar ) {
-			ganador = this.enfrentarTodasLasCartas();
+
+			this.enfrentarTodasLasCartas();
 			this.estaTerminada = true;
 		}
 	}
@@ -40,9 +47,20 @@ public class Mano {
 		return ( this.cartasJugadas.get(unJugador) ); 
 	}
 
-	public Jugador enfrentarTodasLasCartas() {
+	public boolean estaTerminada() {
 		
-		Jugador ganador = null;
+		return this.estaTerminada;
+	}
+
+	public Jugador obtenerGanador() {
+		
+		if ( this.ganador == null ) throw new NoHayGanadorHastaQueLaManoTermineException();
+		
+		return this.ganador;
+	}
+	
+	private void enfrentarTodasLasCartas() {
+		
 		Carta cartaGanadora = null;
 		
 		Collection<Carta> cartas = this.cartasJugadas.values();
@@ -61,22 +79,8 @@ public class Mano {
 			
 			Carta carta = cartasJugadas.get(jugador);
 			if ( carta.equals(cartaGanadora) ) {
-				ganador = jugador;
+				this.ganador = jugador;
 			}
 		}
-		
-		return ganador;
-	}
-
-	public boolean estaTerminada() {
-		
-		return this.estaTerminada;
-	}
-
-	public Jugador obtenerGanador() {
-		
-		if ( this.ganador == null ) throw new NoHayGanadorHastaQueLaManoTermineException();
-		
-		return this.ganador;
 	}
 }
