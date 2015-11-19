@@ -1,6 +1,7 @@
 package truco.excepciones.ronda;
 
-public class NoSePuedeJugarMasDeTresRondasException extends RuntimeException {
+public class NoHayEquipoGanadorHastaQueLaRondaTermineException extends
+		RuntimeException {
 
 	/**
 	 * 
