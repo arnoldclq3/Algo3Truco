@@ -77,7 +77,6 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	}
 	
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
-		
 		this.ronda.jugarCarta(unJugador,unaCarta);
 	}
 	
