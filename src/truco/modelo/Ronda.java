@@ -35,9 +35,10 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		this.manoActual = new Mano(this.cantidadJugadores);
 		this.manos.add(this.manoActual);
 		this.cantoEnProcesoParaElTanto = null;
-		this.cantoEnProcesoParaElTruco = null;
+		this.cantoEnProcesoParaElTruco = new CantosEnProcesoParaElTruco();
 		this.hayEquipoGanador = false;
 	}
+	
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
@@ -56,6 +57,9 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 				this.manoActual = new Mano(this.cantidadJugadores);
 				this.manos.add(this.manoActual);
 			}
+			else{
+				this.equipoGanador.sumarPuntos(this.cantoEnProcesoParaElTruco.puntosParaElGanador() );
+			}
 			
 		} else {
 			
@@ -72,6 +76,10 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		
 		if ( this.equipoGanador == null ) throw new NoHayEquipoGanadorHastaQueLaRondaTermineException();
 		return this.equipoGanador;
+	}
+	
+	public boolean estaTerminada(){
+		return this.hayEquipoGanador;
 	}
 	
 	private void verificarSiHayEquipoGanador() {
@@ -154,16 +162,49 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	}
 	
 	public void noQuiero(Jugador jugadorQueCanta) {
-		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
+		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) ){
+			// El "no quiero" es para un tanto (envido/flor)
 			this.cantoEnProcesoParaElTanto.noQuiero(jugadorQueCanta);
+			this.sumarPuntosPorTantoFinalizado();
+		}
 		else
-			if (this.cantoEnProcesoParaElTruco != null)
+			if (this.cantoEnProcesoParaElTruco != null){
+				// El "no quiero" es para un truco
 				this.cantoEnProcesoParaElTruco.noQuiero(jugadorQueCanta);
+				this.sumarPuntosPorTrucoFinalizado();
+			}
 			else 
 				throw new RespuestaIncorrectaException();
 	}
 	
 	
+	private void sumarPuntosPorTrucoFinalizado() {
+		Jugador jugadorGanadorDelTanto = this.cantoEnProcesoParaElTruco.jugadorGanador();
+		int puntosGanados = this.cantoEnProcesoParaElTruco.puntosParaElGanador();
+		this.hayEquipoGanador = true;
+		
+		this.sumarPuntos(jugadorGanadorDelTanto, puntosGanados);
+	}
+
+	private void sumarPuntosPorTantoFinalizado() {
+		Jugador jugadorGanadorDelTanto = this.cantoEnProcesoParaElTanto.jugadorGanador();
+		int puntosGanados = this.cantoEnProcesoParaElTanto.puntosParaElGanador();
+		
+		this.sumarPuntos(jugadorGanadorDelTanto, puntosGanados);
+	}
+	
+	private void sumarPuntos(Jugador unJugador,int puntosGanados){
+		if ( this.equipo1.estaJugador(unJugador) )
+			this.equipo1.sumarPuntosAJugador(unJugador, puntosGanados);
+		else
+			this.equipo2.sumarPuntosAJugador(unJugador, puntosGanados);
+	}
+	
+	private void controlarSiElCantoDelTantoFinalizo(){
+		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
+			this.sumarPuntosPorTantoFinalizado();
+	}
+
 	/*************************************************
 	 ** 	    Cantos Generales del Tanto	  		**
 	 *************************************************/
@@ -177,17 +218,6 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		if (this.cantoEnProcesoParaElTanto == null)
 			return null;
 		return this.cantoEnProcesoParaElTanto.jugadorGanador();	
-	}
-	
-	private void controlarSiElCantoDelTantoFinalizo() {
-		if( !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
-			return;
-		Jugador jugadorGanador = this.cantoEnProcesoParaElTanto.jugadorGanador();
-		int puntajeGanado = this.cantoEnProcesoParaElTanto.puntosParaElGanador();
-		if ( this.equipo1.estaJugador(jugadorGanador) )
-			this.equipo1.sumarPuntosAJugador(jugadorGanador, puntajeGanado);
-		else
-			this.equipo2.sumarPuntosAJugador(jugadorGanador, puntajeGanado);
 	}
 	
 	/*************************************************
@@ -249,15 +279,6 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		this.controlarSiElCantoDelTantoFinalizo();
 	}
 	
-	/*************************************************
-	 ** 	    Cantos Generales del Tanto	  		**
-	 *************************************************/
-
-	private void iniciarProcesoDelTruco(){
-		if (this.cantoEnProcesoParaElTruco == null)
-			this.cantoEnProcesoParaElTruco = new CantosEnProcesoParaElTruco();
-	}
-	
 	
 	/*************************************************
 	 ** 			   Cantos Truco   				**
@@ -265,21 +286,18 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	@Override
 	public void truco(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDelTruco();
 		this.cantoEnProcesoParaElTruco.truco(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void retruco(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDelTruco();
 		this.cantoEnProcesoParaElTruco.retruco(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void valeCuatro(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDelTruco();
 		this.cantoEnProcesoParaElTruco.valeCuatro(jugadorQueCanta);
 		
 	}

@@ -137,5 +137,11 @@ public class Equipo {
 	public boolean esMano() {
 		return this.esMano;
 	}
+
+	public void sumarPuntos(int puntosGanados) {
+		this.puntaje += puntosGanados;
+		
+	}
+
 		
 }
