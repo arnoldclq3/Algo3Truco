@@ -12,14 +12,18 @@ public class Jugador {
 	/*************************************************
 	 ** 				Atributos					**
 	 *************************************************/
+	
 	private ArrayList<Carta> manoDelJugador;
 	private String nombre;
+	private Mesa mesaEnLaQueEstoyJugando;
 	private static int numeroJugador = 0;
+	
 	
 	/*************************************************
 	 ** 			   Constructores				
 	 * @param nombrEJugador **
 	 *************************************************/
+	
 	public Jugador(){
 		this.manoDelJugador = new ArrayList<Carta>();
 		this.nombre = "Jugador "+ Jugador.numeroJugador;
@@ -63,30 +67,49 @@ public class Jugador {
 	}
 	
 	public int puntajeEnvido() {
-		/*	Este metodo debera ser refactorizado, en especial para tener en cuenta
-		 * 	el caso donde el jugador halla jugado una de sus cartas en la mesa y 
-		 * 	para calcular el envido tenga que usar dicha carta.	*/
-		int puntajeARetornar = 0;
-		for (Carta unaCarta : this.manoDelJugador )
-			for (Carta otraCarta : this.manoDelJugador){
-				if (unaCarta != otraCarta){
-					int valorEnvido = this.calcularEnvido(unaCarta,otraCarta);	
-					if (valorEnvido > puntajeARetornar)
-						puntajeARetornar = valorEnvido;	
-				}
-			}
+		
+		ArrayList<Carta> misCartas = new ArrayList<Carta>();
+		this.agregarCartasJugadas(misCartas);
+		misCartas.addAll(this.manoDelJugador);
+		
+		if (misCartas.size() != 3)
+			return 0;
+		
+		int puntajeARetornar = this.calcularEnvido( misCartas.get(0) , misCartas.get(2) );
+		
+		for (int i = 0 ; i <= 1 ; i++){
+			int puntaje = this.calcularEnvido( misCartas.get(i) , misCartas.get(i+1) );
+			if (puntaje > puntajeARetornar)
+				puntajeARetornar = puntaje;
+		}
+		
 		return puntajeARetornar;
 	}
 
 	public int puntajeFlor() {
-		/*	Posiblemente necesite refactoring cuando jugador juegue cartas a la mesa */
+		
 		if (! this.tieneFlor() )
 			throw new ElJugadorNoTieneFlorException();
+		
+		ArrayList<Carta> misCartas = new ArrayList<Carta>();
+		this.agregarCartasJugadas(misCartas);
+		misCartas.addAll(this.manoDelJugador);
+		
+		if (misCartas.size() != 3)
+			return 0;
+		
 		int valorRetorno = 20;
-		for (Carta unaCarta : this.manoDelJugador){
+		for (Carta unaCarta : misCartas){
 			valorRetorno = valorRetorno + this.valorCartaParaElTanto(unaCarta);
 		}
 		return valorRetorno;
+	}
+	
+	private void agregarCartasJugadas(ArrayList<Carta> listadoEnDondeAgregarLasCartas){
+		if (this.mesaEnLaQueEstoyJugando == null)
+			return;
+		ArrayList<Carta> cartasJugadas = this.mesaEnLaQueEstoyJugando.mostrarCartasDelJugador(this);
+		listadoEnDondeAgregarLasCartas.addAll( cartasJugadas );
 	}
 
 	public boolean tieneFlor() {
@@ -128,6 +151,14 @@ public class Jugador {
 		Jugador unJugador = (Jugador)unObjeto;
 		return ( this.nombre == unJugador.nombre);
 		
+	}
+
+	public Mesa getMesa() {
+		return mesaEnLaQueEstoyJugando;
+	}
+
+	public void setMesa(Mesa laMesaEnLaQueEstoyJugando) {
+		this.mesaEnLaQueEstoyJugando = laMesaEnLaQueEstoyJugando;
 	}
 
 	/*************************************************

@@ -101,4 +101,8 @@ public class Mano {
 	public Collection<Carta> devolverCartas() {
 		return  this.cartasJugadas.values();
 	}
+
+	public Carta mostrarCartaDelJugador(Jugador unJugador) {
+		return this.cartasJugadas.get(unJugador);
+	}
 }

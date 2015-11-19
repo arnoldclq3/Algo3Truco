@@ -30,7 +30,7 @@ public class Mazo {
 	public Carta repartirCarta() {
 		
 		Random random = new Random();
-		int posicion = (random.nextInt(40));
+		int posicion = (random.nextInt(this.cartas.size() ));
 		
 		return cartas.remove(posicion);
 	}

@@ -1,5 +1,6 @@
 package truco.modelo;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +46,16 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		for (Mano unaMano : this.manos)
 			listadoARetornar.addAll(unaMano.devolverCartas() );
 		return listadoARetornar;
+	}
+	
+	public ArrayList<Carta> mostrarCartasDelJugador(Jugador unJugador) {
+		ArrayList<Carta> cartas = new ArrayList<Carta>();
+		for (Mano unaMano : this.manos){
+			Carta cartaJugada = unaMano.mostrarCartaDelJugador(unJugador);
+			if (cartaJugada != null)
+				cartas.add( cartaJugada );
+		}
+		return cartas;
 	}
 	
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
@@ -211,6 +222,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
 			this.sumarPuntosPorTantoFinalizado();
 	}
+	
 
 	/*************************************************
 	 ** 	    Cantos Generales del Tanto	  		**
@@ -308,4 +320,5 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		this.cantoEnProcesoParaElTruco.valeCuatro(jugadorQueCanta);
 		
 	}
+
 }

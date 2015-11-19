@@ -1,5 +1,6 @@
 package truco.modelo;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -36,10 +37,12 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 			Jugador unJugador;
 			
 			unJugador = this.nosotros.siguienteTurno();
+			unJugador.setMesa(this);
 			
 			ordenJugadores.add(unJugador);
 			
 			unJugador = this.ellos.siguienteTurno();
+			unJugador.setMesa(this);
 			
 			ordenJugadores.add(unJugador);
 		}
@@ -91,6 +94,10 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	public boolean juegoTerminado(){
 		return this.juegoTerminado;
+	}
+	
+	public ArrayList<Carta> mostrarCartasDelJugador(Jugador unJugador) {
+		return this.ronda.mostrarCartasDelJugador(unJugador);
 	}
 	
 	
