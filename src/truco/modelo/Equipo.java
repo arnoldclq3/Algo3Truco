@@ -141,5 +141,9 @@ public class Equipo {
 		
 	}
 
+	public boolean esGanador() {
+		return (this.puntaje >= 30);
+	}
+
 		
 }

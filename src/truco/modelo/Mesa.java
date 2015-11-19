@@ -1,5 +1,6 @@
 package truco.modelo;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 
@@ -13,6 +14,10 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 
 	private Equipo nosotros;
 	private Equipo ellos;
+
+	private boolean juegoTerminado;
+
+	private LinkedList<Jugador> ordenJugadores;
 	
 	/*************************************************
 	 ** 			   Constructores				**
@@ -22,7 +27,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		this.nosotros = nosotros;
 		this.ellos = ellos;
 		
-		LinkedList<Jugador> ordenJugadores = new LinkedList<Jugador>();
+		this.ordenJugadores = new LinkedList<Jugador>();
 		
 		for ( int i = 0 ; i < this.nosotros.cantidadJugadores(); i++ ) {
 			
@@ -61,9 +66,28 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
 	}
 	
+	public boolean juegoTerminado(){
+		return this.juegoTerminado;
+	}
 	
 	
 	
+	private void verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego() {
+		this.verificarSiExisteUnEquipoGanador();
+		if ( this.ronda.estaTerminada() )
+			this.generadorDeNuevaRonda();
+	}
+	
+	private void verificarSiExisteUnEquipoGanador(){
+		if ( this.nosotros.esGanador() || this.ellos.esGanador() )
+			this.juegoTerminado = true;	
+	}
+	
+	private void generadorDeNuevaRonda() {
+		Collections.rotate(this.ordenJugadores, -1);
+		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
+	}
+
 	/*************************************************
 	 ** 		    CANTOS GENERALES			    **
 	 *************************************************/
@@ -74,10 +98,12 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	public void noQuiero(Jugador unJugador) {
 		this.ronda.noQuiero(unJugador);
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
-	
+
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		this.ronda.jugarCarta(unJugador,unaCarta);
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
 	
 	public Jugador ganadorDelTantoDeLaRondaActual(){
@@ -129,7 +155,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	@Override
 	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
 		this.ronda.cantarTantoDelEnvido(jugadorQueCanta);	
-		
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();	
 	}
 
 	/*************************************************
@@ -157,7 +183,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	@Override
 	public void cantarTantoDeLaFlor(Jugador jugadorQueCanta) {
 		this.ronda.cantarTantoDeLaFlor(jugadorQueCanta);
-		
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
 
 	/*************************************************
