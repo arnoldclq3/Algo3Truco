@@ -280,4 +280,18 @@ public class CantosEnProcesoParaElTantoTest {
 		assertEquals(this.cantoEnProceso.puntosParaElGanador() , 1);
 		assertEquals(this.jugadorConFlorGanadorEnEnvido , this.cantoEnProceso.jugadorGanador() );
 	}
+	
+	@Test
+	public void testCantarSonBuenasImplicaQueGanaElJugadorConMayorTanto(){
+		this.cantoEnProceso.envido(jugadorConFlorGanadorEnFlor);
+		this.cantoEnProceso.quiero(jugadorConFlorGanadorEnEnvido);
+		this.cantoEnProceso.cantarTantoDelEnvido(this.jugadorConFlorGanadorEnEnvido);
+		this.cantoEnProceso.sonBuenas(this.jugadorConFlorGanadorEnFlor);
+		this.cantoEnProceso.sonBuenas(this.jugadorManoConEnvidoMinimo);
+		this.cantoEnProceso.sonBuenas(this.jugadorPieConEnvidoMinimo);
+		
+		assertTrue(this.cantoEnProceso.terminoElProcesoDeCanto(4) );
+		assertEquals(this.cantoEnProceso.puntosParaElGanador() , 2);
+		assertEquals(this.jugadorConFlorGanadorEnEnvido , this.cantoEnProceso.jugadorGanador() );
+	}
 }

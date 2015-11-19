@@ -13,18 +13,18 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	 ** 				Atributos					**
 	 *************************************************/
 	
-	private Ronda ronda;
+	protected Ronda ronda;
 
-	private Equipo nosotros;
-	private Equipo ellos;
+	protected Equipo nosotros;
+	protected Equipo ellos;
 
 	private boolean juegoTerminado;
 
-	private LinkedList<Jugador> ordenJugadores;
+	protected LinkedList<Jugador> ordenJugadores;
 
 	private Mazo mazo;
 
-	private boolean seJuegaConFlor;
+	protected boolean seJuegaConFlor;
 	
 	/*************************************************
 	 ** 			   Constructores				**
@@ -77,7 +77,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 			}
 	}
 	
-	private void retirarCartasDeLaRonda(){
+	protected void retirarCartasDeLaRonda(){
 		for (Jugador unJugador : this.ordenJugadores){
 			this.mazo.devolverCartas( unJugador.devolverCartas() );
 		}
@@ -114,19 +114,18 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	}
 	
 	
-	
 	private void verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego() {
 		this.verificarSiExisteUnEquipoGanador();
 		if ( this.ronda.estaTerminada() )
 			this.generadorDeNuevaRonda();
 	}
 	
-	private void verificarSiExisteUnEquipoGanador(){
+	protected void verificarSiExisteUnEquipoGanador(){
 		if ( this.nosotros.esGanador() || this.ellos.esGanador() )
 			this.juegoTerminado = true;	
 	}
 	
-	private void generadorDeNuevaRonda() {
+	protected void generadorDeNuevaRonda(){
 		this.retirarCartasDeLaRonda();
 		Collections.rotate(this.ordenJugadores, -1);
 		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
@@ -201,6 +200,12 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		this.ronda.cantarTantoDelEnvido(jugadorQueCanta);	
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();	
 	}
+	
+	
+	@Override
+	public void sonBuenas(Jugador jugadorQueCanta) {
+		this.ronda.sonBuenas(jugadorQueCanta);
+	}
 
 	/*************************************************
 	 ** 			   Cantos Flor   				**
@@ -238,6 +243,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		if (!this.seJuegaConFlor)
 			throw new NoSeJuegaConFlorException();	
 	}
+
 
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**

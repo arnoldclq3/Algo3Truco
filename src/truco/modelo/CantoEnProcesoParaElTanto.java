@@ -38,6 +38,13 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 			return 1;
 		return puntaje;
 	}
+	
+	@Override
+	public int puntosParaElPerdedor(){
+		if (this.seCantoElCasoParticularDeDobleFlor() )
+			return 2;
+		return 0;
+	}
 
 	@Override
 	public void quiero(Jugador jugadorQueCanta) {
@@ -64,9 +71,23 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	private int puntosParaElGanadorPorFlor(){
 		if ( this.cantosAceptados.isEmpty() )
 			return 0;
-		return this.cantosAceptados.getLast().puntosPorGanar();
+		int puntajeARetornar = this.cantosAceptados.getLast().puntosPorGanar();
+		
+		// Se controla el Caso de Flor + Flor + Quiero.
+		// En este caso se devuelve 4 puntos (1 mas de los 3 por ganar la flor)
+		if ( this.seCantoElCasoParticularDeDobleFlor() )
+			puntajeARetornar += 1;
+		
+		return puntajeARetornar;
 	}
 	
+	private boolean seCantoElCasoParticularDeDobleFlor(){
+		int cantidadVecesQueSeCantoFlor = 0;
+		for (Canto unCanto : this.cantosAceptados)
+			if (unCanto.equals( new Flor() ))
+				cantidadVecesQueSeCantoFlor ++;
+		return (cantidadVecesQueSeCantoFlor == 2);
+	}
 
 	public boolean terminoElProcesoDeCanto(int cantidadJugadoresQueDeberianHaberCantadoSuTanto){
 		if ( cantidadJugadoresQueDeberianHaberCantadoSuTanto == this.cantidadDeJugadoresQueCantaronSuTanto )
@@ -179,6 +200,15 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		if ( jugadorQueCanta.puntajeEnvido() > this.jugadorGanadorDelProceso.puntajeEnvido()  )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
+	
+	@Override
+	public void sonBuenas(Jugador jugadorQueCanta) {
+		if (this.seCantoFlor)
+			this.verificarQueSePuedeCantarElTantoDeLaFlor();
+		else
+			this.verificarQueSePuedeCantarElTantoDelEnvido();
+		this.cantidadDeJugadoresQueCantaronSuTanto += 1;
+	}
 
 	/*************************************************
 	 **       Implementacion Cantos Flor			**
@@ -226,4 +256,6 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		if ( jugadorQueCanta.puntajeFlor() > this.jugadorGanadorDelProceso.puntajeFlor() )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
+
+
 }

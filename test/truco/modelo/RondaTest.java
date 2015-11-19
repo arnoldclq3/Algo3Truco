@@ -624,6 +624,8 @@ public class RondaTest {
 		unaRonda.flor(jugador1);
 		unaRonda.flor(jugador2);
 		unaRonda.quiero(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador2);
 		
 		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
 		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
@@ -641,8 +643,9 @@ public class RondaTest {
 		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
 		
 		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
-		assertEquals(equipo1.obtenerCantidadDePuntos(),5);
 		assertEquals(equipo2.obtenerCantidadDePuntos(),2);
+		assertEquals(equipo1.obtenerCantidadDePuntos(),5);
+		
 		
 		jugador1.devolverCartas();
 		jugador2.devolverCartas();
@@ -670,6 +673,8 @@ public class RondaTest {
 		unaRonda.flor(jugador1);
 		unaRonda.contraFlor(jugador2);
 		unaRonda.quiero(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador2);
 		
 		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
 		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
@@ -716,6 +721,8 @@ public class RondaTest {
 		unaRonda.flor(jugador1);
 		unaRonda.contraFlorAResto(jugador2);
 		unaRonda.quiero(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador2);
 		
 		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
 		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
