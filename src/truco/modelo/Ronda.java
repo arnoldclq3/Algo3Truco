@@ -179,11 +179,14 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	
 	private void sumarPuntosPorTrucoFinalizado() {
-		Jugador jugadorGanadorDelTanto = this.cantoEnProcesoParaElTruco.jugadorGanador();
+		Jugador jugadorGanadorDelTruco = this.cantoEnProcesoParaElTruco.jugadorGanador();
 		int puntosGanados = this.cantoEnProcesoParaElTruco.puntosParaElGanador();
 		this.hayEquipoGanador = true;
 		
-		this.sumarPuntos(jugadorGanadorDelTanto, puntosGanados);
+		if ( this.equipo1.estaJugador(jugadorGanadorDelTruco) ) this.equipoGanador = this.equipo1;
+		if ( this.equipo2.estaJugador(jugadorGanadorDelTruco) ) this.equipoGanador = this.equipo2;
+		
+		this.sumarPuntos(jugadorGanadorDelTruco, puntosGanados);
 	}
 
 	private void sumarPuntosPorTantoFinalizado() {
