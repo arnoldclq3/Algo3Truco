@@ -1,6 +1,10 @@
 package truco.modelo;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+
+import truco.excepciones.mesa.NoSeJuegaConFlorException;
 
 
 public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
@@ -13,33 +17,73 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 
 	private Equipo nosotros;
 	private Equipo ellos;
+
+	private boolean juegoTerminado;
+
+	private LinkedList<Jugador> ordenJugadores;
+
+	private Mazo mazo;
+
+	private boolean seJuegaConFlor;
 	
 	/*************************************************
 	 ** 			   Constructores				**
 	 *************************************************/
 	
 	public Mesa(Equipo nosotros, Equipo ellos) {
+		this.configurarMesa(nosotros, ellos, true);
+	}
+	
+	public Mesa(Equipo nosotros, Equipo ellos,boolean seJuegaConFlor){
+		this.configurarMesa(nosotros, ellos, seJuegaConFlor);
+	}
+	
+	private void configurarMesa(Equipo nosotros, Equipo ellos,boolean seJuegaConFlor){
 		this.nosotros = nosotros;
 		this.ellos = ellos;
 		
-		LinkedList<Jugador> ordenJugadores = new LinkedList<Jugador>();
+		this.ordenJugadores = new LinkedList<Jugador>();
 		
 		for ( int i = 0 ; i < this.nosotros.cantidadJugadores(); i++ ) {
 			
 			Jugador unJugador;
 			
 			unJugador = this.nosotros.siguienteTurno();
+			unJugador.setMesa(this);
 			
 			ordenJugadores.add(unJugador);
 			
 			unJugador = this.ellos.siguienteTurno();
+			unJugador.setMesa(this);
 			
 			ordenJugadores.add(unJugador);
 		}
 		
 		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
+		this.mazo = new Mazo();
+		this.repartirCartasParaLosJugadores();	
+		this.seJuegaConFlor = seJuegaConFlor;	
 	}
 	
+	/*************************************************
+	 ** 	    Interacciones con el Mazo	        **
+	 *************************************************/
+	
+	private void repartirCartasParaLosJugadores() {
+		for (int cantidadCartas = 1 ; cantidadCartas <= 3 ; cantidadCartas++ )
+			for (Jugador unJugador : this.ordenJugadores){
+				Carta unaCarta = this.mazo.repartirCarta();
+				unJugador.tomarCarta(unaCarta);
+			}
+	}
+	
+	private void retirarCartasDeLaRonda(){
+		for (Jugador unJugador : this.ordenJugadores){
+			this.mazo.devolverCartas( unJugador.devolverCartas() );
+		}
+		this.mazo.devolverCartas( this.ronda.devolverCartas() );
+	}
+
 	/*************************************************
 	 ** 			  Metodos Publicos				**
 	 *************************************************/
@@ -61,9 +105,33 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
 	}
 	
+	public boolean juegoTerminado(){
+		return this.juegoTerminado;
+	}
+	
+	public ArrayList<Carta> mostrarCartasDelJugador(Jugador unJugador) {
+		return this.ronda.mostrarCartasDelJugador(unJugador);
+	}
 	
 	
 	
+	private void verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego() {
+		this.verificarSiExisteUnEquipoGanador();
+		if ( this.ronda.estaTerminada() )
+			this.generadorDeNuevaRonda();
+	}
+	
+	private void verificarSiExisteUnEquipoGanador(){
+		if ( this.nosotros.esGanador() || this.ellos.esGanador() )
+			this.juegoTerminado = true;	
+	}
+	
+	private void generadorDeNuevaRonda() {
+		this.retirarCartasDeLaRonda();
+		Collections.rotate(this.ordenJugadores, -1);
+		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
+	}
+
 	/*************************************************
 	 ** 		    CANTOS GENERALES			    **
 	 *************************************************/
@@ -74,10 +142,12 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	public void noQuiero(Jugador unJugador) {
 		this.ronda.noQuiero(unJugador);
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
-	
+
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		this.ronda.jugarCarta(unJugador,unaCarta);
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
 	
 	public Jugador ganadorDelTantoDeLaRondaActual(){
@@ -129,7 +199,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	@Override
 	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
 		this.ronda.cantarTantoDelEnvido(jugadorQueCanta);	
-		
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();	
 	}
 
 	/*************************************************
@@ -138,26 +208,35 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	@Override
 	public void flor(Jugador jugadorQueCanta) {
+		this.controlarSiSeJuegaConFlor();
 		this.ronda.flor(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
+		this.controlarSiSeJuegaConFlor();
 		this.ronda.contraFlor(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
+		this.controlarSiSeJuegaConFlor();
 		this.ronda.contraFlorAResto(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void cantarTantoDeLaFlor(Jugador jugadorQueCanta) {
+		this.controlarSiSeJuegaConFlor();
 		this.ronda.cantarTantoDeLaFlor(jugadorQueCanta);
-		
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
+	}
+
+	private void controlarSiSeJuegaConFlor() {
+		if (!this.seJuegaConFlor)
+			throw new NoSeJuegaConFlorException();	
 	}
 
 	/*************************************************

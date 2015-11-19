@@ -12,29 +12,26 @@ import truco.excepciones.cantos.RespuestaIncorrectaException;
 public class MesaTest {
 
 	private Mesa mesa;
-	private Jugador primerJugador;
-	private Jugador segundoJugador;
+	
+	private Jugador jugadorNosotros;
+	private Jugador jugadorEllos;
+	
+	private Equipo equipoNosotros;
+	private Equipo equipoEllos;
 
 
 	@Before
 	public void setup(){
-		this.primerJugador = new Jugador("Jugador 1");
-		this.segundoJugador = new Jugador("Jugador 2");
-		Equipo nosotros = new Equipo();
-		nosotros.agregarJugador(this.primerJugador);
-		Equipo ellos = new Equipo();
-		ellos.agregarJugador(this.segundoJugador);
+		this.jugadorNosotros = new Jugador("Jugador 1");
+		this.jugadorEllos = new Jugador("Jugador 2");
+		this.equipoNosotros = new Equipo();
+		equipoNosotros.agregarJugador(this.jugadorNosotros);
+		this.equipoEllos = new Equipo();
+		equipoEllos.agregarJugador(this.jugadorEllos);
 		
-		this.mesa = new Mesa(nosotros,ellos);
-		
-		primerJugador.tomarCarta( new Carta(5,Palo.ESPADA) );
-		primerJugador.tomarCarta( new Carta(3,Palo.ESPADA) );
-		primerJugador.tomarCarta( new Carta(7,Palo.ESPADA) );
-		
-		segundoJugador.tomarCarta( new Carta(1,Palo.BASTO) );
-		segundoJugador.tomarCarta( new Carta(6,Palo.BASTO) );
-		segundoJugador.tomarCarta( new Carta(7,Palo.BASTO) );
+		this.mesa = new Mesa(equipoNosotros,equipoEllos);
 	}
+	
 	
 	@Test
 	public void testLaMesaSeIniciaConDosJugadores() {
@@ -43,79 +40,52 @@ public class MesaTest {
 	
 	@Test
 	public void testAlInciarseUnProcesoDeEnvidoElJugadorConMayorTantoEsElGanador(){
-		this.mesa.envido(primerJugador);
-		this.mesa.quiero(segundoJugador);
-		this.mesa.cantarTantoDelEnvido(primerJugador);
-		this.mesa.cantarTantoDelEnvido(segundoJugador);
+		this.mesa.envido(jugadorNosotros);
+		this.mesa.quiero(jugadorEllos);
+		this.mesa.cantarTantoDelEnvido(jugadorNosotros);
+		this.mesa.cantarTantoDelEnvido(jugadorEllos);
 		
-		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
+		Jugador jugadorConMayorTanto = this.jugadorEllos;
+		if (this.jugadorNosotros.puntajeEnvido() > this.jugadorEllos.puntajeEnvido() )
+			jugadorConMayorTanto = this.jugadorNosotros;
+		
+		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , jugadorConMayorTanto);
 	}
 	
-	@Test
-	public void testAlInciarseUnProcesoDeFlorElJugadorConMayorTantoEsElGanador(){
-		this.mesa.flor(primerJugador);
-		this.mesa.quiero(segundoJugador);
-		this.mesa.cantarTantoDeLaFlor(primerJugador);
-		this.mesa.cantarTantoDeLaFlor(segundoJugador);
-		
-		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , primerJugador);
-	}
 	
 	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
 	public void testUnaVezFinalizadoElProcesoDeUnEnvidoNoPuedeVolverseACantarOtroEnvido(){
-		this.mesa.envido(primerJugador);
-		this.mesa.quiero(segundoJugador);
-		this.mesa.cantarTantoDelEnvido(primerJugador);
-		this.mesa.cantarTantoDelEnvido(segundoJugador);
+		this.mesa.envido(jugadorNosotros);
+		this.mesa.quiero(jugadorEllos);
+		this.mesa.cantarTantoDelEnvido(jugadorNosotros);
+		this.mesa.cantarTantoDelEnvido(jugadorEllos);
 		
-		this.mesa.envido(primerJugador);
-	}
-	
-	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
-	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoPuedeCantarseEnvido(){
-		this.mesa.flor(primerJugador);
-		this.mesa.quiero(segundoJugador);
-		this.mesa.cantarTantoDeLaFlor(primerJugador);
-		this.mesa.cantarTantoDeLaFlor(segundoJugador);
-		
-		this.mesa.envido(primerJugador);
-	}
-	
-	@Test (expected = NoSePuedeCantarTantoDosVecesEnUnaRondaException.class)
-	public void testUnaVezFinalizadoElProcesoDeUnaFlorNoSePuedeVolverACantarFlor(){
-		this.mesa.flor(primerJugador);
-		this.mesa.quiero(segundoJugador);
-		this.mesa.cantarTantoDeLaFlor(primerJugador);
-		this.mesa.cantarTantoDeLaFlor(segundoJugador);
-		
-		this.mesa.flor(primerJugador);
-	}
-	
-	@Test
-	public void testElPrimerCantoPuedeSerUnRealEnvidoDandoComoGanadorAlQuePoseaMejorTanto(){
-		this.mesa.realEnvido(primerJugador);
-		this.mesa.quiero(segundoJugador);
-		this.mesa.cantarTantoDelEnvido(primerJugador);
-		this.mesa.cantarTantoDelEnvido(segundoJugador);
-		
-		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , segundoJugador);
+		this.mesa.envido(jugadorNosotros);
 	}
 	
 	@Test (expected = RespuestaIncorrectaException.class)
 	public void testNoSePuedeResponderEnvidoAUnRealEnvido(){
-		this.mesa.realEnvido(segundoJugador);
+		this.mesa.realEnvido(jugadorEllos);
 		
-		this.mesa.envido(primerJugador);
+		this.mesa.envido(jugadorNosotros);
 	}
 	
 	@Test
 	public void testSePuedeResponderRealEnvidoAUnEnvidoYGanaElJugadorQueTengaMayorTanto(){
-		this.mesa.envido(segundoJugador);
-		this.mesa.realEnvido(primerJugador);
-		this.mesa.quiero(segundoJugador);
-		this.mesa.cantarTantoDelEnvido(primerJugador);
-		this.mesa.cantarTantoDelEnvido(segundoJugador);
+		this.mesa.envido(jugadorEllos);
+		this.mesa.realEnvido(jugadorNosotros);
+		this.mesa.quiero(jugadorEllos);
+		this.mesa.cantarTantoDelEnvido(jugadorNosotros);
+		this.mesa.cantarTantoDelEnvido(jugadorEllos);
 		
-		assertEquals(5,this.mesa.mostrarPuntajeEquipoEllos());
+		Jugador jugadorConMayorTanto = this.jugadorNosotros;
+		if (this.jugadorEllos.puntajeEnvido() > this.jugadorNosotros.puntajeEnvido() )
+			jugadorConMayorTanto = this.jugadorEllos;
+		Equipo equipoGanador = this.equipoEllos;
+		if (this.equipoNosotros.estaJugador(jugadorConMayorTanto) )
+			equipoGanador = this.equipoNosotros;
+		
+		assertEquals(5,equipoGanador.obtenerCantidadDePuntos() );
 	}
+
 }

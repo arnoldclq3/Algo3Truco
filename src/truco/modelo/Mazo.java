@@ -30,7 +30,7 @@ public class Mazo {
 	public Carta repartirCarta() {
 		
 		Random random = new Random();
-		int posicion = (random.nextInt(40));
+		int posicion = (random.nextInt(this.cartas.size() ));
 		
 		return cartas.remove(posicion);
 	}
@@ -38,6 +38,11 @@ public class Mazo {
 	public boolean contieneEstaCarta(Carta unaCarta) {
 		
 		return cartas.contains(unaCarta);
+	}
+
+
+	public void devolverCartas(List<Carta> listadoCartasDevueltas) {
+		this.cartas.addAll(listadoCartasDevueltas);
 	}
 
 }

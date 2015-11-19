@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import truco.excepciones.equipo.EquipoGanoException;
 import truco.excepciones.equipo.ExisteJugadorEnEquipoException;
 import truco.excepciones.equipo.JugadorInexistenteException;
 
