@@ -11,7 +11,7 @@ import truco.excepciones.ronda.NoSePuedeJugarMasCartasRondaTerminadaException;
 import truco.excepciones.cantos.PuntosQueLeFaltanAlOtroEquipoParaGanarException;
 import truco.excepciones.cantos.RespuestaIncorrectaException;
 
-public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
+public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales{
 
 	private LinkedList<Jugador> ordenJugadores;
 	private LinkedList<Mano> manos;
@@ -170,6 +170,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	 ** 	   		 Cantos Generales			    **
 	 *************************************************/
 	
+	@Override
 	public void quiero(Jugador jugadorQueCanta) {
 		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
 			this.cantoEnProcesoParaElTanto.quiero(jugadorQueCanta);
@@ -180,6 +181,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 				throw new RespuestaIncorrectaException();
 	}
 	
+	@Override
 	public void noQuiero(Jugador jugadorQueCanta) {
 		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) ){
 			// El "no quiero" es para un tanto (envido/flor)
@@ -270,6 +272,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 			this.cantoEnProcesoParaElTanto = new CantoEnProcesoParaElTanto();
 	}
 	
+	// Se esta usando para que Mesa pueda realizar Tests
 	public Jugador jugadorGanadorDelTanto(){
 		if (this.cantoEnProcesoParaElTanto == null)
 			return null;
