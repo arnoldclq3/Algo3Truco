@@ -19,10 +19,10 @@ public class RondaTest {
 	@Before
 	public void setup() {
 	
-		jugador1 = new Jugador("jugador1", true, false);
-		jugador2 = new Jugador("jugador2", false, false);
-		jugador3 = new Jugador("jugador3", false, false);
-		jugador4 = new Jugador("jugador4", false, false);
+		jugador1 = new Jugador();
+		jugador2 = new Jugador();
+		jugador3 = new Jugador();
+		jugador4 = new Jugador();
 		
 		this.ordenJugadores = new LinkedList<Jugador>();
 		ordenJugadores.add(jugador1);

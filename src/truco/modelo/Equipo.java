@@ -21,8 +21,6 @@ public class Equipo {
 	public Equipo(Jugador unJugador) {
 		this.jugadores = new ArrayList<Jugador>();
 		
-		unJugador.setEsMano(true);
-		unJugador.setEsPie(true);
 		this.jugadores.add(unJugador);
 		
 		this.jugadorTurno = unJugador;
@@ -48,40 +46,28 @@ public class Equipo {
 		switch(cantidadJugadores){
 			case 1:
 				unJugador = this.jugadores.get(0);
-				unJugador.setEsMano(true);
-				unJugador.setEsPie(true);
 				this.jugadores.set(0, unJugador);
 				this.jugadorTurno = unJugador;
 				break;
 			
 			case 2:
 				unJugador = this.jugadores.get(0);
-				unJugador.setEsMano(true);
-				unJugador.setEsPie(false);
 				this.jugadores.set(0, unJugador);
 				this.jugadorTurno = unJugador;
 				
 				unJugador = this.jugadores.get(1);
-				unJugador.setEsMano(false);
-				unJugador.setEsPie(true);
 				this.jugadores.set(1, unJugador);
 				break;
 				
 			case 3:
 				unJugador = this.jugadores.get(0);
-				unJugador.setEsMano(true);
-				unJugador.setEsPie(false);
 				this.jugadores.set(0, unJugador);
 				this.jugadorTurno = unJugador;
 				
 				unJugador = this.jugadores.get(1);
-				unJugador.setEsMano(false);
-				unJugador.setEsPie(false);
 				this.jugadores.set(1, unJugador);
 				
 				unJugador = this.jugadores.get(2);
-				unJugador.setEsMano(false);
-				unJugador.setEsPie(true);
 				this.jugadores.set(2, unJugador);
 				break;
 			default:
@@ -127,12 +113,6 @@ public class Equipo {
 	
 		return jugadorTurno;
 		
-	}
-	
-	public void rotarPosicionesMano(){
-		this.esMano = !this.esMano;
-		Collections.rotate(this.jugadores, -1);
-		this.reconfigurarPosiciones();
 	}
 	
 	public void setEsMano(boolean esMano){

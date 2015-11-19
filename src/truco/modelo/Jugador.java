@@ -14,8 +14,7 @@ public class Jugador {
 	 *************************************************/
 	private ArrayList<Carta> manoDelJugador;
 	private String nombre;
-	private boolean esMano = false;
-	private boolean esPie = false;
+	private static int numeroJugador = 0;
 	
 	/*************************************************
 	 ** 			   Constructores				
@@ -23,18 +22,13 @@ public class Jugador {
 	 *************************************************/
 	public Jugador(){
 		this.manoDelJugador = new ArrayList<Carta>();
+		this.nombre = "Jugador "+this.numeroJugador;
+		this.numeroJugador++;
 	}
 	
 	public Jugador(String nombreJugador){
 		this.nombre = nombreJugador;
 		this.manoDelJugador = new ArrayList<Carta>();
-	}
-	
-	public Jugador(String nombreJugador, boolean esMano, boolean esPie){
-		this.nombre = nombreJugador;
-		this.manoDelJugador = new ArrayList<Carta>();
-		this.esMano = esMano;
-		this.esPie = esPie;
 	}
 	
 	/*************************************************
@@ -134,22 +128,6 @@ public class Jugador {
 		Jugador unJugador = (Jugador)unObjeto;
 		return ( this.nombre == unJugador.nombre);
 		
-	}
-
-	public boolean esMano() {
-		return this.esMano;
-	}
-
-	public boolean esPie() {
-		return esPie;
-	}
-
-	public void setEsMano(boolean esMano) {
-		this.esMano = esMano;
-	}
-	
-	public void setEsPie(boolean esPie) {
-		this.esPie = esPie;
 	}
 
 	/*************************************************
