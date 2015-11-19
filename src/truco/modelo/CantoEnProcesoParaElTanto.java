@@ -179,6 +179,15 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		if ( jugadorQueCanta.puntajeEnvido() > this.jugadorGanadorDelProceso.puntajeEnvido()  )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
+	
+	@Override
+	public void sonBuenas(Jugador jugadorQueCanta) {
+		if (this.seCantoFlor)
+			this.verificarQueSePuedeCantarElTantoDeLaFlor();
+		else
+			this.verificarQueSePuedeCantarElTantoDelEnvido();
+		this.cantidadDeJugadoresQueCantaronSuTanto += 1;
+	}
 
 	/*************************************************
 	 **       Implementacion Cantos Flor			**
@@ -226,4 +235,6 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		if ( jugadorQueCanta.puntajeFlor() > this.jugadorGanadorDelProceso.puntajeFlor() )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
+
+
 }

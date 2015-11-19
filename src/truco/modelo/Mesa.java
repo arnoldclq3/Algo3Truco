@@ -201,6 +201,12 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		this.ronda.cantarTantoDelEnvido(jugadorQueCanta);	
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();	
 	}
+	
+	
+	@Override
+	public void sonBuenas(Jugador jugadorQueCanta) {
+		this.ronda.sonBuenas(jugadorQueCanta);
+	}
 
 	/*************************************************
 	 ** 			   Cantos Flor   				**
@@ -238,6 +244,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		if (!this.seJuegaConFlor)
 			throw new NoSeJuegaConFlorException();	
 	}
+
 
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**

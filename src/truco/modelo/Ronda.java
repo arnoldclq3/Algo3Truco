@@ -277,6 +277,14 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		if (!seCantoFaltaEnvido)
 			this.controlarSiElCantoDelTantoFinalizo();
 	}
+	
+	@Override
+	public void sonBuenas(Jugador jugadorQueCanta) {
+		this.iniciarProcesoDeTanto();
+		this.cantoEnProcesoParaElTanto.sonBuenas(jugadorQueCanta);
+		this.controlarSiElCantoDelTantoFinalizo();
+	}
+
 
 	private void sumarPuntosQueLeFaltanAlOtroEquipo() {
 		Jugador jugadorGanador = this.cantoEnProcesoParaElTanto.jugadorGanador();

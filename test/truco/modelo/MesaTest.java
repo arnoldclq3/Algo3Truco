@@ -46,7 +46,7 @@ public class MesaTest {
 		this.mesa.cantarTantoDelEnvido(jugadorEllos);
 		
 		Jugador jugadorConMayorTanto = this.jugadorEllos;
-		if (this.jugadorNosotros.puntajeEnvido() > this.jugadorEllos.puntajeEnvido() )
+		if (this.jugadorNosotros.puntajeEnvido() >= this.jugadorEllos.puntajeEnvido() )
 			jugadorConMayorTanto = this.jugadorNosotros;
 		
 		assertEquals(this.mesa.ganadorDelTantoDeLaRondaActual() , jugadorConMayorTanto);
