@@ -22,8 +22,8 @@ public class Jugador {
 	 *************************************************/
 	public Jugador(){
 		this.manoDelJugador = new ArrayList<Carta>();
-		this.nombre = "Jugador "+this.numeroJugador;
-		this.numeroJugador++;
+		this.nombre = "Jugador "+ Jugador.numeroJugador;
+		Jugador.numeroJugador++;
 	}
 	
 	public Jugador(String nombreJugador){

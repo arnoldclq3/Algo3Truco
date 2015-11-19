@@ -1,9 +1,7 @@
 package truco.modelo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
-import truco.excepciones.equipo.EquipoGanoException;
 import truco.excepciones.equipo.ExisteJugadorEnEquipoException;
 import truco.excepciones.equipo.JugadorInexistenteException;
 
