@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import truco.excepciones.mesa.NoSeJuegaConFlorException;
 
 
-public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
+public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales{
 
 	/*************************************************
 	 ** 				Atributos					**
@@ -134,11 +134,12 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	/*************************************************
 	 ** 		    CANTOS GENERALES			    **
 	 *************************************************/
-
+	@Override
 	public void quiero(Jugador unJugador) {
 		this.ronda.quiero(unJugador);
 	}
 	
+	@Override
 	public void noQuiero(Jugador unJugador) {
 		this.ronda.noQuiero(unJugador);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
@@ -149,6 +150,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
 	
+	// Se esta usando para hacer tests en Mesa-Test
 	public Jugador ganadorDelTantoDeLaRondaActual(){
 		return this.ronda.jugadorGanadorDelTanto();
 	}

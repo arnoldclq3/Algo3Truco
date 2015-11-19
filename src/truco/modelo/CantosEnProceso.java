@@ -2,7 +2,7 @@ package truco.modelo;
 
 import java.util.LinkedList;
 
-public abstract class CantosEnProceso {
+public abstract class CantosEnProceso implements CantosGenerales{
 
 	protected LinkedList<Canto> cantosAceptados;
 	protected Jugador jugadorGanadorDelProceso;
@@ -12,8 +12,10 @@ public abstract class CantosEnProceso {
 		this.jugadorGanadorDelProceso = null;
 	}
 	
+	@Override
 	public abstract void quiero(Jugador jugadorQueCanta);
 	
+	@Override
 	public void noQuiero(Jugador jugadorQueCanta){
 		this.cantosAceptados.removeLast();
 	}
