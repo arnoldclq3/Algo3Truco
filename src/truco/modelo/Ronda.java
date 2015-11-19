@@ -2,6 +2,7 @@ package truco.modelo;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import truco.excepciones.mano.NoHayGanadorHuboEmpateException;
 import truco.excepciones.ronda.NoEsElTurnoDeEsteJugadorException;
@@ -39,7 +40,13 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		this.hayEquipoGanador = false;
 	}
 	
-
+	public List<Carta> devolverCartas() {
+		List<Carta> listadoARetornar = new LinkedList<Carta>();
+		for (Mano unaMano : this.manos)
+			listadoARetornar.addAll(unaMano.devolverCartas() );
+		return listadoARetornar;
+	}
+	
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		
 		if ( this.hayEquipoGanador ) throw new NoSePuedeJugarMasCartasRondaTerminadaException();

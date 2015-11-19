@@ -40,4 +40,9 @@ public class Mazo {
 		return cartas.contains(unaCarta);
 	}
 
+
+	public void devolverCartas(List<Carta> listadoCartasDevueltas) {
+		this.cartas.addAll(listadoCartasDevueltas);
+	}
+
 }

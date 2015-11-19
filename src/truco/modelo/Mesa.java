@@ -18,6 +18,8 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	private boolean juegoTerminado;
 
 	private LinkedList<Jugador> ordenJugadores;
+
+	private Mazo mazo;
 	
 	/*************************************************
 	 ** 			   Constructores				**
@@ -43,8 +45,29 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		}
 		
 		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
+		this.mazo = new Mazo();
+		this.repartirCartasParaLosJugadores();	
 	}
 	
+	/*************************************************
+	 ** 	    Interacciones con el Mazo	        **
+	 *************************************************/
+	
+	private void repartirCartasParaLosJugadores() {
+		for (int cantidadCartas = 1 ; cantidadCartas <= 3 ; cantidadCartas++ )
+			for (Jugador unJugador : this.ordenJugadores){
+				Carta unaCarta = this.mazo.repartirCarta();
+				unJugador.tomarCarta(unaCarta);
+			}
+	}
+	
+	private void retirarCartasDeLaRonda(){
+		for (Jugador unJugador : this.ordenJugadores){
+			this.mazo.devolverCartas( unJugador.devolverCartas() );
+		}
+		this.mazo.devolverCartas( this.ronda.devolverCartas() );
+	}
+
 	/*************************************************
 	 ** 			  Metodos Publicos				**
 	 *************************************************/
@@ -84,6 +107,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	}
 	
 	private void generadorDeNuevaRonda() {
+		this.retirarCartasDeLaRonda();
 		Collections.rotate(this.ordenJugadores, -1);
 		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
 	}

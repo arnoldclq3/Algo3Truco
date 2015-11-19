@@ -97,4 +97,8 @@ public class Mano {
 			}
 		}
 	}
+
+	public Collection<Carta> devolverCartas() {
+		return  this.cartasJugadas.values();
+	}
 }
