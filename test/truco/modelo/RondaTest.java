@@ -41,6 +41,12 @@ public class RondaTest {
 		equipo2.setEsMano(false);
 	}
 	
+	/* 
+	 * 
+	 * TEST: DETERMINAR GANADOR RONDA SIN TRUCO SIN ENVIDO 
+	 * 
+	 * */
+	
 	@Test
 	public void testGanaLaRondaElEquipoQueGanoLasDosPrimerasManos() {
 		
@@ -210,74 +216,542 @@ public class RondaTest {
 		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
 	}
 	
-	/*
+	/* 
+	 * 
+	 * TEST: DETERMINAR GANADOR RONDA CON TRUCO 
+	 * 
+	 * */
+	
 	@Test
-	public void testGanaLaRondaElEquipoQueGanaLaPrimeraManoYPierdeLaSegundaManoYEmpataLaTercerMano2() {
+	public void testGanaLaRondaElEquipoQueGanaLaPrimeraManoYEmpataLaSegundaManoCantando_Truco() {
 		
 		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
 		
 		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
-		unaRonda.jugarCarta(jugador2, new Carta(7, Palo.ORO));
-		unaRonda.jugarCarta(jugador3, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		
+		unaRonda.truco(jugador3);
+		unaRonda.quiero(jugador2);
+		
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
 		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
 		
-		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.COPA));
-		unaRonda.jugarCarta(jugador3, new Carta(3, Palo.BASTO));
-		unaRonda.jugarCarta(jugador4, new Carta(2, Palo.ESPADA));
-		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador3, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(4, Palo.BASTO));
+		unaRonda.jugarCarta(jugador1, new Carta(4, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
 		
-		unaRonda.jugarCarta(jugador3, new Carta(2, Palo.COPA));
-		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.ORO));
-		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.BASTO));
-		unaRonda.jugarCarta(jugador2, new Carta(2, Palo.BASTO));
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),2);
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanaLaPrimeraManoYEmpataLaSegundaManoCantando_Truco_Retruco_ValeCuatro_NoQuiero() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		
+		unaRonda.truco(jugador3);
+		unaRonda.retruco(jugador2);
+		unaRonda.valeCuatro(jugador3);
+		unaRonda.noQuiero(jugador2);
+
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),3);
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQuePierdeLaPrimerManoYGanaLasDosUltimasManosCantando_Truco_Retruco_Quiero() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.COPA));
+		
+		unaRonda.truco(jugador4);
+		unaRonda.retruco(jugador1);
+		unaRonda.quiero(jugador4);
+		
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador1, new Carta(6, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(7, Palo.BASTO));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.ORO));
+		unaRonda.jugarCarta(jugador1, new Carta(5, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(2, Palo.BASTO));
 		
 		assertEquals(equipo2,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo2.obtenerCantidadDePuntos(),3);
 	}
-	
-	/*
-	 * Estos Test contemplan mano, todavia no implementado
-	 *
-	 *
-	@Test
-	public void testGanaLaRondaElEquipoQueGanoLaSegundaManoYEmpatoLaPrimerManoYElEQuipoEraMano() {
-		
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(4, Palo.ESPADA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(3, Palo.BASTO));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(4, Palo.COPA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(3, Palo.ORO));
-		
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(7, Palo.COPA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(7, Palo.ESPADA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(6, Palo.COPA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(5, Palo.BASTO));
-		
-		Jugador jugador = new Jugador("jugador1");
-		assertTrue(this.unaRonda.equipoGanadorDeLaRonda().estaJugador(jugador));
-	}
-	
 	
 	@Test
-	public void testGanaLaRondaElEquipoQuePierdeLaPrimerManoEmpataLaSegundaManoYGanaLaTercerMano() {
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(1, Palo.BASTO));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(3, Palo.BASTO));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(1, Palo.ESPADA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(3, Palo.ORO));
+	public void testGanaLaRondaElEquipoQueEmpataTodasLasManosYElEquipoEsManoCantando_Truco_Retruco_ValeCuatro_Quiero() {
 		
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(7, Palo.COPA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(4, Palo.ESPADA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(6, Palo.COPA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(7, Palo.BASTO));
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
 		
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(7, Palo.ORO));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(7, Palo.ESPADA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(2, Palo.COPA));
-		this.unaRonda.jugarCarta(this.unaRonda.equipoEnTurno().siguienteTurno(), new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador1, new Carta(3, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(1, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.COPA));
 		
+		unaRonda.truco(jugador1);
+		unaRonda.retruco(jugador2);
+		unaRonda.valeCuatro(jugador1);
+		unaRonda.quiero(jugador2);
 		
-		Jugador jugador = new Jugador("jugador2");
-		assertTrue(this.unaRonda.equipoGanadorDeLaRonda().estaJugador(jugador));
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(3, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.ESPADA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(2, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador3, new Carta(10, Palo.BASTO));
+		unaRonda.jugarCarta(jugador4, new Carta(2, Palo.BASTO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),4);
 	}
+	
+	/* 
+	 * 
+	 * TEST: DETERMINAR GANADOR RONDA CON ENVIDO 
+	 * 
+	 * */
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanaLaPrimeraManoYPierdeLaSegundaManoYEmpataLaTercerManoCantando_Envido_Quiero() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(10, Palo.ORO));
+		jugador1.tomarCarta(new Carta(2, Palo.ESPADA));
+		jugador1.tomarCarta(new Carta(10, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(1, Palo.COPA));
+		jugador2.tomarCarta(new Carta(11, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(11, Palo.COPA));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(10, Palo.COPA));
+		jugador4.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(6, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		
+		unaRonda.envido(jugador3);
+		unaRonda.quiero(jugador4);
+		unaRonda.cantarTantoDelEnvido(jugador1);
+		unaRonda.cantarTantoDelEnvido(jugador2);
+		unaRonda.cantarTantoDelEnvido(jugador3);
+		unaRonda.cantarTantoDelEnvido(jugador4);
+		
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador1, new Carta(2, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.COPA));
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(10, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),3);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueEmpataLaPrimeraYSegundaManoYGanaLaTercerManoCantando_Envido_Envido_Quiero() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(3, Palo.ORO));
+		jugador1.tomarCarta(new Carta(10, Palo.COPA));
+		jugador1.tomarCarta(new Carta(11, Palo.COPA));
+		jugador2.tomarCarta(new Carta(1, Palo.COPA));
+		jugador2.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador2.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(1, Palo.ORO));
+		jugador3.tomarCarta(new Carta(3, Palo.ESPADA));
+		jugador3.tomarCarta(new Carta(7, Palo.ESPADA));
+		jugador4.tomarCarta(new Carta(3, Palo.COPA));
+		jugador4.tomarCarta(new Carta(10, Palo.ESPADA));
+		jugador4.tomarCarta(new Carta(7, Palo.BASTO));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(3, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		
+		unaRonda.envido(jugador3);
+		unaRonda.envido(jugador2);
+		unaRonda.quiero(jugador3);
+		unaRonda.cantarTantoDelEnvido(jugador1);
+		unaRonda.cantarTantoDelEnvido(jugador2);
+		unaRonda.cantarTantoDelEnvido(jugador3);
+		unaRonda.cantarTantoDelEnvido(jugador4);
+		
+		unaRonda.jugarCarta(jugador3, new Carta(1, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(3, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.ESPADA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(7, Palo.BASTO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),5);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanoLasDosPrimerasManosCantando_RealEnvido_RealEnvido_Quiero() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(1, Palo.ESPADA));
+		jugador1.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador1.tomarCarta(new Carta(10, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador2.tomarCarta(new Carta(6, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(4, Palo.COPA));
+		jugador3.tomarCarta(new Carta(4, Palo.COPA));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(3, Palo.ORO));
+		jugador4.tomarCarta(new Carta(5, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(5, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(4, Palo.COPA));
+		
+		unaRonda.realEnvido(jugador4);
+		unaRonda.realEnvido(jugador1);
+		unaRonda.quiero(jugador4);
+		unaRonda.cantarTantoDelEnvido(jugador1);
+		unaRonda.cantarTantoDelEnvido(jugador2);
+		unaRonda.cantarTantoDelEnvido(jugador3);
+		unaRonda.cantarTantoDelEnvido(jugador4);
+		
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.BASTO));
+		unaRonda.jugarCarta(jugador2, new Carta(6, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(5, Palo.BASTO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),7);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanoLasDosPrimerasManosCantando_RealEnvido_RealEnvido_Envido_Envido_Quiero() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(1, Palo.ESPADA));
+		jugador1.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador1.tomarCarta(new Carta(10, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador2.tomarCarta(new Carta(6, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(4, Palo.COPA));
+		jugador3.tomarCarta(new Carta(4, Palo.COPA));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(3, Palo.ORO));
+		jugador4.tomarCarta(new Carta(5, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(5, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(4, Palo.COPA));
+		
+		unaRonda.envido(jugador4);
+		unaRonda.envido(jugador3);
+		unaRonda.realEnvido(jugador4);
+		unaRonda.realEnvido(jugador3);
+		unaRonda.quiero(jugador4);
+		unaRonda.cantarTantoDelEnvido(jugador1);
+		unaRonda.cantarTantoDelEnvido(jugador2);
+		unaRonda.cantarTantoDelEnvido(jugador3);
+		unaRonda.cantarTantoDelEnvido(jugador4);
+		
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.BASTO));
+		unaRonda.jugarCarta(jugador2, new Carta(6, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(5, Palo.BASTO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),11);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanoLasDosPrimerasManosCantando_Envido_FaltaEnvido_Quiero() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(1, Palo.ESPADA));
+		jugador1.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador1.tomarCarta(new Carta(10, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador2.tomarCarta(new Carta(6, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(4, Palo.COPA));
+		jugador3.tomarCarta(new Carta(4, Palo.COPA));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(3, Palo.ORO));
+		jugador4.tomarCarta(new Carta(5, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(5, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(4, Palo.COPA));
+		
+		unaRonda.envido(jugador4);
+		unaRonda.faltaEnvido(jugador1);
+		unaRonda.quiero(jugador4);
+		unaRonda.cantarTantoDelEnvido(jugador1);
+		unaRonda.cantarTantoDelEnvido(jugador2);
+		unaRonda.cantarTantoDelEnvido(jugador3);
+		unaRonda.cantarTantoDelEnvido(jugador4);
+				
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),30);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	/* 
+	 * 
+	 * TEST: DETERMINAR GANADOR RONDA CON FLOR
+	 * 
+	 * */
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanaLaPrimeraManoYPierdeLaSegundaManoYEmpataLaTercerManoCantando_Flor() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(11, Palo.ORO));
+		jugador1.tomarCarta(new Carta(2, Palo.ORO));
+		jugador1.tomarCarta(new Carta(10, Palo.ORO));
+		jugador2.tomarCarta(new Carta(1, Palo.COPA));
+		jugador2.tomarCarta(new Carta(11, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(11, Palo.COPA));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(10, Palo.COPA));
+		jugador4.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(6, Palo.COPA));
+		
+		unaRonda.flor(jugador1);
+		unaRonda.noQuiero(jugador2);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador1, new Carta(2, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.COPA));
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(10, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),4);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanaLaPrimeraManoYPierdeLaSegundaManoYEmpataLaTercerManoCantando_Flor_Flor() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(11, Palo.ORO));
+		jugador1.tomarCarta(new Carta(2, Palo.ORO));
+		jugador1.tomarCarta(new Carta(10, Palo.ORO));
+		jugador2.tomarCarta(new Carta(1, Palo.COPA));
+		jugador2.tomarCarta(new Carta(11, Palo.COPA));
+		jugador2.tomarCarta(new Carta(10, Palo.COPA));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(11, Palo.ESPADA));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(6, Palo.COPA));
+		
+		unaRonda.flor(jugador1);
+		unaRonda.flor(jugador2);
+		unaRonda.quiero(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador2);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador1, new Carta(2, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.COPA));
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(10, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo2.obtenerCantidadDePuntos(),2);
+		assertEquals(equipo1.obtenerCantidadDePuntos(),5);
+		
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanaLaPrimeraManoYPierdeLaSegundaManoYEmpataLaTercerManoCantando_Flor_ContraFlor() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(11, Palo.ORO));
+		jugador1.tomarCarta(new Carta(2, Palo.ORO));
+		jugador1.tomarCarta(new Carta(10, Palo.ORO));
+		jugador2.tomarCarta(new Carta(1, Palo.COPA));
+		jugador2.tomarCarta(new Carta(11, Palo.COPA));
+		jugador2.tomarCarta(new Carta(10, Palo.COPA));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(11, Palo.ESPADA));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(6, Palo.COPA));
+		
+		unaRonda.flor(jugador1);
+		unaRonda.contraFlor(jugador2);
+		unaRonda.quiero(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador2);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador1, new Carta(2, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.COPA));
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(10, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),7);
+		assertEquals(equipo2.obtenerCantidadDePuntos(),0);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	@Test
+	public void testGanaLaRondaElEquipoQueGanaLaPrimeraManoYPierdeLaSegundaManoYEmpataLaTercerManoCantando_Flor_ContraFlorAResto() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(11, Palo.ORO));
+		jugador1.tomarCarta(new Carta(2, Palo.ORO));
+		jugador1.tomarCarta(new Carta(10, Palo.ORO));
+		jugador2.tomarCarta(new Carta(1, Palo.COPA));
+		jugador2.tomarCarta(new Carta(11, Palo.COPA));
+		jugador2.tomarCarta(new Carta(10, Palo.COPA));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(11, Palo.ESPADA));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(6, Palo.COPA));
+		
+		unaRonda.flor(jugador1);
+		unaRonda.contraFlorAResto(jugador2);
+		unaRonda.quiero(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador2);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador1, new Carta(2, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.COPA));
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(10, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
+		
+		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+		assertEquals(equipo1.obtenerCantidadDePuntos(),30);
+		assertEquals(equipo2.obtenerCantidadDePuntos(),0);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+	}
+	
+	
+	
 	
 
-	*/
+	//*/
 }

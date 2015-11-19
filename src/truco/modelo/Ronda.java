@@ -198,11 +198,18 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	
 	private void sumarPuntosPorTrucoFinalizado() {
-		Jugador jugadorGanadorDelTanto = this.cantoEnProcesoParaElTruco.jugadorGanador();
+		Jugador jugadorGanadorDelTruco = this.cantoEnProcesoParaElTruco.jugadorGanador();
 		int puntosGanados = this.cantoEnProcesoParaElTruco.puntosParaElGanador();
 		this.hayEquipoGanador = true;
 		
-		this.sumarPuntos(jugadorGanadorDelTanto, puntosGanados);
+		if ( this.equipo1.estaJugador(jugadorGanadorDelTruco) ) {
+			this.equipoGanador = this.equipo1;
+		}
+		if ( this.equipo2.estaJugador(jugadorGanadorDelTruco) ) {
+			this.equipoGanador = this.equipo2;
+		}
+		
+		this.sumarPuntos(jugadorGanadorDelTruco, puntosGanados);
 	}
 
 	private void sumarPuntosPorTantoFinalizado() {
@@ -210,7 +217,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		int puntosGanados = this.cantoEnProcesoParaElTanto.puntosParaElGanador();
 		
 		this.sumarPuntos(jugadorGanadorDelTanto, puntosGanados);
-		this.sumarPuntosParaPerdedorPorTanto(jugadorGanadorDelTanto, puntosGanados);
+		this.sumarPuntosParaPerdedorPorTanto(jugadorGanadorDelTanto);
 	}
 
 	private void sumarPuntos(Jugador unJugador,int puntosGanados){
@@ -218,9 +225,20 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 			this.equipo1.sumarPuntosAJugador(unJugador, puntosGanados);
 		else
 			this.equipo2.sumarPuntosAJugador(unJugador, puntosGanados);
+		
+		//acá va el analisis de si hay un equipo ganador del juego, ponerlo como ganador de la ronda.
+		
+		if ( equipo1.obtenerPuntosFaltantesParaGanar() == 0 ) {
+			this.equipoGanador = this.equipo1;
+			this.hayEquipoGanador = true;
+		}
+		if ( equipo2.obtenerPuntosFaltantesParaGanar() == 0 ) {
+			this.equipoGanador = this.equipo2;
+			this.hayEquipoGanador = true;
+		}
 	}
 		
-	private void sumarPuntosParaPerdedorPorTanto(Jugador jugadorGanadorDelTanto, int puntosGanados) {
+	private void sumarPuntosParaPerdedorPorTanto(Jugador jugadorGanadorDelTanto) {
 		if ( this.equipo1.estaJugador(jugadorGanadorDelTanto) )
 			this.equipo2.sumarPuntos(this.cantoEnProcesoParaElTanto.puntosParaElPerdedor() );
 		else
@@ -286,16 +304,13 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	@Override
 	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDeTanto();
-		boolean seCantoFaltaEnvido = false;
+		this.cantoEnProcesoParaElTanto.cantarTantoDelEnvido(jugadorQueCanta);
+	
 		try{
-			this.cantoEnProcesoParaElTanto.cantarTantoDelEnvido(jugadorQueCanta);
-		}
-		catch (PuntosQueLeFaltanAlOtroEquipoParaGanarException excepcion){
-			seCantoFaltaEnvido = true;
-			this.sumarPuntosQueLeFaltanAlOtroEquipo();
-		}
-		if (!seCantoFaltaEnvido)
 			this.controlarSiElCantoDelTantoFinalizo();
+		} catch(PuntosQueLeFaltanAlOtroEquipoParaGanarException e){
+			this.sumarPuntosQueLeFaltanAlOtroEquipo();
+		}	
 	}
 	
 	@Override
@@ -341,16 +356,15 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	@Override
 	public void cantarTantoDeLaFlor(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDeTanto();
-		boolean seCantoContraFlorAResto = false;
+		this.cantoEnProcesoParaElTanto.cantarTantoDeLaFlor(jugadorQueCanta);
+		
 		try{
-			this.cantoEnProcesoParaElTanto.cantarTantoDeLaFlor(jugadorQueCanta);
+			this.controlarSiElCantoDelTantoFinalizo();
 		}
 		catch (PuntosQueLeFaltanAlOtroEquipoParaGanarException excepcion){
-			seCantoContraFlorAResto = true;
 			this.sumarPuntosQueLeFaltanAlOtroEquipo();
 		}
-		if (!seCantoContraFlorAResto)
-			this.controlarSiElCantoDelTantoFinalizo();
+			
 	}
 	
 	

@@ -138,8 +138,10 @@ public class Equipo {
 	}
 
 	public void sumarPuntos(int puntosGanados) {
+		
 		this.puntaje += puntosGanados;
 		
+		if ( this.puntaje > this.puntosParaGanar ) this.puntaje = this.puntosParaGanar;
 	}
 
 	public boolean esGanador() {
