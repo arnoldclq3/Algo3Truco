@@ -143,9 +143,6 @@ public class Equipo {
 		
 		if(this.jugadorExiste(unJugador)){
 			this.puntaje  += puntos;
-			if(this.puntaje>=30){
-				throw new EquipoGanoException();
-			}
 			return true;
 		} else{
 			throw new JugadorInexistenteException();

@@ -202,18 +202,6 @@ public class EquipoTest {
 		
 	}
 	
-	@Test (expected = EquipoGanoException.class)
-	public void testEquipoLanzaExcepcionSiAlcanzaLosTreintaPuntos() {
-		
-		Equipo equipo = new Equipo(this.unJugador);
-		int puntos = 30;
-		
-		equipo.agregarJugador(this.otroJugador);
-		
-		equipo.sumarPuntosAJugador(this.unJugador,puntos);
-		
-	}
-	
 	
 
 }
