@@ -724,20 +724,6 @@ public class RondaTest {
 		unaRonda.cantarTantoDeLaFlor(jugador1);
 		unaRonda.cantarTantoDeLaFlor(jugador2);
 		
-		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
-		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
-		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
-		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
-		
-		unaRonda.jugarCarta(jugador3, new Carta(11, Palo.COPA));
-		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.BASTO));
-		unaRonda.jugarCarta(jugador1, new Carta(2, Palo.ORO));
-		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
-		
-		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.COPA));
-		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
-		unaRonda.jugarCarta(jugador2, new Carta(10, Palo.BASTO));
-		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
 		
 		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
 		assertEquals(equipo1.obtenerCantidadDePuntos(),30);

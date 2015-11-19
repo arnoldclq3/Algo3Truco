@@ -226,8 +226,6 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 		else
 			this.equipo2.sumarPuntosAJugador(unJugador, puntosGanados);
 		
-		//acá va el analisis de si hay un equipo ganador del juego, ponerlo como ganador de la ronda.
-		
 		if ( equipo1.obtenerPuntosFaltantesParaGanar() == 0 ) {
 			this.equipoGanador = this.equipo1;
 			this.hayEquipoGanador = true;
