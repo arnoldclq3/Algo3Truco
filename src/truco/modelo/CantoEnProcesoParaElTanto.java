@@ -95,6 +95,10 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		return false;
 	}
 	
+	public boolean seCantoFlor() {
+		return this.seCantoFlor;
+	}
+	
 	/*************************************************
 	 ** 			 VERIFICACIONES					**
 	 *************************************************/
@@ -256,6 +260,8 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		if ( jugadorQueCanta.puntajeFlor() > this.jugadorGanadorDelProceso.puntajeFlor() )
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
+
+
 
 
 }

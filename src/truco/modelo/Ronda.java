@@ -228,10 +228,22 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	}
 	
 	private void controlarSiElCantoDelTantoFinalizo(){
+		if ( this.cantoEnProcesoParaElTanto.seCantoFlor() )
+			this.controlarSiElCantoDeFlorFinalizo();
+		
 		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
 			this.sumarPuntosPorTantoFinalizado();
 	}
 	
+
+	private void controlarSiElCantoDeFlorFinalizo() {
+		int jugadoresConFlor = 0;
+		for (Jugador jugador : this.ordenJugadores )
+			if ( jugador.tieneFlor() )
+				jugadoresConFlor++;
+		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto( jugadoresConFlor ) )
+			this.sumarPuntosPorTantoFinalizado();
+	}
 
 	/*************************************************
 	 ** 	    Cantos Generales del Tanto	  		**
