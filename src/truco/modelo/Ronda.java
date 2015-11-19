@@ -7,6 +7,7 @@ import java.util.List;
 
 import truco.excepciones.mano.NoHayGanadorHuboEmpateException;
 import truco.excepciones.ronda.NoEsElTurnoDeEsteJugadorException;
+import truco.excepciones.ronda.NoHayEquipoGanadorHastaQueLaRondaTermineException;
 import truco.excepciones.ronda.NoSePuedeJugarMasCartasRondaTerminadaException;
 import truco.excepciones.cantos.PuntosQueLeFaltanAlOtroEquipoParaGanarException;
 import truco.excepciones.cantos.RespuestaIncorrectaException;

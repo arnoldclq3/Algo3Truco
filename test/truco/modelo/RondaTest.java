@@ -1,10 +1,13 @@
 package truco.modelo;
 
 import static org.junit.Assert.*;
+
 import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import truco.excepciones.ronda.*;
 
 public class RondaTest {
 	
@@ -214,6 +217,53 @@ public class RondaTest {
 		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
 		
 		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
+	}
+	
+	@Test (expected = NoEsElTurnoDeEsteJugadorException.class)
+	public void testElJugadorQueGanoLaPrimeraManoDebeIniciarLaSegundaMano() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(4, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(4, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(11, Palo.ESPADA));
+	}
+	
+	@Test (expected = NoHayEquipoGanadorHastaQueLaRondaTermineException.class)
+	public void testNoHayGanadorHastaQueTermineLaRonda() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.obtenerEquipoGanador();
+	}
+	
+	@Test (expected = NoSePuedeJugarMasCartasRondaTerminadaException.class)
+	public void testNoSePuedeJugarSiLaRondaTermino() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(11, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(4, Palo.BASTO));
+		unaRonda.jugarCarta(jugador1, new Carta(4, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		
+		unaRonda.jugarCarta(jugador2, new Carta(5, Palo.COPA));
 	}
 	
 	/* 
@@ -554,6 +604,43 @@ public class RondaTest {
 		jugador4.devolverCartas();
 	}
 	
+	@Test (expected = NoSePuedeJugarMasCartasRondaTerminadaException.class)
+	public void testNoSePuedeJugarMasCartasSiSeGanoUnFaltaEnvido() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(1, Palo.ESPADA));
+		jugador1.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador1.tomarCarta(new Carta(10, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador2.tomarCarta(new Carta(6, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(4, Palo.COPA));
+		jugador3.tomarCarta(new Carta(4, Palo.COPA));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(3, Palo.ORO));
+		jugador4.tomarCarta(new Carta(5, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(5, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(4, Palo.COPA));
+		
+		unaRonda.envido(jugador4);
+		unaRonda.faltaEnvido(jugador1);
+		unaRonda.quiero(jugador4);
+		unaRonda.cantarTantoDelEnvido(jugador1);
+		unaRonda.cantarTantoDelEnvido(jugador2);
+		unaRonda.cantarTantoDelEnvido(jugador3);
+		unaRonda.cantarTantoDelEnvido(jugador4);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+		
+		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ESPADA));
+	}
+	
 	/* 
 	 * 
 	 * TEST: DETERMINAR GANADOR RONDA CON FLOR
@@ -646,7 +733,6 @@ public class RondaTest {
 		assertEquals(equipo2.obtenerCantidadDePuntos(),2);
 		assertEquals(equipo1.obtenerCantidadDePuntos(),5);
 		
-		
 		jugador1.devolverCartas();
 		jugador2.devolverCartas();
 		jugador3.devolverCartas();
@@ -724,7 +810,6 @@ public class RondaTest {
 		unaRonda.cantarTantoDeLaFlor(jugador1);
 		unaRonda.cantarTantoDeLaFlor(jugador2);
 		
-		
 		assertEquals(equipo1,unaRonda.obtenerEquipoGanador());
 		assertEquals(equipo1.obtenerCantidadDePuntos(),30);
 		assertEquals(equipo2.obtenerCantidadDePuntos(),0);
@@ -735,7 +820,36 @@ public class RondaTest {
 		jugador4.devolverCartas();
 	}
 	
-	
+	@Test (expected = NoSePuedeJugarMasCartasRondaTerminadaException.class)
+	public void testNoSePuedeJugarMasCartasSiSeGanoUnContraFlorAResto() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(11, Palo.ORO));
+		jugador1.tomarCarta(new Carta(2, Palo.ORO));
+		jugador1.tomarCarta(new Carta(10, Palo.ORO));
+		jugador2.tomarCarta(new Carta(1, Palo.COPA));
+		jugador2.tomarCarta(new Carta(11, Palo.COPA));
+		jugador2.tomarCarta(new Carta(10, Palo.COPA));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(11, Palo.ESPADA));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(6, Palo.COPA));
+		
+		unaRonda.flor(jugador1);
+		unaRonda.contraFlorAResto(jugador2);
+		unaRonda.quiero(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador1);
+		unaRonda.cantarTantoDeLaFlor(jugador2);
+		
+		jugador1.devolverCartas();
+		jugador2.devolverCartas();
+		jugador3.devolverCartas();
+		jugador4.devolverCartas();
+		
+		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
+	}
 	
 	
 
