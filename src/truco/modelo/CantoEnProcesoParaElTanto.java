@@ -44,8 +44,15 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		// Despues de un quiero no se pueden agregar mas cantos en el proceso
 		this.sePuedenRealizarCantosNuevos = false;
 	}
-
 	
+	@Override
+	public void noQuiero(Jugador jugadorQueCanta){
+		if (!this.seCantoFlor){
+			super.noQuiero(jugadorQueCanta);
+			return;
+		}
+	}
+
 	private int puntosParaElGanadorPorEnvido(){
 		// Tener en cuenta que si el ultimo aceptado fue un Falta Envido igual recorre toda la lista.
 		int puntajeGanador = 0;

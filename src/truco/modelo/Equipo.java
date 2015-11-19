@@ -11,6 +11,7 @@ public class Equipo {
 	private Jugador jugadorTurno;
 	private boolean esMano = true; //para saber cual es la mano real: si este atributo es true y si el jugador es mano
 	private int puntaje = 0;
+	private int puntosParaGanar = 30;
 
 	public Equipo() {
 		this.jugadores = new ArrayList<Jugador>();
@@ -142,7 +143,11 @@ public class Equipo {
 	}
 
 	public boolean esGanador() {
-		return (this.puntaje >= 30);
+		return (this.puntaje >= this.puntosParaGanar);
+	}
+
+	public int obtenerPuntosFaltantesParaGanar() {
+		return (this.puntosParaGanar - this.puntaje);
 	}
 
 		

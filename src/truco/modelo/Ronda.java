@@ -8,6 +8,7 @@ import java.util.List;
 import truco.excepciones.mano.NoHayGanadorHuboEmpateException;
 import truco.excepciones.ronda.NoEsElTurnoDeEsteJugadorException;
 import truco.excepciones.ronda.NoSePuedeJugarMasCartasRondaTerminadaException;
+import truco.excepciones.cantos.PuntosQueLeFaltanAlOtroEquipoParaGanarException;
 import truco.excepciones.cantos.RespuestaIncorrectaException;
 
 public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
@@ -265,8 +266,26 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	@Override
 	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDeTanto();
-		this.cantoEnProcesoParaElTanto.cantarTantoDelEnvido(jugadorQueCanta);
-		this.controlarSiElCantoDelTantoFinalizo();
+		boolean seCantoFaltaEnvido = false;
+		try{
+			this.cantoEnProcesoParaElTanto.cantarTantoDelEnvido(jugadorQueCanta);
+		}
+		catch (PuntosQueLeFaltanAlOtroEquipoParaGanarException excepcion){
+			seCantoFaltaEnvido = true;
+			this.sumarPuntosQueLeFaltanAlOtroEquipo();
+		}
+		if (!seCantoFaltaEnvido)
+			this.controlarSiElCantoDelTantoFinalizo();
+	}
+
+	private void sumarPuntosQueLeFaltanAlOtroEquipo() {
+		Jugador jugadorGanador = this.cantoEnProcesoParaElTanto.jugadorGanador();
+		int puntajeGanador = 0;
+		if ( this.equipo1.estaJugador(jugadorGanador) )
+			puntajeGanador = equipo2.obtenerPuntosFaltantesParaGanar();
+		else
+			puntajeGanador = equipo1.obtenerPuntosFaltantesParaGanar();
+		this.sumarPuntos(jugadorGanador, puntajeGanador);
 	}
 
 	/*************************************************
@@ -294,8 +313,16 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco{
 	@Override
 	public void cantarTantoDeLaFlor(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDeTanto();
-		this.cantoEnProcesoParaElTanto.cantarTantoDeLaFlor(jugadorQueCanta);	
-		this.controlarSiElCantoDelTantoFinalizo();
+		boolean seCantoContraFlorAResto = false;
+		try{
+			this.cantoEnProcesoParaElTanto.cantarTantoDeLaFlor(jugadorQueCanta);
+		}
+		catch (PuntosQueLeFaltanAlOtroEquipoParaGanarException excepcion){
+			seCantoContraFlorAResto = true;
+			this.sumarPuntosQueLeFaltanAlOtroEquipo();
+		}
+		if (!seCantoContraFlorAResto)
+			this.controlarSiElCantoDelTantoFinalizo();
 	}
 	
 	

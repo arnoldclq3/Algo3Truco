@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import truco.excepciones.mesa.NoSeJuegaConFlorException;
+
 
 public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 
@@ -21,12 +23,22 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	private LinkedList<Jugador> ordenJugadores;
 
 	private Mazo mazo;
+
+	private boolean seJuegaConFlor;
 	
 	/*************************************************
 	 ** 			   Constructores				**
 	 *************************************************/
 	
 	public Mesa(Equipo nosotros, Equipo ellos) {
+		this.configurarMesa(nosotros, ellos, true);
+	}
+	
+	public Mesa(Equipo nosotros, Equipo ellos,boolean seJuegaConFlor){
+		this.configurarMesa(nosotros, ellos, seJuegaConFlor);
+	}
+	
+	private void configurarMesa(Equipo nosotros, Equipo ellos,boolean seJuegaConFlor){
 		this.nosotros = nosotros;
 		this.ellos = ellos;
 		
@@ -50,6 +62,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
 		this.mazo = new Mazo();
 		this.repartirCartasParaLosJugadores();	
+		this.seJuegaConFlor = seJuegaConFlor;	
 	}
 	
 	/*************************************************
@@ -195,26 +208,35 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco{
 	
 	@Override
 	public void flor(Jugador jugadorQueCanta) {
+		this.controlarSiSeJuegaConFlor();
 		this.ronda.flor(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
+		this.controlarSiSeJuegaConFlor();
 		this.ronda.contraFlor(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
+		this.controlarSiSeJuegaConFlor();
 		this.ronda.contraFlorAResto(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void cantarTantoDeLaFlor(Jugador jugadorQueCanta) {
+		this.controlarSiSeJuegaConFlor();
 		this.ronda.cantarTantoDeLaFlor(jugadorQueCanta);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
+	}
+
+	private void controlarSiSeJuegaConFlor() {
+		if (!this.seJuegaConFlor)
+			throw new NoSeJuegaConFlorException();	
 	}
 
 	/*************************************************
