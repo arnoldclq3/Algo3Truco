@@ -2,7 +2,8 @@ package truco.modelo;
 
 public class Retruco extends Canto {
 
-	public Retruco(){
+	public Retruco(Jugador jugadorQueCanta){
+		super(jugadorQueCanta);
 		this.cantosValidosDeRespuesta.add( new ValeCuatro() );
 	}
 	

@@ -5,9 +5,11 @@ import java.util.LinkedList;
 public abstract class Canto {
 	
 	protected LinkedList<Canto> cantosValidosDeRespuesta;
+	private Jugador jugadorQueCanta;
 	
-	public Canto(){
+	public Canto(Jugador jugadorQueCanta){
 		this.cantosValidosDeRespuesta = new LinkedList<Canto>();
+		this.jugadorQueCanta = jugadorQueCanta;
 	}
 
 	public boolean esUnaRespuestaValidaElCanto(Canto unCanto) {
@@ -19,6 +21,10 @@ public abstract class Canto {
 	}
 
 	public abstract int puntosPorGanar();
+	
+	public Jugador jugadorQueRealizoElCanto(){
+		return this.jugadorQueCanta;
+	}
 
 
 }

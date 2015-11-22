@@ -31,14 +31,19 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	 *************************************************/
 	
 	public Mesa(Equipo nosotros, Equipo ellos) {
-		this.configurarMesa(nosotros, ellos, true);
+		// Invoca el constructor correcto jugando con flor.
+		this(nosotros, ellos, true);
 	}
 	
 	public Mesa(Equipo nosotros, Equipo ellos,boolean seJuegaConFlor){
-		this.configurarMesa(nosotros, ellos, seJuegaConFlor);
+		this.configurarMesa(nosotros, ellos);
+		
+		this.mazo = new Mazo();
+		this.repartirCartasParaLosJugadores();	
+		this.seJuegaConFlor = seJuegaConFlor;	
 	}
 	
-	private void configurarMesa(Equipo nosotros, Equipo ellos,boolean seJuegaConFlor){
+	private void configurarMesa(Equipo nosotros, Equipo ellos){
 		this.nosotros = nosotros;
 		this.ellos = ellos;
 		
@@ -48,21 +53,18 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 			
 			Jugador unJugador;
 			
-			unJugador = this.nosotros.siguienteTurno();
+			unJugador = this.nosotros.siguienteJugador();
 			unJugador.setMesa(this);
 			
 			ordenJugadores.add(unJugador);
 			
-			unJugador = this.ellos.siguienteTurno();
+			unJugador = this.ellos.siguienteJugador();
 			unJugador.setMesa(this);
 			
 			ordenJugadores.add(unJugador);
 		}
 		
 		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
-		this.mazo = new Mazo();
-		this.repartirCartasParaLosJugadores();	
-		this.seJuegaConFlor = seJuegaConFlor;	
 	}
 	
 	/*************************************************

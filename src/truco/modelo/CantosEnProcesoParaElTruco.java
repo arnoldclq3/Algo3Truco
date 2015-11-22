@@ -61,7 +61,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 	
 	@Override
 	public void truco(Jugador jugadorQueCanta) {
-		Truco truco = new Truco();
+		Truco truco = new Truco(jugadorQueCanta);
 		this.verificarQueNoExisteCantoPrevio();
 		
 		this.agregarCanto(truco,jugadorQueCanta);
@@ -69,7 +69,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 
 	@Override
 	public void retruco(Jugador jugadorQueCanta) {
-		Retruco reTruco = new Retruco();
+		Retruco reTruco = new Retruco(jugadorQueCanta);
 		this.verificarCantoValido(reTruco);
 		
 		this.agregarCanto(reTruco,jugadorQueCanta);

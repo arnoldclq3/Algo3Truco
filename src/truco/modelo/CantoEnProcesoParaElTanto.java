@@ -84,7 +84,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	private boolean seCantoElCasoParticularDeDobleFlor(){
 		int cantidadVecesQueSeCantoFlor = 0;
 		for (Canto unCanto : this.cantosAceptados)
-			if (unCanto.equals( new Flor() ))
+			if (unCanto.equals( new Flor(null) ))
 				cantidadVecesQueSeCantoFlor ++;
 		return (cantidadVecesQueSeCantoFlor == 2);
 	}
@@ -172,7 +172,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	
 	@Override
 	public void envido(Jugador jugadorQueCanta) {
-		Canto envido = new Envido();
+		Canto envido = new Envido(jugadorQueCanta);
 		this.verificacionesDelEnvido(envido, 1);
 		
 		this.agregarCanto(envido, jugadorQueCanta);
@@ -180,7 +180,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 
 	@Override
 	public void realEnvido(Jugador jugadorQueCanta) {
-		Canto realEnvido = new RealEnvido();
+		Canto realEnvido = new RealEnvido(jugadorQueCanta);
 		this.verificacionesDelEnvido(realEnvido, 1);
 		
 		this.agregarCanto(realEnvido, jugadorQueCanta);
@@ -188,7 +188,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 
 	@Override
 	public void faltaEnvido(Jugador jugadorQueCanta) {
-		Canto faltaEnvido = new FaltaEnvido();
+		Canto faltaEnvido = new FaltaEnvido(jugadorQueCanta);
 		this.verificacionesDelEnvido(faltaEnvido, 0);
 		
 		this.agregarCanto(faltaEnvido, jugadorQueCanta);
@@ -220,7 +220,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	
 	@Override
 	public void flor(Jugador jugadorQueCanta) {
-		Canto flor = new Flor();
+		Canto flor = new Flor(jugadorQueCanta);
 		this.verificacionDeCantoDeTantoUnicoPorLaRonda();
 		this.verificacionesGeneralesDelTanto(flor, 1);
 		

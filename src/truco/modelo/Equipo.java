@@ -1,6 +1,7 @@
 package truco.modelo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import truco.excepciones.equipo.ExisteJugadorEnEquipoException;
 import truco.excepciones.equipo.JugadorInexistenteException;
@@ -8,71 +9,27 @@ import truco.excepciones.equipo.JugadorInexistenteException;
 public class Equipo {
 
 	private ArrayList<Jugador> jugadores;
-	private Jugador jugadorTurno;
 	private boolean esMano = true; //para saber cual es la mano real: si este atributo es true y si el jugador es mano
 	private int puntaje = 0;
 	private int puntosParaGanar = 30;
+	private Iterator<Jugador> iteradorJugador;
 
 	public Equipo() {
 		this.jugadores = new ArrayList<Jugador>();
 	}
 	
-	public Equipo(Jugador unJugador) {
-		this.jugadores = new ArrayList<Jugador>();
-		
+	public void agregarJugador(Jugador unJugador){
+		if ( this.jugadorExiste(unJugador) )
+			throw new ExisteJugadorEnEquipoException();
 		this.jugadores.add(unJugador);
-		
-		this.jugadorTurno = unJugador;
-	}
-
-	public boolean agregarJugador(Jugador unJugador) {
-
-		if(!this.jugadorExiste(unJugador)){
-			this.jugadores.add(unJugador);
-			this.reconfigurarPosiciones();
-			return true;
-		}
-		
-		throw new ExisteJugadorEnEquipoException();
-		
 	}
 	
-	private void reconfigurarPosiciones(){
-		
-		int cantidadJugadores = this.cantidadJugadores();
-		Jugador unJugador;
-		
-		switch(cantidadJugadores){
-			case 1:
-				unJugador = this.jugadores.get(0);
-				this.jugadores.set(0, unJugador);
-				this.jugadorTurno = unJugador;
-				break;
-			
-			case 2:
-				unJugador = this.jugadores.get(0);
-				this.jugadores.set(0, unJugador);
-				this.jugadorTurno = unJugador;
-				
-				unJugador = this.jugadores.get(1);
-				this.jugadores.set(1, unJugador);
-				break;
-				
-			case 3:
-				unJugador = this.jugadores.get(0);
-				this.jugadores.set(0, unJugador);
-				this.jugadorTurno = unJugador;
-				
-				unJugador = this.jugadores.get(1);
-				this.jugadores.set(1, unJugador);
-				
-				unJugador = this.jugadores.get(2);
-				this.jugadores.set(2, unJugador);
-				break;
-			default:
-				//no hago nada
-		}
+	public Jugador siguienteJugador(){
+		if (this.iteradorJugador == null || !this.iteradorJugador.hasNext() )
+			this.iteradorJugador = this.jugadores.iterator();
+		return this.iteradorJugador.next();	
 	}
+	
 
 	private boolean jugadorExiste(Jugador unJugador) {
 		
@@ -80,7 +37,6 @@ public class Equipo {
 			if(otroJugador.equals(unJugador)){
 				return true;
 			}
-			
 		}
 		return false;
 	}
@@ -93,48 +49,14 @@ public class Equipo {
 		return this.jugadorExiste(unJugador);
 	}
 	
-	public Jugador siguienteTurno() {
-		Jugador jugadorTurno = this.jugadorTurno;
-		
-		for(int i=0;i<this.jugadores.size();i++){
-			
-			if(this.jugadores.get(i).equals(jugadorTurno)){
-				
-				if(i==this.jugadores.size()-1){
-					this.jugadorTurno = this.jugadores.get(0);
-				} else{
-					this.jugadorTurno = this.jugadores.get(i+1);
-				}
-				
-			}
-			
-		}
 	
-		return jugadorTurno;
-		
-	}
-	
-	public void setEsMano(boolean esMano){
-		this.esMano = esMano;
-	}
-
-	public boolean sumarPuntosAJugador(Jugador unJugador, int puntos) {
-		
-		if(this.jugadorExiste(unJugador)){
-			this.puntaje  += puntos;
-			return true;
-		} else{
-			throw new JugadorInexistenteException();
-		}
-		
-	}
-
-	public int obtenerCantidadDePuntos() {
-		return this.puntaje;
-	}
 
 	public boolean esMano() {
 		return this.esMano;
+	}
+
+	public void setEsMano(boolean esMano){
+		this.esMano = esMano;
 	}
 
 	public void sumarPuntos(int puntosGanados) {
@@ -143,14 +65,29 @@ public class Equipo {
 		
 		if ( this.puntaje > this.puntosParaGanar ) this.puntaje = this.puntosParaGanar;
 	}
+	
+	public void sumarPuntosAJugador(Jugador unJugador, int puntos) {
+		
+		if(this.jugadorExiste(unJugador))
+			this.puntaje  += puntos;
+		else
+			throw new JugadorInexistenteException();
+	}
+	
 
-	public boolean esGanador() {
-		return (this.puntaje >= this.puntosParaGanar);
+	public int obtenerCantidadDePuntos() {
+		return this.puntaje;
 	}
 
 	public int obtenerPuntosFaltantesParaGanar() {
 		return (this.puntosParaGanar - this.puntaje);
 	}
+
+	public boolean esGanador() {
+		return (this.puntaje >= this.puntosParaGanar);
+	}
+
+	
 
 		
 }

@@ -2,10 +2,11 @@ package truco.modelo;
 
 public class Envido extends Canto {
 
-	public Envido(){
+	public Envido(Jugador jugadorQueCanta){
+		super(jugadorQueCanta);
 		this.cantosValidosDeRespuesta.add(this);
-		this.cantosValidosDeRespuesta.add( new RealEnvido() );
-		this.cantosValidosDeRespuesta.add( new FaltaEnvido() );
+		this.cantosValidosDeRespuesta.add( new RealEnvido(null) );
+		this.cantosValidosDeRespuesta.add( new FaltaEnvido(null) );
 	}
 
 	@Override

@@ -2,8 +2,9 @@ package truco.modelo;
 
 public class Truco extends Canto {
 
-	public Truco(){
-		this.cantosValidosDeRespuesta.add( new Retruco() );
+	public Truco(Jugador jugadorQueCanta){
+		super(jugadorQueCanta);
+		this.cantosValidosDeRespuesta.add( new Retruco(null) );
 	}
 	
 	public int puntosPorGanar() {
