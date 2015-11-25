@@ -120,12 +120,16 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		if ( this.hayEquipoGanador ) throw new NoSePuedeJugarMasCartasRondaTerminadaException();
 		
 		this.verificarSiEsteJugadorPuedeJugar(unJugador);
+		
 		this.jugadoresEnJuego.remove(unJugador);
 		this.jugadorQueSeFueronAlMazo.add(unJugador);
+		
+		this.verificarSiSigueEnJuegoElEquipoDelJugador(unJugador);
+		
 		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
 		this.manoActual.unJugadorSeFueAlMazo();
 		
-		if ( this.manoActual.estaTerminada() ) {
+		if ( this.manoActual.estaTerminada() && !this.hayEquipoGanador ) {
 			
 			this.verificarSiHayEquipoGanador();
 			
@@ -140,7 +144,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 			}	
 		}
 	}
-	
+
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
 		
 		return ( this.manos.getLast().mostrarUltimaCartaJugadaPor(unJugador) );
@@ -148,7 +152,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	public Equipo obtenerEquipoGanador() {
 		
-		if ( this.equipoGanador == null ) throw new NoHayEquipoGanadorHastaQueLaRondaTermineException();
+		if ( !this.hayEquipoGanador ) throw new NoHayEquipoGanadorHastaQueLaRondaTermineException();
 		return this.equipoGanador;
 	}
 	
@@ -220,6 +224,32 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		} catch(NoHayGanadorHuboEmpateException e) {
 			this.actualizarTurnos();
 		}
+	}
+	
+	private void verificarSiSigueEnJuegoElEquipoDelJugador(Jugador unJugador) {
+		
+		int cantidadJugadoresDelEquipo1QueSeFueronAlMazo = 0;
+		int cantidadJugadoresDelEquipo2QueSeFueronAlMazo = 0;
+		
+		for ( Jugador otroJugador : this.jugadorQueSeFueronAlMazo ) {
+			
+			if ( this.equipo1.estaJugador(otroJugador) ) {
+				cantidadJugadoresDelEquipo1QueSeFueronAlMazo++;
+			}
+			
+			if ( this.equipo2.estaJugador(otroJugador) ) {
+				cantidadJugadoresDelEquipo2QueSeFueronAlMazo++;
+			}
+		}
+		
+		if ( cantidadJugadoresDelEquipo1QueSeFueronAlMazo == this.equipo1.cantidadJugadores() ) {
+			this.equipoGanador = this.equipo2;
+		}
+		
+		if ( cantidadJugadoresDelEquipo2QueSeFueronAlMazo == this.equipo2.cantidadJugadores() ) {
+			this.equipoGanador = this.equipo1;
+		}
+		this.hayEquipoGanador = ( this.equipoGanador != null );
 	}
 
 	/*************************************************
