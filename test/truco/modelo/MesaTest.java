@@ -12,6 +12,7 @@ import truco.excepciones.cantos.RespuestaIncorrectaException;
 public class MesaTest {
 
 	private Mesa mesa;
+	private Mesa mesa6Jugadores;
 	
 	private Jugador jugadorNosotros;
 	private Jugador jugadorEllos;
@@ -30,6 +31,14 @@ public class MesaTest {
 		equipoEllos.agregarJugador(this.jugadorEllos);
 		
 		this.mesa = new Mesa(equipoNosotros,equipoEllos);
+		
+		Equipo equipoNosotros = new Equipo();
+		Equipo equipoEllos = new Equipo();
+		for(int i=1;i<=3;i++){
+			equipoNosotros.agregarJugador(new Jugador("Jugador "+i+" Nosotros"));
+			equipoEllos.agregarJugador(new Jugador("Jugador "+i+" Ellos"));
+		}
+		this.mesa6Jugadores = new Mesa(equipoNosotros,equipoEllos);
 	}
 	
 	
@@ -86,6 +95,11 @@ public class MesaTest {
 			equipoGanador = this.equipoNosotros;
 		
 		assertEquals(5,equipoGanador.obtenerCantidadDePuntos() );
+	}
+	
+	@Test
+	public void testLaMesaSeIniciaConSeisJugadores() {
+		assertTrue(this.mesa6Jugadores.cantidadDeJugadores() == 6);
 	}
 
 }

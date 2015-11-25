@@ -26,6 +26,11 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 
 	protected boolean seJuegaConFlor;
 	
+	private boolean manoAnteriorSeJugoPicaPica = false;
+	private int ordenPicaPica = 0;
+
+	private LinkedList<Jugador> ordenDeJugada; 
+	
 	/*************************************************
 	 ** 			   Constructores				**
 	 *************************************************/
@@ -48,7 +53,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 		this.ellos = ellos;
 		
 		this.ordenJugadores = new LinkedList<Jugador>();
-		
+			
 		for ( int i = 0 ; i < this.nosotros.cantidadJugadores(); i++ ) {
 			
 			Jugador unJugador;
@@ -64,7 +69,24 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 			ordenJugadores.add(unJugador);
 		}
 		
-		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
+		this.ordenDeJugada = new LinkedList<Jugador>();
+		if(this.seJuegaPicaPica() && !this.manoAnteriorSeJugoPicaPica){
+			
+			this.ordenDeJugada.add(ordenJugadores.get(this.ordenPicaPica));
+			this.ordenDeJugada.add(ordenJugadores.get(this.ordenPicaPica+3));
+			
+		} else{
+			
+			this.ordenDeJugada = this.ordenJugadores;
+			
+		}
+		
+		this.ronda = new Ronda(nosotros, ellos,this.ordenDeJugada);
+	}
+	
+	private boolean seJuegaPicaPica(){
+		boolean seJuegaConPicaPica = ((this.nosotros.obtenerCantidadDePuntos()>=5 && this.nosotros.obtenerCantidadDePuntos()<=20) || (this.ellos.obtenerCantidadDePuntos()>=5 && this.ellos.obtenerCantidadDePuntos()<=20)) && this.nosotros.cantidadJugadores()==3 && !this.manoAnteriorSeJugoPicaPica;
+		return seJuegaConPicaPica;
 	}
 	
 	/*************************************************
@@ -73,14 +95,14 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	
 	private void repartirCartasParaLosJugadores() {
 		for (int cantidadCartas = 1 ; cantidadCartas <= 3 ; cantidadCartas++ )
-			for (Jugador unJugador : this.ordenJugadores){
+			for (Jugador unJugador : this.ordenDeJugada){
 				Carta unaCarta = this.mazo.repartirCarta();
 				unJugador.tomarCarta(unaCarta);
 			}
 	}
 	
 	protected void retirarCartasDeLaRonda(){
-		for (Jugador unJugador : this.ordenJugadores){
+		for (Jugador unJugador : this.ordenDeJugada){
 			this.mazo.devolverCartas( unJugador.devolverCartas() );
 		}
 		this.mazo.devolverCartas( this.ronda.devolverCartas() );
@@ -128,9 +150,27 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	}
 	
 	protected void generadorDeNuevaRonda(){
+		
+		this.ordenPicaPica++;
 		this.retirarCartasDeLaRonda();
-		Collections.rotate(this.ordenJugadores, -1);
-		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
+		this.ordenDeJugada = new LinkedList<Jugador>();
+		
+		if(this.seJuegaPicaPica() && !this.manoAnteriorSeJugoPicaPica && this.ordenPicaPica<3){
+			
+			this.ordenDeJugada.add(ordenJugadores.get(this.ordenPicaPica));
+			this.ordenDeJugada.add(ordenJugadores.get(this.ordenPicaPica+3));
+			
+		} else{
+			
+			Collections.rotate(this.ordenJugadores, -1);
+			this.ordenDeJugada = this.ordenJugadores;
+			
+			
+		}
+		
+		this.ronda = new Ronda(nosotros, ellos,this.ordenDeJugada);
+		this.manoAnteriorSeJugoPicaPica = !this.manoAnteriorSeJugoPicaPica;
+		
 	}
 
 	/*************************************************
