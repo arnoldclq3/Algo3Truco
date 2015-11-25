@@ -66,7 +66,10 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	}
 
 	private int puntosParaElGanadorPorEnvido(){
-		// Tener en cuenta que si el ultimo aceptado fue un Falta Envido igual recorre toda la lista.
+		// Caso especial de que el ultimo canto fue un Falta Envido
+		if (!this.cantosAceptados.isEmpty() && this.cantosAceptados.getLast().equals(new FaltaEnvido(null) ) )
+			return this.cantosAceptados.getLast().puntosPorGanar(this.jugadorGanadorDelProceso);
+		
 		int puntajeGanador = 0;
 		for (Canto unCanto : this.cantosAceptados)
 			puntajeGanador += unCanto.puntosPorGanar(this.jugadorGanadorDelProceso);
@@ -74,6 +77,10 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	}
 	
 	private int puntosParaElGanadorPorFlor(){
+		// Caso especial de que el ultimo canto sea una contra flor a resto
+		if (!this.cantosAceptados.isEmpty() && this.cantosAceptados.getLast().equals(new ContraFlorAResto(null) ) )
+			return this.cantosAceptados.getLast().puntosPorGanar(this.jugadorGanadorDelProceso);
+		
 		if ( this.cantosAceptados.isEmpty() )
 			return 0;
 		int puntajeARetornar = this.cantosAceptados.getLast().puntosPorGanar(this.jugadorGanadorDelProceso);
