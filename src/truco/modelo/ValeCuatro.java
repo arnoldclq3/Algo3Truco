@@ -6,7 +6,7 @@ public class ValeCuatro extends Canto {
 		super(null);
 	}
 
-	public int puntosPorGanar() {
+	public int puntosPorGanar(Jugador jugadorGanador) {
 		
 		return 4;
 	}
