@@ -641,6 +641,37 @@ public class RondaTest {
 		unaRonda.jugarCarta(jugador1, new Carta(10, Palo.ESPADA));
 	}
 	
+	
+	@Test (expected = SoloLosJugadoresPieDeLaRondaPuedenCantarElEnvidoException.class)	
+	public void testSiUnJugadorNoEsPieYCantaEnvidoSeLanzaExcepcion(){
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		unaRonda.envido(jugador1);
+	}
+	
+	@Test (expected = SoloSePuedeCantarElTantoEnLaPrimeraManoException.class)	
+	public void testSiUnJugadorIntentaCantarEnvidoEnLaSegundaRondaSeDebeLanzarExcepcion(){
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		jugador1.tomarCarta(new Carta(11, Palo.ORO));
+		jugador1.tomarCarta(new Carta(2, Palo.ORO));
+		jugador1.tomarCarta(new Carta(10, Palo.ORO));
+		jugador2.tomarCarta(new Carta(1, Palo.COPA));
+		jugador2.tomarCarta(new Carta(11, Palo.ESPADA));
+		jugador2.tomarCarta(new Carta(10, Palo.BASTO));
+		jugador3.tomarCarta(new Carta(7, Palo.ORO));
+		jugador3.tomarCarta(new Carta(11, Palo.COPA));
+		jugador3.tomarCarta(new Carta(6, Palo.ORO));
+		jugador4.tomarCarta(new Carta(10, Palo.COPA));
+		jugador4.tomarCarta(new Carta(3, Palo.BASTO));
+		jugador4.tomarCarta(new Carta(6, Palo.COPA));
+		
+		unaRonda.jugarCarta(jugador1, new Carta(11, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(1, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.ORO));
+		unaRonda.jugarCarta(jugador4, new Carta(10, Palo.COPA));
+		
+		unaRonda.envido(jugador1);
+	}
+	
 	/* 
 	 * 
 	 * TEST: DETERMINAR GANADOR RONDA CON FLOR
@@ -945,6 +976,8 @@ public class RondaTest {
 		
 		assertEquals(equipo2,unaRonda.obtenerEquipoGanador());
 	}
+
+	
 	
 	//*/
 }

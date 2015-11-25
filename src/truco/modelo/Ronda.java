@@ -10,39 +10,56 @@ import truco.excepciones.ronda.EsteJugadorSeFueAlMazoException;
 import truco.excepciones.ronda.NoEsElTurnoDeEsteJugadorException;
 import truco.excepciones.ronda.NoHayEquipoGanadorHastaQueLaRondaTermineException;
 import truco.excepciones.ronda.NoSePuedeJugarMasCartasRondaTerminadaException;
+import truco.excepciones.ronda.SoloLosJugadoresPieDeLaRondaPuedenCantarElEnvidoException;
+import truco.excepciones.ronda.SoloSePuedeCantarElTantoEnLaPrimeraManoException;
 import truco.excepciones.cantos.RespuestaIncorrectaException;
 
 public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales{
 
 	private LinkedList<Jugador> jugadoresEnJuego;
 	private LinkedList<Jugador> jugadorQueSeFueronAlMazo;
+	private Jugador jugadorQueDebeJugar;
+	private LinkedList<Jugador> jugadoresQuePuedenCantarTanto;
+	
 	private LinkedList<Mano> manos;
 	private Mano manoActual;
+	
 	private Equipo equipo1;
 	private Equipo equipo2;
+	
 	private Equipo equipoGanador;
-	private Jugador jugadorQueDebeJugar;
 	private boolean hayEquipoGanador;
 	
 	private CantoEnProcesoParaElTanto cantoEnProcesoParaElTanto;
 	private CantosEnProcesoParaElTruco cantoEnProcesoParaElTruco;
-	
+
 	public Ronda(Equipo equipo1, Equipo equipo2, LinkedList<Jugador> jugadoresEnJuego) {
 	
-		this.equipo1 = equipo1;
-		this.equipo2 = equipo2;
-		this.equipoGanador = null;
 		this.jugadoresEnJuego = jugadoresEnJuego;
 		this.jugadorQueSeFueronAlMazo = new LinkedList<Jugador>();
 		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
+		this.iniciarJugadoresQueDebenCantarEnvido();
+		
+		this.equipo1 = equipo1;
+		this.equipo2 = equipo2;
+		
 		this.manos = new LinkedList<Mano>();
 		this.manoActual = new Mano(this.jugadoresEnJuego.size());
 		this.manos.add(this.manoActual);
+		
+		this.equipoGanador = null;
+		this.hayEquipoGanador = false;
+		
 		this.cantoEnProcesoParaElTanto = null;
 		this.cantoEnProcesoParaElTruco = new CantosEnProcesoParaElTruco();
-		this.hayEquipoGanador = false;
 	}
 	
+	private void iniciarJugadoresQueDebenCantarEnvido() {
+		this.jugadoresQuePuedenCantarTanto = new LinkedList<Jugador>();
+		this.jugadoresQuePuedenCantarTanto.add( this.jugadoresEnJuego.get(this.jugadoresEnJuego.size() - 1) );
+		this.jugadoresQuePuedenCantarTanto.add( this.jugadoresEnJuego.get(this.jugadoresEnJuego.size() - 2) );
+	}
+
 	public List<Carta> devolverCartas() {
 		List<Carta> listadoARetornar = new LinkedList<Carta>();
 		for (Mano unaMano : this.manos)
@@ -320,12 +337,31 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	}
 
 	/*************************************************
-	 ** 	    Cantos Generales del Tanto	  		**
+	 ** 	    Cantos Generales del Tanto	  		
 	 *************************************************/
 	
-	private void iniciarProcesoDeTanto(){
-		if (this.cantoEnProcesoParaElTanto == null)
+	private void iniciarProcesoDelEnvido(Jugador jugadorQueCanta){
+		boolean procesoIniciado = this.iniciarProcesoDelTanto();
+		
+		if (procesoIniciado){
+			if ( this.manos.size() != 1)
+				throw new SoloSePuedeCantarElTantoEnLaPrimeraManoException();
+			if ( !this.jugadoresQuePuedenCantarTanto.contains(jugadorQueCanta) )
+				throw new SoloLosJugadoresPieDeLaRondaPuedenCantarElEnvidoException();
+		}	
+		
+	}
+	
+	private void iniciarProcesoDeLaFlor(Jugador jugadorQueCanta){
+		this.iniciarProcesoDelTanto();
+	}
+	
+	private boolean iniciarProcesoDelTanto(){
+		if (this.cantoEnProcesoParaElTanto == null){
 			this.cantoEnProcesoParaElTanto = new CantoEnProcesoParaElTanto(this.equipo1,this.equipo2);
+			return true;
+		}
+		return false;
 	}
 	
 	// Se esta usando para que Mesa pueda realizar Tests
@@ -341,33 +377,33 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 
 	@Override
 	public void envido(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDelEnvido(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.envido(jugadorQueCanta);
 	}
 
 	@Override
 	public void realEnvido(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDelEnvido(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.realEnvido(jugadorQueCanta);
 	}
 
 	@Override
 	public void faltaEnvido(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDelEnvido(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.faltaEnvido(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDelEnvido(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.cantarTantoDelEnvido(jugadorQueCanta);
 		this.controlarSiElCantoDelTantoFinalizo();
 	}
 	
 	@Override
 	public void sonBuenas(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDelTanto();
 		this.cantoEnProcesoParaElTanto.sonBuenas(jugadorQueCanta);
 		this.controlarSiElCantoDelTantoFinalizo();
 	}
@@ -378,25 +414,25 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	@Override
 	public void flor(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDeLaFlor(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.flor(jugadorQueCanta);		
 	}
 
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDeLaFlor(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.contraFlor(jugadorQueCanta);	
 	}
 
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDeLaFlor(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.contraFlorAResto(jugadorQueCanta);	
 	}
 
 	@Override
 	public void cantarTantoDeLaFlor(Jugador jugadorQueCanta) {
-		this.iniciarProcesoDeTanto();
+		this.iniciarProcesoDeLaFlor(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.cantarTantoDeLaFlor(jugadorQueCanta);
 		this.controlarSiElCantoDelTantoFinalizo();
 	}
