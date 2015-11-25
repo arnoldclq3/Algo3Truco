@@ -15,7 +15,7 @@ hs_err_pid*
 *~
 
 # Evita informes de Ant (Usa la nomenclatura Inicial de los test)
-TEST-algo3.*
+TEST-truco.*
 
 # Evita la Carpeta Build
 build
