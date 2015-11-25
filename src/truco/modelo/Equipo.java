@@ -69,7 +69,7 @@ public class Equipo {
 	public void sumarPuntosAJugador(Jugador unJugador, int puntos) {
 		
 		if(this.jugadorExiste(unJugador))
-			this.puntaje  += puntos;
+			this.sumarPuntos(puntos);
 		else
 			throw new JugadorInexistenteException();
 	}
