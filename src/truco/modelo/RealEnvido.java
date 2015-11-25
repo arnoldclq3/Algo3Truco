@@ -9,7 +9,7 @@ public class RealEnvido extends Canto {
 	}
 
 	@Override
-	public int puntosPorGanar() {
+	public int puntosPorGanar(Jugador jugadorGanador) {
 		return 3;
 	}
 

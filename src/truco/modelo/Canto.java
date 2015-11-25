@@ -20,7 +20,7 @@ public abstract class Canto {
 		return ( this.getClass() == objeto.getClass());
 	}
 
-	public abstract int puntosPorGanar();
+	public abstract int puntosPorGanar(Jugador jugadorGanador);
 	
 	public Jugador jugadorQueRealizoElCanto(){
 		return this.jugadorQueCanta;

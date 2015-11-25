@@ -12,8 +12,13 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	private boolean seCantoFlor;
 	private boolean sePuedenRealizarCantosNuevos;
 	private int cantidadDeJugadoresQueCantaronSuTanto;
+	
+	private Equipo equipo1;
+	private Equipo equipo2;
 
-	public CantoEnProcesoParaElTanto() {
+	public CantoEnProcesoParaElTanto(Equipo equipo1, Equipo equipo2) {
+		this.equipo1 = equipo1;
+		this.equipo2 = equipo2;
 		this.seCantoFlor = false;
 		this.sePuedenRealizarCantosNuevos = true;
 		this.cantidadDeJugadoresQueCantaronSuTanto = 0;
@@ -64,14 +69,14 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 		// Tener en cuenta que si el ultimo aceptado fue un Falta Envido igual recorre toda la lista.
 		int puntajeGanador = 0;
 		for (Canto unCanto : this.cantosAceptados)
-			puntajeGanador += unCanto.puntosPorGanar();
+			puntajeGanador += unCanto.puntosPorGanar(this.jugadorGanadorDelProceso);
 		return puntajeGanador;
 	}
 	
 	private int puntosParaElGanadorPorFlor(){
 		if ( this.cantosAceptados.isEmpty() )
 			return 0;
-		int puntajeARetornar = this.cantosAceptados.getLast().puntosPorGanar();
+		int puntajeARetornar = this.cantosAceptados.getLast().puntosPorGanar(this.jugadorGanadorDelProceso);
 		
 		// Se controla el Caso de Flor + Flor + Quiero.
 		// En este caso se devuelve 4 puntos (1 mas de los 3 por ganar la flor)
@@ -188,7 +193,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 
 	@Override
 	public void faltaEnvido(Jugador jugadorQueCanta) {
-		Canto faltaEnvido = new FaltaEnvido(jugadorQueCanta);
+		Canto faltaEnvido = new FaltaEnvido(jugadorQueCanta,this.equipo1,this.equipo2);
 		this.verificacionesDelEnvido(faltaEnvido, 0);
 		
 		this.agregarCanto(faltaEnvido, jugadorQueCanta);
@@ -230,7 +235,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
-		Canto contraFlor = new ContraFlor();
+		Canto contraFlor = new ContraFlor(jugadorQueCanta);
 		this.verificacionDeCantoDeTantoUnicoPorLaRonda();
 		this.verificarQueSeHayaCantadoFlorPreviamente();
 		this.verificacionesGeneralesDelTanto(contraFlor, 0);
@@ -241,7 +246,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
-		Canto contraFlorAResto = new ContraFlorAResto();
+		Canto contraFlorAResto = new ContraFlorAResto(jugadorQueCanta,this.equipo1,this.equipo2);
 		this.verificacionDeCantoDeTantoUnicoPorLaRonda();
 		this.verificarQueSeHayaCantadoFlorPreviamente();
 		this.verificacionesGeneralesDelTanto(contraFlorAResto, 0);

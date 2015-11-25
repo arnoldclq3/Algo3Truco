@@ -26,7 +26,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 	public int puntosParaElGanador() {
 		if (this.cantosAceptados.isEmpty())
 			return 1;
-		return this.cantosAceptados.getLast().puntosPorGanar();
+		return this.cantosAceptados.getLast().puntosPorGanar(null);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ public class Retruco extends Canto {
 	}
 	
 	
-	public int puntosPorGanar() {	
+	public int puntosPorGanar(Jugador jugadorGanador) {	
 		return 3;
 	}
 }

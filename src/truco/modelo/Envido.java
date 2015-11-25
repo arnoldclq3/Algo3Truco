@@ -10,7 +10,7 @@ public class Envido extends Canto {
 	}
 
 	@Override
-	public int puntosPorGanar() {
+	public int puntosPorGanar(Jugador jugadorGanador) {
 		return 2;
 	}
 }

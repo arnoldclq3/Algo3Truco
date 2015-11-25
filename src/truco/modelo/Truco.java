@@ -7,7 +7,7 @@ public class Truco extends Canto {
 		this.cantosValidosDeRespuesta.add( new Retruco(null) );
 	}
 	
-	public int puntosPorGanar() {
+	public int puntosPorGanar(Jugador jugadorGanador) {
 		return 2;
 	}
 }
