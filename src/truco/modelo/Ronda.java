@@ -160,6 +160,14 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 				this.equipoGanador.sumarPuntos(this.cantoEnProcesoParaElTruco.puntosParaElGanador() );
 			}	
 		}
+		else if (this.hayEquipoGanador){
+			this.equipoGanador.sumarPuntos(this.cantoEnProcesoParaElTruco.puntosParaElGanador() );
+			if ( this.manos.size() == 1)
+				if (this.cantoEnProcesoParaElTanto == null )
+					this.equipoGanador.sumarPuntos( 1 );
+				/* 	En este lugar podria agregase la condicion de que se puedan ir al mazo 
+			 		sin responder un envido por quiero o no quiero */
+		}
 	}
 
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
