@@ -1,5 +1,6 @@
 package truco.modelo;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,7 @@ import truco.excepciones.mano.NoSePuedeJugarMasCartasManoTerminadaException;
 public class Mano {
 
 	private HashMap<Jugador,Carta> cartasJugadas;
+	private ArrayList<Carta> cartasTapadas;
 	private int cantidadMaximaCartasAJugar;
 	private int cantidadCartasJugadas;
 	private Jugador ganador;
@@ -20,6 +22,7 @@ public class Mano {
 	public Mano(int cantidad) {
 		
 		this.cartasJugadas = new HashMap<Jugador,Carta>();
+		this.cartasTapadas = new ArrayList<Carta>();
 		this.cantidadMaximaCartasAJugar = cantidad;
 		this.cantidadCartasJugadas = 0;
 		this.ganador = null;
@@ -32,11 +35,8 @@ public class Mano {
 			
 		if ( this.manoTerminada ) throw new NoSePuedeJugarMasCartasManoTerminadaException();
 		
-		if ( this.cantidadCartasJugadas < this.cantidadMaximaCartasAJugar ) {
-			
-			this.cartasJugadas.put(unJugador, unaCarta);
-			this.cantidadCartasJugadas++;
-		} 
+		this.cartasJugadas.put(unJugador, unaCarta);
+		this.cantidadCartasJugadas++;
 		
 		if ( this.cantidadCartasJugadas == this.cantidadMaximaCartasAJugar ) {
 
@@ -44,7 +44,32 @@ public class Mano {
 			this.manoTerminada = true;
 		}
 	}
+	
+	public void jugarCartaTapada(Carta carta) {
+		
+		if ( this.manoTerminada ) throw new NoSePuedeJugarMasCartasManoTerminadaException();
+		
+		this.cartasTapadas.add(carta);
+		this.cantidadCartasJugadas++; 
+		
+		if ( this.cantidadCartasJugadas == this.cantidadMaximaCartasAJugar ) {
 
+			this.enfrentarTodasLasCartas();
+			this.manoTerminada = true;
+		}
+	}
+	
+	public void unJugadorSeFueAlMazo() {
+		
+		this.cantidadCartasJugadas++;
+		
+		if ( this.cantidadCartasJugadas == this.cantidadMaximaCartasAJugar ) {
+
+			this.enfrentarTodasLasCartas();
+			this.manoTerminada = true;
+		}
+	}
+	
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
 		
 		return ( this.cartasJugadas.get(unJugador) ); 
@@ -99,7 +124,9 @@ public class Mano {
 	}
 
 	public Collection<Carta> devolverCartas() {
-		return  this.cartasJugadas.values();
+		Collection<Carta> cartas = this.cartasJugadas.values();
+		cartas.addAll(cartasTapadas);
+		return cartas;
 	}
 
 	public Carta mostrarCartaDelJugador(Jugador unJugador) {

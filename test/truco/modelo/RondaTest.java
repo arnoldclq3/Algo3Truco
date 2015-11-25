@@ -851,7 +851,100 @@ public class RondaTest {
 		unaRonda.jugarCarta(jugador3, new Carta(6, Palo.ORO));
 	}
 	
+	/* 
+	 * 
+	 * TEST: IRSE AL MAZO 
+	 * 
+	 * */
 	
-
+	@Test
+	public void testSeVaAlMazoElJugador1EnLaSegundaPrimerMano() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.irseAlMazo(jugador1);
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador2, new Carta(7, Palo.BASTO));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(2, Palo.BASTO));
+		
+		assertEquals(equipo2,unaRonda.obtenerEquipoGanador());
+	}
+	
+	@Test
+	public void testSeVaAlMazoElJugador1EnLaSegundaMano() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ESPADA));
+		unaRonda.irseAlMazo(jugador1);
+		unaRonda.jugarCarta(jugador2, new Carta(7, Palo.BASTO));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.ORO));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(2, Palo.BASTO));
+		
+		assertEquals(equipo2,unaRonda.obtenerEquipoGanador());
+	}
+	
+	@Test
+	public void testSeVaAlMazoElJugador1EnLaTercerMano() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador1, new Carta(4, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(7, Palo.BASTO));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.ORO));
+		unaRonda.irseAlMazo(jugador1);
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(2, Palo.BASTO));
+		
+		assertEquals(equipo2,unaRonda.obtenerEquipoGanador());
+	}
+	
+	@Test (expected = EsteJugadorSeFueAlMazoException.class)
+	public void testUnJugadorSeFueAlMazoYQuiereJugarCarta() {
+		
+		Ronda unaRonda = new Ronda(this.equipo1, this.equipo2, this.ordenJugadores);
+		
+		unaRonda.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		unaRonda.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		
+		unaRonda.jugarCarta(jugador3, new Carta(7, Palo.COPA));
+		unaRonda.jugarCarta(jugador4, new Carta(3, Palo.ESPADA));
+		unaRonda.irseAlMazo(jugador1);
+		unaRonda.jugarCarta(jugador2, new Carta(7, Palo.BASTO));
+		
+		unaRonda.jugarCarta(jugador4, new Carta(6, Palo.ORO));
+		unaRonda.jugarCarta(jugador1, new Carta(4, Palo.COPA));
+		unaRonda.jugarCarta(jugador2, new Carta(3, Palo.COPA));
+		unaRonda.jugarCarta(jugador3, new Carta(2, Palo.BASTO));
+		
+		assertEquals(equipo2,unaRonda.obtenerEquipoGanador());
+	}
+	
 	//*/
 }

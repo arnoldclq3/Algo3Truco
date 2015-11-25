@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import truco.excepciones.mano.NoHayGanadorHuboEmpateException;
+import truco.excepciones.ronda.EsteJugadorSeFueAlMazoException;
 import truco.excepciones.ronda.NoEsElTurnoDeEsteJugadorException;
 import truco.excepciones.ronda.NoHayEquipoGanadorHastaQueLaRondaTermineException;
 import truco.excepciones.ronda.NoSePuedeJugarMasCartasRondaTerminadaException;
@@ -14,29 +15,29 @@ import truco.excepciones.cantos.RespuestaIncorrectaException;
 
 public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales{
 
-	private LinkedList<Jugador> ordenJugadores;
+	private LinkedList<Jugador> jugadoresEnJuego;
+	private LinkedList<Jugador> jugadorQueSeFueronAlMazo;
 	private LinkedList<Mano> manos;
 	private Mano manoActual;
 	private Equipo equipo1;
 	private Equipo equipo2;
 	private Equipo equipoGanador;
 	private Jugador jugadorQueDebeJugar;
-	private int cantidadJugadores;
 	private boolean hayEquipoGanador;
 	
 	private CantoEnProcesoParaElTanto cantoEnProcesoParaElTanto;
 	private CantosEnProcesoParaElTruco cantoEnProcesoParaElTruco;
 	
-	public Ronda(Equipo equipo1, Equipo equipo2, LinkedList<Jugador> ordenJugadores) {
+	public Ronda(Equipo equipo1, Equipo equipo2, LinkedList<Jugador> jugadoresEnJuego) {
 	
 		this.equipo1 = equipo1;
 		this.equipo2 = equipo2;
 		this.equipoGanador = null;
-		this.ordenJugadores = ordenJugadores;
-		this.jugadorQueDebeJugar = this.ordenJugadores.getFirst();
+		this.jugadoresEnJuego = jugadoresEnJuego;
+		this.jugadorQueSeFueronAlMazo = new LinkedList<Jugador>();
+		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
 		this.manos = new LinkedList<Mano>();
-		this.cantidadJugadores = this.equipo1.cantidadJugadores()+this.equipo2.cantidadJugadores();
-		this.manoActual = new Mano(this.cantidadJugadores);
+		this.manoActual = new Mano(this.jugadoresEnJuego.size());
 		this.manos.add(this.manoActual);
 		this.cantoEnProcesoParaElTanto = null;
 		this.cantoEnProcesoParaElTruco = new CantosEnProcesoParaElTruco();
@@ -74,7 +75,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 			if ( !this.hayEquipoGanador ) {
 				
 				this.actualizarJugadorQueDebeJugar();			
-				this.manoActual = new Mano(this.cantidadJugadores);
+				this.manoActual = new Mano(this.jugadoresEnJuego.size());
 				this.manos.add(this.manoActual);
 			}
 			else{
@@ -86,7 +87,61 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 			this.actualizarTurnos();
 		}
 	}
-
+	
+	public void jugarCartaTapada(Jugador unJugador, Carta unaCarta) {
+		
+		if ( this.hayEquipoGanador ) throw new NoSePuedeJugarMasCartasRondaTerminadaException();
+		
+		this.verificarSiEsteJugadorPuedeJugar(unJugador);
+		this.manoActual.jugarCartaTapada(unaCarta);
+		
+		if ( this.manoActual.estaTerminada() ) {
+			
+			this.verificarSiHayEquipoGanador();
+			
+			if ( !this.hayEquipoGanador ) {
+				
+				this.actualizarJugadorQueDebeJugar();			
+				this.manoActual = new Mano(this.jugadoresEnJuego.size());
+				this.manos.add(this.manoActual);
+			}
+			else{
+				this.equipoGanador.sumarPuntos(this.cantoEnProcesoParaElTruco.puntosParaElGanador() );
+			}
+			
+		} else {
+			
+			this.actualizarTurnos();
+		}
+		
+	}
+	
+	public void irseAlMazo(Jugador unJugador) {
+		
+		if ( this.hayEquipoGanador ) throw new NoSePuedeJugarMasCartasRondaTerminadaException();
+		
+		this.verificarSiEsteJugadorPuedeJugar(unJugador);
+		this.jugadoresEnJuego.remove(unJugador);
+		this.jugadorQueSeFueronAlMazo.add(unJugador);
+		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
+		this.manoActual.unJugadorSeFueAlMazo();
+		
+		if ( this.manoActual.estaTerminada() ) {
+			
+			this.verificarSiHayEquipoGanador();
+			
+			if ( !this.hayEquipoGanador ) {
+				
+				this.actualizarJugadorQueDebeJugar();			
+				this.manoActual = new Mano(this.jugadoresEnJuego.size());
+				this.manos.add(this.manoActual);
+			}
+			else{
+				this.equipoGanador.sumarPuntos(this.cantoEnProcesoParaElTruco.puntosParaElGanador() );
+			}	
+		}
+	}
+	
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
 		
 		return ( this.manos.getLast().mostrarUltimaCartaJugadaPor(unJugador) );
@@ -145,23 +200,24 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	private void verificarSiEsteJugadorPuedeJugar(Jugador unJugador) {
 		
+		if ( this.jugadorQueSeFueronAlMazo.contains(unJugador) ) throw new EsteJugadorSeFueAlMazoException();
 		if ( this.jugadorQueDebeJugar != unJugador ) throw new NoEsElTurnoDeEsteJugadorException();
 	}
 	
 
 	private void actualizarTurnos() {
 		
-		Collections.rotate(this.ordenJugadores, -1);
-		this.jugadorQueDebeJugar = this.ordenJugadores.getFirst();
+		Collections.rotate(this.jugadoresEnJuego, -1);
+		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
 	}
 	
 	private void actualizarJugadorQueDebeJugar() {
 		
 		try {
 			Jugador jugador = this.manoActual.obtenerGanador();
-			int posicion = this.ordenJugadores.indexOf(jugador);
-			Collections.rotate(ordenJugadores, -posicion);
-			this.jugadorQueDebeJugar = this.ordenJugadores.getFirst();
+			int posicion = this.jugadoresEnJuego.indexOf(jugador);
+			Collections.rotate(jugadoresEnJuego, -posicion);
+			this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
 		} catch(NoHayGanadorHuboEmpateException e) {
 			this.actualizarTurnos();
 		}
@@ -173,7 +229,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	@Override
 	public void quiero(Jugador jugadorQueCanta) {
-		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
+		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.jugadoresEnJuego.size()) )
 			this.cantoEnProcesoParaElTanto.quiero(jugadorQueCanta);
 		else
 			if (this.cantoEnProcesoParaElTruco != null)
@@ -184,7 +240,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	@Override
 	public void noQuiero(Jugador jugadorQueCanta) {
-		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) ){
+		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.jugadoresEnJuego.size()) ){
 			// El "no quiero" es para un tanto (envido/flor)
 			this.cantoEnProcesoParaElTanto.noQuiero(jugadorQueCanta);
 			this.sumarPuntosPorTantoFinalizado();
@@ -250,14 +306,14 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		if ( this.cantoEnProcesoParaElTanto.seCantoFlor() )
 			this.controlarSiElCantoDeFlorFinalizo();
 		
-		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.cantidadJugadores) )
+		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.jugadoresEnJuego.size()) )
 			this.sumarPuntosPorTantoFinalizado();
 	}
 	
 
 	private void controlarSiElCantoDeFlorFinalizo() {
 		int jugadoresConFlor = 0;
-		for (Jugador jugador : this.ordenJugadores )
+		for (Jugador jugador : this.jugadoresEnJuego )
 			if ( jugador.tieneFlor() )
 				jugadoresConFlor++;
 		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto( jugadoresConFlor ) )
