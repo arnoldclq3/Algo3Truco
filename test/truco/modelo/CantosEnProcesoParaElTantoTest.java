@@ -19,8 +19,8 @@ public class CantosEnProcesoParaElTantoTest {
 	private Jugador jugadorManoConEnvidoMinimo;
 	private Jugador jugadorPieConEnvidoMinimo;
 	private CantoEnProcesoParaElTanto cantoEnProceso;
-	private Equipo equipo1;
-	private Equipo equipo2;
+	private Equipo equipoGanadorEnvido;
+	private Equipo equipoGanadorFlor;
 
 	@Before
 	public void setUp(){
@@ -49,14 +49,14 @@ public class CantosEnProcesoParaElTantoTest {
 		this.jugadorPieConEnvidoMinimo.tomarCarta( new Carta(12,Palo.BASTO) );
 		this.jugadorPieConEnvidoMinimo.tomarCarta( new Carta(4,Palo.ORO) );
 		
-		this.equipo1 = new Equipo();
-		equipo1.agregarJugador(this.jugadorConFlorGanadorEnEnvido);
-		equipo1.agregarJugador(this.jugadorPieConEnvidoMinimo);
-		this.equipo2 = new Equipo();
-		equipo2.agregarJugador(this.jugadorConFlorGanadorEnFlor);
-		equipo2.agregarJugador(this.jugadorManoConEnvidoMinimo);
+		this.equipoGanadorEnvido = new Equipo();
+		equipoGanadorEnvido.agregarJugador(this.jugadorConFlorGanadorEnEnvido);
+		equipoGanadorEnvido.agregarJugador(this.jugadorPieConEnvidoMinimo);
+		this.equipoGanadorFlor = new Equipo();
+		equipoGanadorFlor.agregarJugador(this.jugadorConFlorGanadorEnFlor);
+		equipoGanadorFlor.agregarJugador(this.jugadorManoConEnvidoMinimo);
 		
-		this.cantoEnProceso = new CantoEnProcesoParaElTanto(equipo1,equipo2);
+		this.cantoEnProceso = new CantoEnProcesoParaElTanto(equipoGanadorEnvido,equipoGanadorFlor);
 		
 	}
 
@@ -108,7 +108,7 @@ public class CantosEnProcesoParaElTantoTest {
 		this.cantoEnProceso.cantarTantoDelEnvido(this.jugadorConFlorGanadorEnEnvido);
 		this.cantoEnProceso.cantarTantoDelEnvido(this.jugadorConFlorGanadorEnFlor);
 
-		assertEquals(this.cantoEnProceso.puntosParaElGanador(),this.equipo1.obtenerPuntosFaltantesParaGanar() );
+		assertEquals(this.cantoEnProceso.puntosParaElGanador(),this.equipoGanadorEnvido.obtenerPuntosFaltantesParaGanar() );
 	}
 	
 	@Test
@@ -156,7 +156,7 @@ public class CantosEnProcesoParaElTantoTest {
 		this.cantoEnProceso.cantarTantoDeLaFlor(this.jugadorConFlorGanadorEnEnvido);
 		this.cantoEnProceso.cantarTantoDeLaFlor(this.jugadorConFlorGanadorEnFlor);
 		
-		assertEquals(this.cantoEnProceso.puntosParaElGanador(),this.equipo2.obtenerPuntosFaltantesParaGanar() );
+		assertEquals(this.cantoEnProceso.puntosParaElGanador(),this.equipoGanadorFlor.obtenerPuntosFaltantesParaGanar() );
 	}
 	
 	@Test (expected = RespuestaIncorrectaException.class)
@@ -301,6 +301,23 @@ public class CantosEnProcesoParaElTantoTest {
 		
 		assertTrue(this.cantoEnProceso.terminoElProcesoDeCanto(4) );
 		assertEquals(this.cantoEnProceso.puntosParaElGanador() , 2);
+		assertEquals(this.jugadorConFlorGanadorEnEnvido , this.cantoEnProceso.jugadorGanador() );
+	}
+	
+	@Test
+	public void testAlCantarUnFaltaEnvidoElEquipoGanadorGanaCorrectamenteLosPuntosQueLeFaltanAlOtroEquipo() {
+		// Sumo 10 Puntos al equipo perdedor para que el ganador gane 20 por el falta envido y no 22.
+		this.equipoGanadorFlor.sumarPuntos(10);
+		this.cantoEnProceso.envido(jugadorConFlorGanadorEnFlor);
+		this.cantoEnProceso.faltaEnvido(jugadorConFlorGanadorEnEnvido);
+		this.cantoEnProceso.quiero(jugadorConFlorGanadorEnFlor);
+		this.cantoEnProceso.cantarTantoDelEnvido(this.jugadorConFlorGanadorEnEnvido);
+		this.cantoEnProceso.cantarTantoDelEnvido(this.jugadorConFlorGanadorEnFlor);
+		this.cantoEnProceso.cantarTantoDelEnvido(this.jugadorManoConEnvidoMinimo);
+		this.cantoEnProceso.cantarTantoDelEnvido(this.jugadorPieConEnvidoMinimo);
+		
+		assertTrue( this.cantoEnProceso.terminoElProcesoDeCanto(4) );
+		assertEquals( this.cantoEnProceso.puntosParaElGanador() , 20);
 		assertEquals(this.jugadorConFlorGanadorEnEnvido , this.cantoEnProceso.jugadorGanador() );
 	}
 }
