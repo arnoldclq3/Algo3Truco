@@ -14,15 +14,17 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	 *************************************************/
 	
 	protected Ronda ronda;
+	private LinkedList<Ronda> rondasAJugar;
 
 	protected Equipo nosotros;
 	protected Equipo ellos;
-
+	protected LinkedList<Jugador> jugadoresEnJuego;
+	
 	private boolean juegoTerminado;
 
-	protected LinkedList<Jugador> ordenJugadores;
-
 	private Mazo mazo;
+	
+	private GeneradorRondas generador;
 
 	protected boolean seJuegaConFlor;
 	
@@ -30,24 +32,24 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	 ** 			   Constructores				**
 	 *************************************************/
 	
-	public Mesa(Equipo nosotros, Equipo ellos) {
+	public Mesa(Equipo nosotros, Equipo ellos, GeneradorRondas generador) {
 		// Invoca el constructor correcto jugando con flor.
-		this(nosotros, ellos, true);
+		this(nosotros, ellos, generador, true);
 	}
 	
-	public Mesa(Equipo nosotros, Equipo ellos,boolean seJuegaConFlor){
-		this.configurarMesa(nosotros, ellos);
-		
-		this.mazo = new Mazo();
-		this.repartirCartasParaLosJugadores();	
+	public Mesa(Equipo nosotros, Equipo ellos,GeneradorRondas generador,boolean seJuegaConFlor){
+		this.generador = generador;
+		this.mazo = new Mazo();	
 		this.seJuegaConFlor = seJuegaConFlor;	
+		
+		this.configurarMesa(nosotros, ellos);
 	}
 	
 	private void configurarMesa(Equipo nosotros, Equipo ellos){
 		this.nosotros = nosotros;
 		this.ellos = ellos;
 		
-		this.ordenJugadores = new LinkedList<Jugador>();
+		this.jugadoresEnJuego = new LinkedList<Jugador>();
 		
 		for ( int i = 0 ; i < this.nosotros.cantidadJugadores(); i++ ) {
 			
@@ -56,31 +58,40 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 			unJugador = this.nosotros.siguienteJugador();
 			unJugador.setMesa(this);
 			
-			ordenJugadores.add(unJugador);
+			jugadoresEnJuego.add(unJugador);
 			
 			unJugador = this.ellos.siguienteJugador();
 			unJugador.setMesa(this);
 			
-			ordenJugadores.add(unJugador);
+			jugadoresEnJuego.add(unJugador);
 		}
 		
-		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
+		this.procesoDeActualizarRondaActual();
 	}
 	
+	private void procesoDeActualizarRondaActual() {
+		if (this.rondasAJugar == null || this.rondasAJugar.isEmpty() ){
+			this.rondasAJugar = this.generador.generar(this.nosotros, this.ellos , jugadoresEnJuego);
+			this.repartirCartasParaLosJugadores();
+		}
+		
+		this.ronda = this.rondasAJugar.remove();
+	}
+
 	/*************************************************
 	 ** 	    Interacciones con el Mazo	        **
 	 *************************************************/
 	
 	private void repartirCartasParaLosJugadores() {
 		for (int cantidadCartas = 1 ; cantidadCartas <= 3 ; cantidadCartas++ )
-			for (Jugador unJugador : this.ordenJugadores){
+			for (Jugador unJugador : this.jugadoresEnJuego){
 				Carta unaCarta = this.mazo.repartirCarta();
 				unJugador.tomarCarta(unaCarta);
 			}
 	}
 	
 	protected void retirarCartasDeLaRonda(){
-		for (Jugador unJugador : this.ordenJugadores){
+		for (Jugador unJugador : this.jugadoresEnJuego){
 			this.mazo.devolverCartas( unJugador.devolverCartas() );
 		}
 		this.mazo.devolverCartas( this.ronda.devolverCartas() );
@@ -129,8 +140,8 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	
 	protected void generadorDeNuevaRonda(){
 		this.retirarCartasDeLaRonda();
-		Collections.rotate(this.ordenJugadores, -1);
-		this.ronda = new Ronda(nosotros, ellos,ordenJugadores);
+		Collections.rotate(this.jugadoresEnJuego, -1);
+		this.procesoDeActualizarRondaActual();
 	}
 
 	/*************************************************
@@ -148,6 +159,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	}
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
+		this.verificarSiExisteUnEquipoGanador();
 		this.ronda.jugarCarta(unJugador,unaCarta);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}

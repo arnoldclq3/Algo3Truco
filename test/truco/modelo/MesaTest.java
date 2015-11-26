@@ -37,7 +37,7 @@ public class MesaTest {
 		equipoNosotros.agregarJugador(this.jugadorNosotros);
 		this.equipoEllos = new Equipo();
 		equipoEllos.agregarJugador(this.jugadorEllos);
-		this.mesa = new Mesa(equipoNosotros,equipoEllos);
+		this.mesa = new Mesa(equipoNosotros,equipoEllos, new GeneradorRondasNormales() );
 		
 		this.jugador1 = new Jugador("Juan1");
 		this.jugador2 = new Jugador("Juan2");
@@ -53,7 +53,7 @@ public class MesaTest {
 		this.equipoB.agregarJugador(jugador2);
 		this.equipoB.agregarJugador(jugador4);
 		this.equipoB.agregarJugador(jugador6);
-		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB);
+		
 	}
 	
 	
@@ -115,6 +115,8 @@ public class MesaTest {
 	@Test
 	public void testElEquipoBGanaUnaRonda() {
 		
+		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB, new GeneradorRondasPicaPica() );
+		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
 		this.mesaPicaPica.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
 		this.mesaPicaPica.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
@@ -141,6 +143,8 @@ public class MesaTest {
 	
 	@Test
 	public void testElEquipoBGanaUnaRondaCon_Truco_Quiero() {
+		
+		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB, new GeneradorRondasPicaPica() );
 		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
 		this.mesaPicaPica.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
@@ -173,6 +177,8 @@ public class MesaTest {
 	@Test
 	public void testElEquipoBGanaUnaRondaCon_Truco_Retruco_ValeCuatro_NoQuiero() {
 		
+		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB, new GeneradorRondasPicaPica() );
+		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
 		this.mesaPicaPica.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
 		this.mesaPicaPica.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
@@ -194,6 +200,8 @@ public class MesaTest {
 	
 	@Test
 	public void testElEquipoBGanaDosRondas() {
+		
+		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB, new GeneradorRondasPicaPica() );
 		
 		// RONDA 1
 		
@@ -249,15 +257,16 @@ public class MesaTest {
 		
 		this.equipoA.sumarPuntos(6);
 		this.equipoB.sumarPuntos(6);
+		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB, new GeneradorRondasPicaPica() );
 		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.COPA));
-		this.mesaPicaPica.jugarCarta(jugador2, new Carta(11, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(11, Palo.COPA));
 		
-		this.mesaPicaPica.jugarCarta(jugador2, new Carta(7, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(7, Palo.BASTO));
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(11, Palo.BASTO));
 		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.ESPADA));
-		this.mesaPicaPica.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(11, Palo.ESPADA));
 		
 		assertEquals(7, this.equipoA.obtenerCantidadDePuntos());
 	}
@@ -267,6 +276,7 @@ public class MesaTest {
 		
 		this.equipoA.sumarPuntos(6);
 		this.equipoB.sumarPuntos(6);
+		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB, new GeneradorRondasPicaPica() );
 		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.COPA));
 		this.mesaPicaPica.jugarCarta(jugador4, new Carta(11, Palo.COPA));
@@ -290,6 +300,7 @@ public class MesaTest {
 		
 		this.equipoA.sumarPuntos(6);
 		this.equipoB.sumarPuntos(6);
+		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB, new GeneradorRondasPicaPica() );
 		
 		// RONDA PICAPICA 1 GANA Jugador1
 		
