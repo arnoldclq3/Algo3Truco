@@ -113,7 +113,7 @@ public class MesaTest {
 	}
 	
 	@Test
-	public void testElEquipoAGanaUnaRonda() {
+	public void testElEquipoBGanaUnaRonda() {
 		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
 		this.mesaPicaPica.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
@@ -137,9 +137,40 @@ public class MesaTest {
 		this.mesaPicaPica.jugarCarta(jugador3, new Carta(11, Palo.ORO));
 		
 		assertEquals(1, this.equipoB.obtenerCantidadDePuntos());
-		
-		
 	}
+	
+	@Test
+	public void testElEquipoBGanaUnaRondaCon_Truco_Quiero() {
+		
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(12, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(12, Palo.ORO));
+		
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(7, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(3, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(6, Palo.COPA));
+		
+		this.mesaPicaPica.truco(jugador6);
+		this.mesaPicaPica.quiero(jugador1);
+		
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(7, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(12, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(12, Palo.BASTO));
+		
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(6, Palo.ORO));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(5, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(3, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(2, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(11, Palo.ORO));
+		
+		assertEquals(2, this.equipoB.obtenerCantidadDePuntos());
+	}
+	
+
 	
 	@Test
 	public void testElJugador1GanaUnaRondaPicaPicaYSumaPuntosASuEquipo() {
