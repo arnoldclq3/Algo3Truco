@@ -12,24 +12,48 @@ import truco.excepciones.cantos.RespuestaIncorrectaException;
 public class MesaTest {
 
 	private Mesa mesa;
-	
 	private Jugador jugadorNosotros;
 	private Jugador jugadorEllos;
-	
 	private Equipo equipoNosotros;
 	private Equipo equipoEllos;
+	
+	private Jugador jugador1;
+	private Jugador jugador2;
+	private Jugador jugador3;
+	private Jugador jugador4;
+	private Jugador jugador5;
+	private Jugador jugador6;
+	private Equipo equipoA;
+	private Equipo equipoB;
+	private Mesa mesaPicaPica;
 
 
 	@Before
 	public void setup(){
+		
 		this.jugadorNosotros = new Jugador("Jugador 1");
 		this.jugadorEllos = new Jugador("Jugador 2");
 		this.equipoNosotros = new Equipo();
 		equipoNosotros.agregarJugador(this.jugadorNosotros);
 		this.equipoEllos = new Equipo();
 		equipoEllos.agregarJugador(this.jugadorEllos);
-		
 		this.mesa = new Mesa(equipoNosotros,equipoEllos);
+		
+		this.jugador1 = new Jugador("Juan1");
+		this.jugador2 = new Jugador("Juan2");
+		this.jugador3 = new Jugador("Juan3");
+		this.jugador4 = new Jugador("Juan4");
+		this.jugador5 = new Jugador("Juan5");
+		this.jugador6 = new Jugador("Juan6");
+		this.equipoA = new Equipo();
+		this.equipoA.agregarJugador(jugador1);
+		this.equipoA.agregarJugador(jugador3);
+		this.equipoA.agregarJugador(jugador5);
+		this.equipoB = new Equipo();
+		this.equipoB.agregarJugador(jugador2);
+		this.equipoB.agregarJugador(jugador4);
+		this.equipoB.agregarJugador(jugador6);
+		this.mesaPicaPica = new Mesa(this.equipoA,this.equipoB);
 	}
 	
 	
@@ -86,6 +110,42 @@ public class MesaTest {
 			equipoGanador = this.equipoNosotros;
 		
 		assertEquals(5,equipoGanador.obtenerCantidadDePuntos() );
+	}
+	
+	@Test
+	public void testElEquipoAGanaUnaRonda() {
+		
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(12, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(12, Palo.ORO));
+		
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(7, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(3, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(6, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(7, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(12, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(12, Palo.BASTO));
+		
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(6, Palo.ORO));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(5, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(3, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(2, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(11, Palo.ORO));
+		
+		assertEquals(1, this.equipoB.obtenerCantidadDePuntos());
+		
+		
+	}
+	
+	@Test
+	public void testElJugador1GanaUnaRondaPicaPicaYSumaPuntosASuEquipo() {
+		
+		this.equipoA.sumarPuntos(6);
+		
 	}
 
 }
