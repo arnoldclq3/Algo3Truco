@@ -248,7 +248,18 @@ public class MesaTest {
 	public void testElJugador1GanaUnaRondaPicaPicaYSumaPuntosASuEquipo() {
 		
 		this.equipoA.sumarPuntos(6);
+		this.equipoB.sumarPuntos(6);
 		
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(11, Palo.COPA));
+		
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(7, Palo.ORO));
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(11, Palo.ORO));
+		
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		
+		assertEquals(7, this.equipoA.obtenerCantidadDePuntos());
 	}
 
 }
