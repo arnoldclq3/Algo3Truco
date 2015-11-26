@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import truco.excepciones.jugador.CartaEnManoInexistenteException;
+import truco.excepciones.jugador.ElJugadorNoEstaEnNingunaMesaException;
 import truco.excepciones.jugador.ElJugadorNoTieneFlorException;
 import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnManoException;
 
@@ -49,6 +50,11 @@ public class Jugador {
 		if (unaCarta.getValor()>= 10 && unaCarta.getValor() <= 12)
 			return 0;
 		return unaCarta.getValor();
+	}
+	
+	private void verificarQueEstaEnUnaMesa() {
+		
+		if ( this.mesaEnLaQueEstoyJugando == null ) throw new ElJugadorNoEstaEnNingunaMesaException();
 	}
 	
 	/*************************************************
@@ -159,6 +165,102 @@ public class Jugador {
 
 	public void setMesa(Mesa laMesaEnLaQueEstoyJugando) {
 		this.mesaEnLaQueEstoyJugando = laMesaEnLaQueEstoyJugando;
+	}
+	
+	public void jugarCarta(Carta unaCarta) {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.jugarCarta(this, this.tirarCarta(unaCarta));
+	}
+	
+	public void irseAlMazo() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.irseAlMazo(this);
+	}
+	
+	public void quiero() {
+	
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.quiero(this);
+	}
+	
+	public void noQuiero() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.noQuiero(this);
+	}
+	
+	public void envido() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.envido(this);
+	}
+	
+	public void realEnvido() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.realEnvido(this);
+	}
+	
+	public void faltaEnvido() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.faltaEnvido(this);
+	}
+	
+	public void cantarTantoDelEnvido() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.cantarTantoDelEnvido(this);
+	}
+	
+	public void sonBuenas() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.sonBuenas(this);
+	}
+	
+	public void flor() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.flor(this);
+	}
+	
+	public void contraFlor() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.contraFlor(this);
+	}
+	
+	public void contraFlorAResto() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.contraFlorAResto(this);
+	}
+	
+	public void cantarTantoDeLaFlor() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.cantarTantoDeLaFlor(this);
+	}
+	
+	public void truco() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.truco(this);
+	}
+	
+	public void retruco() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.retruco(this);
+	}
+	
+	public void valeCuatro() {
+		
+		this.verificarQueEstaEnUnaMesa();
+		this.mesaEnLaQueEstoyJugando.valeCuatro(this);
 	}
 
 	/*************************************************
