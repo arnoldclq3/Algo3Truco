@@ -269,19 +269,62 @@ public class MesaTest {
 		this.equipoB.sumarPuntos(6);
 		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.COPA));
-		this.mesaPicaPica.jugarCarta(jugador2, new Carta(11, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(11, Palo.COPA));
 		
-		this.mesaPicaPica.jugarCarta(jugador2, new Carta(7, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(7, Palo.BASTO));
 		
 		this.mesaPicaPica.truco(jugador1);
-		this.mesaPicaPica.retruco(jugador2);
+		this.mesaPicaPica.retruco(jugador4);
 		this.mesaPicaPica.quiero(jugador1);
 		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(11, Palo.BASTO));
 		
 		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.ESPADA));
-		this.mesaPicaPica.jugarCarta(jugador2, new Carta(11, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(11, Palo.ESPADA));
 		
 		assertEquals(9, this.equipoA.obtenerCantidadDePuntos());
+	}
+	
+	@Test
+	public void testEquipoAGanasDosRondasPicaPicaYEquipoBGanaUnaSola() {
+		
+		this.equipoA.sumarPuntos(6);
+		this.equipoB.sumarPuntos(6);
+		
+		// RONDA PICAPICA 1 GANA Jugador1
+		
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(11, Palo.COPA));
+		
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(7, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(11, Palo.BASTO));
+		
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(7, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(11, Palo.ESPADA));
+		
+		// RONDA PICAPICA 2 GANA Jugador2
+		
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(10, Palo.ORO));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(11, Palo.ORO));
+		
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(6, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(10, Palo.BASTO));
+		
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(7, Palo.ORO));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(10, Palo.ESPADA));
+		
+		// RONDA PICAPICA 3 GANA Jugador3
+		
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(5, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(6, Palo.COPA));
+		
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(6, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(1, Palo.COPA));
+		
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(3, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(4, Palo.ESPADA));
+		
+		assertEquals(8, this.equipoA.obtenerCantidadDePuntos());
+		assertEquals(7, this.equipoB.obtenerCantidadDePuntos());
 	}
 }
