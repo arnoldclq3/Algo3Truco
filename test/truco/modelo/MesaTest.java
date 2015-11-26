@@ -170,7 +170,27 @@ public class MesaTest {
 		assertEquals(2, this.equipoB.obtenerCantidadDePuntos());
 	}
 	
-
+	@Test
+	public void testElEquipoBGanaUnaRondaCon_Truco_Retruco_ValeCuatro_NoQuiero() {
+		
+		this.mesaPicaPica.jugarCarta(jugador1, new Carta(1, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador2, new Carta(3, Palo.BASTO));
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(1, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(3, Palo.ORO));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(12, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador6, new Carta(12, Palo.ORO));
+		
+		this.mesaPicaPica.jugarCarta(jugador3, new Carta(7, Palo.COPA));
+		this.mesaPicaPica.jugarCarta(jugador4, new Carta(3, Palo.ESPADA));
+		this.mesaPicaPica.jugarCarta(jugador5, new Carta(6, Palo.COPA));
+		
+		this.mesaPicaPica.truco(jugador6);
+		this.mesaPicaPica.retruco(jugador1);
+		this.mesaPicaPica.valeCuatro(jugador6);
+		this.mesaPicaPica.noQuiero(jugador1);
+		
+		assertEquals(3, this.equipoB.obtenerCantidadDePuntos());
+	}
 	
 	@Test
 	public void testElJugador1GanaUnaRondaPicaPicaYSumaPuntosASuEquipo() {
