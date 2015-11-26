@@ -14,7 +14,7 @@ import truco.excepciones.ronda.SoloLosJugadoresPieDeLaRondaPuedenCantarElEnvidoE
 import truco.excepciones.ronda.SoloSePuedeCantarElTantoEnLaPrimeraManoException;
 import truco.excepciones.cantos.RespuestaIncorrectaException;
 
-public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales{
+public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales, Acciones {
 
 	private LinkedList<Jugador> jugadoresEnJuego;
 	private LinkedList<Jugador> jugadorQueSeFueronAlMazo;

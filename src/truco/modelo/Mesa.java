@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import truco.excepciones.mesa.NoSeJuegaConFlorException;
 
 
-public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales{
+public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales, Acciones {
 
 	/*************************************************
 	 ** 				Atributos					**
@@ -161,6 +161,12 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		this.verificarSiExisteUnEquipoGanador();
 		this.ronda.jugarCarta(unJugador,unaCarta);
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
+	}
+	
+	public void irseAlMazo(Jugador unJugador) {
+		this.verificarSiExisteUnEquipoGanador();
+		this.ronda.irseAlMazo(unJugador);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
 	
