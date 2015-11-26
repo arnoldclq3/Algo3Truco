@@ -35,8 +35,9 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 
 	public Ronda(Equipo equipo1, Equipo equipo2, LinkedList<Jugador> jugadoresEnJuego) {
 	
-		this.jugadoresEnJuego = jugadoresEnJuego;
+		this.jugadoresEnJuego = new LinkedList<Jugador>();
 		this.jugadorQueSeFueronAlMazo = new LinkedList<Jugador>();
+		this.jugadoresEnJuego.addAll(jugadoresEnJuego);
 		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
 		this.iniciarJugadoresQueDebenCantarEnvido();
 		
