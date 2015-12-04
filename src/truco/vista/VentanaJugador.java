@@ -157,13 +157,15 @@ public class VentanaJugador extends Ventana implements Observer {
 		List<Carta> cartas = (List<Carta>)arg;
 		Jugador jugador = (Jugador)o;
 		
-		int i = 0;
-		for(Carta carta: jugador.obtenerCartasEnMano()){
-			Button botonCarta = this.botonesCarta.get(i);
-			botonCarta.setGraphic(this.conseguirImagen(carta));
-			botonCarta.setOnAction(new ControladorJugadorTirarCarta(jugador,carta));
-			this.botonesCarta.set(i, botonCarta);
-			i++;
+		if(jugador.obtenerCartasEnMano().size() == 3){
+			int i = 0;
+			for(Carta carta: jugador.obtenerCartasEnMano()){
+				Button botonCarta = this.botonesCarta.get(i);
+				botonCarta.setGraphic(this.conseguirImagen(carta));
+				botonCarta.setOnAction(new ControladorJugadorTirarCarta(jugador,carta));
+				this.botonesCarta.set(i, botonCarta);
+				i++;
+			}
 		}
 		
 	}
