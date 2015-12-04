@@ -1,5 +1,6 @@
 package truco.vista;
 
+import truco.controlador.ControladorJugadorTirarCarta;
 import truco.modelo.*;
 
 import java.util.ArrayList;
@@ -68,7 +69,9 @@ public class VentanaJugador extends Ventana implements Observer {
 		this.botonIrseAlMazo = new Button("Irse al Mazo");
 	}
 	
-	public void crearVentana(Stage principal){
+	public void crearVentana(Stage principal, Jugador jugador){
+		
+		this.jugador = jugador;
 		
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -152,14 +155,25 @@ public class VentanaJugador extends Ventana implements Observer {
 		
 		@SuppressWarnings("unchecked")
 		List<Carta> cartas = (List<Carta>)arg;
+		Jugador jugador = (Jugador)o;
 		
 		int i = 0;
-		for(Carta carta: cartas){
+		for(Carta carta: jugador.obtenerCartasEnMano()){
 			Button botonCarta = this.botonesCarta.get(i);
 			botonCarta.setGraphic(this.conseguirImagen(carta));
+			botonCarta.setOnAction(new ControladorJugadorTirarCarta(jugador,carta));
 			this.botonesCarta.set(i, botonCarta);
 			i++;
 		}
+		
+	}
+	
+	public void setBotonControladorJugadorTirarCarta(EventHandler<ActionEvent> controlador) {
+		for(int i=0;i<3;i++){
+			Button botonCarta = this.botonesCarta.get(i);
+			botonCarta.setOnAction(controlador);
+			this.botonesCarta.set(i, botonCarta);
+        }
 	}
 	
 }

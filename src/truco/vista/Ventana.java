@@ -23,8 +23,6 @@ import javafx.stage.Stage;
 
 public abstract class Ventana {
 	
-	public abstract void crearVentana(Stage principal);
-	
 	protected ImageView conseguirImagen(Carta carta) {
 		
 		Image imagen = new Image("file:Imagenes/nada.jpg");

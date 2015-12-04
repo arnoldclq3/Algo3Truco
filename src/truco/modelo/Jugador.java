@@ -132,10 +132,14 @@ public class Jugador extends Observable {
 		return true;
 	}
 
-	public Carta tirarCarta(Carta carta) { 
+	public Carta tirarCarta(Carta carta) {
 		for (Carta otraCarta : this.manoDelJugador){
 			if(otraCarta.equals(carta)){
 				this.manoDelJugador.remove(otraCarta);
+				
+				this.setChanged();
+				this.notifyObservers(manoDelJugador);
+				
 				return otraCarta;
 			}
 		}
@@ -269,6 +273,11 @@ public class Jugador extends Observable {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.valeCuatro(this);
+	}
+	
+	public List<Carta> obtenerCartasEnMano() {
+		
+		return this.manoDelJugador;
 	}
 
 	/*************************************************

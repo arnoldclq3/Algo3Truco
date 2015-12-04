@@ -7,6 +7,7 @@ import truco.modelo.Mazo;
 import truco.modelo.Mesa;
 import truco.controlador.ControladorBotonDevolverCartas;
 import truco.controlador.ControladorBotonRepartirCartas;
+import truco.controlador.ControladorJugadorTirarCarta;
 import truco.vista.VentanaPrincipal;
 import truco.vista.VentanaJugador;
 import javafx.application.Application;
@@ -44,11 +45,11 @@ public class Aplicacion extends Application {
     	miStage.setTitle("Mesa de Truco 2 vs 2");
     	miStage.show();
     	
-    	this.ventanaJugador1.crearVentana(jugador1Stage);
+    	this.ventanaJugador1.crearVentana(jugador1Stage,this.jugador1);
     	this.jugador1Stage.setTitle("Jugador 1");
     	this.jugador1Stage.show();
         
-        this.ventanaJugador2.crearVentana(jugador2Stage);
+        this.ventanaJugador2.crearVentana(jugador2Stage,this.jugador1);
         this.jugador2Stage.setTitle("Jugador 2");
         this.jugador2Stage.show();
     }
@@ -80,8 +81,6 @@ public class Aplicacion extends Application {
     	
     	/* Creacion de los Controladores y Conexion */
     	
-    	//ControladorJugadorTirarCarta controladorTirarCartaJugador1 = new ControladorJugadorTirarCarta(this.jugador1);	// Controlador
-    	//this.ventanaJugador1.setBotonTirarCarta(controladorTirarCartaJugador1);
     	//ControladorBotonRepartirCartas miControlador2 = new ControladorBotonRepartirCartas(miJugador, miMazo);	// Controlador
     	//this.miVentanaPrincipal.setBotonDevolverCartas(miControlador1);
     	//this.miVentanaPrincipal.setBotonRepartirCartas(miControlador2);
