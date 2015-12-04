@@ -17,7 +17,7 @@ public class Carta {
 		return ( this.palo == carta.palo );
 	}
 	
-	int getValor() {
+	public int getValor() {
 		
 		return this.valor;
 	}
@@ -42,6 +42,11 @@ public class Carta {
 	public int hashCode(){
 		return ( this.valor * 13 + this.palo.valor() ) * 3;
 		
+	}
+
+	public String getPalo() {
+		
+		return this.palo.toString();
 	}
 	
 }
