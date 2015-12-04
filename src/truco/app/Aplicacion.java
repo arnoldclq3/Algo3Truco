@@ -78,7 +78,6 @@ public class Aplicacion extends Application {
 		equipo2.agregarJugador(this.jugador2);
 		this.mesa = new Mesa(equipo1,equipo2, new GeneradorRondasNormales() );
     	
-    	
     	/* Creacion de los Controladores y Conexion */
     	
     	//ControladorBotonRepartirCartas miControlador2 = new ControladorBotonRepartirCartas(miJugador, miMazo);	// Controlador

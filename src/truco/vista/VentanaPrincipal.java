@@ -2,6 +2,7 @@ package truco.vista;
 
 import truco.modelo.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -25,27 +26,21 @@ import javafx.stage.Stage;
 
 public class VentanaPrincipal extends Ventana implements Observer {
 	
-	private Button botonCarta1Jugador1;
-	private Button botonCarta2Jugador1;
-	private Button botonCarta3Jugador1;
-	
-	private Button botonCarta1Jugador2;
-	private Button botonCarta2Jugador2;
-	private Button botonCarta3Jugador2;
+	private List<Button> botonesCartaJugador1;
+	private List<Button> botonesCartaJugador2;
 	
 	private Button botonDevolverCartas;
 	private Button botonRepartirCartas;
 	
 	public VentanaPrincipal() {
 		
-		this.botonCarta1Jugador1 = new Button("",this.conseguirImagen(null));
-		this.botonCarta2Jugador1 = new Button("",this.conseguirImagen(null));
-		this.botonCarta3Jugador1 = new Button("",this.conseguirImagen(null));
+		this.botonesCartaJugador1 = new ArrayList<Button>();
+		this.botonesCartaJugador2 = new ArrayList<Button>();
 		
-		this.botonCarta1Jugador2 = new Button("",this.conseguirImagen(null));
-		this.botonCarta2Jugador2 = new Button("",this.conseguirImagen(null));
-		this.botonCarta3Jugador2 = new Button("",this.conseguirImagen(null));
-		
+		for(int i=0;i<3;i++){
+			this.botonesCartaJugador1.add(new Button("",this.conseguirImagen(null)));
+			this.botonesCartaJugador2.add(new Button("",this.conseguirImagen(null)));
+		}
 		this.botonDevolverCartas = new Button("Devolver \n Cartas");
 		this.botonRepartirCartas = new Button("Repartir \n Cartas");
 	}
@@ -60,35 +55,20 @@ public class VentanaPrincipal extends Ventana implements Observer {
         
         grid.setGridLinesVisible(true);
 
-        HBox boxBoton1 = new HBox(10);
-        boxBoton1.setAlignment(Pos.CENTER);
-        boxBoton1.getChildren().add(this.botonCarta1Jugador1);
-        grid.add(boxBoton1, 0, 3);
-        
-        HBox boxBoton2 = new HBox(10);
-        boxBoton2.setAlignment(Pos.CENTER);
-        boxBoton2.getChildren().add(this.botonCarta2Jugador1);
-        grid.add(boxBoton2, 1, 3);
-        
-        HBox boxBoton3 = new HBox(10);
-        boxBoton3.setAlignment(Pos.CENTER);
-        boxBoton3.getChildren().add(this.botonCarta3Jugador1);
-        grid.add(boxBoton3, 2, 3);
-        
-        HBox boxBoton4 = new HBox(10);
-        boxBoton4.setAlignment(Pos.CENTER);
-        boxBoton4.getChildren().add(this.botonCarta1Jugador2);
-        grid.add(boxBoton4, 0, 5);
-        
-        HBox boxBoton5 = new HBox(10);
-        boxBoton5.setAlignment(Pos.CENTER);
-        boxBoton5.getChildren().add(this.botonCarta2Jugador2);
-        grid.add(boxBoton5, 1, 5);
-        
-        HBox boxBoton6 = new HBox(10);
-        boxBoton6.setAlignment(Pos.CENTER);
-        boxBoton6.getChildren().add(this.botonCarta3Jugador2);
-        grid.add(boxBoton6, 2, 5);
+        for(int i=0;i<3;i++){
+        	
+        	HBox boxBoton1 = new HBox(10);
+            boxBoton1.setAlignment(Pos.CENTER);
+            boxBoton1.getChildren().add(this.botonesCartaJugador1.get(i));
+            grid.add(boxBoton1, i, 3);
+            
+            HBox boxBoton4 = new HBox(10);
+            boxBoton4.setAlignment(Pos.CENTER);
+            boxBoton4.getChildren().add(this.botonesCartaJugador2.get(i));
+            grid.add(boxBoton4, i, 5);
+            
+            
+		}
         
         VBox boxPuntaje = new VBox(10);
         Label lblEquipo1 = new Label("Equipo 1: 0");
@@ -133,24 +113,30 @@ public class VentanaPrincipal extends Ventana implements Observer {
 	public void update(Observable o, Object arg) {
 		
 		@SuppressWarnings("unchecked")
-		List<Carta> cartas = (List<Carta>)arg;
+		Jugador jugador = (Jugador)o;
+		List<Carta> cartasJugadas = (List<Carta>)arg;
 		
-		/*if ( cartas.size() == 3 ) {
+		if(jugador.getNombre() == "Jugador 1"){
 			
-			Carta carta1 = cartas.get(0);
-			Carta carta2 = cartas.get(1);
-			Carta carta3 = cartas.get(2);
+			int i=0;
+			for(Carta cartaJugada: cartasJugadas){
+				Button boton = this.botonesCartaJugador1.get(i);
+				boton.setGraphic(this.conseguirImagen(cartaJugada));
+				this.botonesCartaJugador1.set(i,boton);
+				i++;
+			}
 			
-			this.botonCarta1.setGraphic(this.conseguirImagen(carta1));
-			this.botonCarta2.setGraphic(this.conseguirImagen(carta2));
-			this.botonCarta3.setGraphic(this.conseguirImagen(carta3));
-		
-		} else if ( cartas.size() == 0 ) {
+		} else{
 			
-			this.botonCarta1.setGraphic(this.conseguirImagen(null));
-			this.botonCarta2.setGraphic(this.conseguirImagen(null));
-			this.botonCarta3.setGraphic(this.conseguirImagen(null));
-		}*/
+			int i=0;
+			for(Carta cartaJugada: cartasJugadas){
+				Button boton = this.botonesCartaJugador2.get(i);
+				boton.setGraphic(this.conseguirImagen(cartaJugada));
+				this.botonesCartaJugador2.set(i,boton);
+				i++;
+			}
+			
+		}
 	}
 	
 }

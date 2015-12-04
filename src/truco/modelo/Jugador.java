@@ -72,7 +72,7 @@ public class Jugador extends Observable {
 		this.manoDelJugador.removeAll(this.manoDelJugador);
 		
 		this.setChanged();
-		this.notifyObservers(manoDelJugador);
+		this.notifyObservers(new ArrayList<Carta>());
 		
 		return listadoRetorno;
 	}
@@ -138,7 +138,7 @@ public class Jugador extends Observable {
 				this.manoDelJugador.remove(otraCarta);
 				
 				this.setChanged();
-				this.notifyObservers(manoDelJugador);
+				this.notifyObservers(this.mesaEnLaQueEstoyJugando.mostrarCartasDelJugador(this));
 				
 				return otraCarta;
 			}
@@ -153,7 +153,7 @@ public class Jugador extends Observable {
 		this.manoDelJugador.add(unaCarta);
 		
 		this.setChanged();
-		this.notifyObservers(manoDelJugador);
+		this.notifyObservers(new ArrayList<Carta>());
 	}
 
 	public String getNombre() {
