@@ -104,7 +104,8 @@ public class JuegoTruco {
 
 	private void controlarQueLosEquiposEstenLlenos() {
 		int cantidadJugadoresActualmente = this.nosotros.cantidadJugadores() + this.ellos.cantidadJugadores();
-		if ( cantidadJugadoresActualmente != this.cantidadJugadores )
+		if ( cantidadJugadoresActualmente != this.cantidadJugadores &&
+			 this.nosotros.cantidadJugadores() == this.ellos.cantidadJugadores() )
 			throw new ElJuegoConfiguradoNoPoseeTodosLosJugadoresQueDeberiaException();
 	}
 	
