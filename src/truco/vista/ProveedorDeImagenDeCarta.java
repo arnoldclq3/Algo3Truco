@@ -1,4 +1,4 @@
-package truco.interfaz;
+package truco.vista;
 
 import java.util.HashMap;
 

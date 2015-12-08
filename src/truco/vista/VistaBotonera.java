@@ -1,4 +1,4 @@
-package truco.interfaz;
+package truco.vista;
 
 import java.util.HashMap;
 import java.util.Observable;
@@ -116,8 +116,9 @@ public class VistaBotonera implements Observer{
 	private void estadoInicialDeBotonera(){
 		this.botoneraTruco.getChildren().get(1).setDisable(true);
 		this.botoneraTruco.getChildren().get(2).setDisable(true);
-		this.botoneraFlor.getChildren().get(1).setDisable(true);
-		this.botoneraFlor.getChildren().get(2).setDisable(true);
+		
+		this.botoneraFlor.setDisable(true);
+
 		this.botoneraAcciones.getChildren().get(0).setDisable(true);
 		this.botoneraAcciones.getChildren().get(1).setDisable(true);
 		this.botoneraTantos.setVisible(false);

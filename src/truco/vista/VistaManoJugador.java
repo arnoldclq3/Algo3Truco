@@ -1,4 +1,4 @@
-package truco.interfaz;
+package truco.vista;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;

@@ -1,4 +1,4 @@
-package truco.interfaz;
+package truco.vista;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,6 +15,7 @@ public class VentanaJugador {
 		this.iniciarGridVistas();
 		this.iniciarBotonera();
 		this.iniciarManoJugador();
+		this.iniciarMesa();
 		Scene escenaJugador = new Scene(vistas, 1050, 650, Color.BLACK);
 		escenaPrincipal.setScene(escenaJugador);
 	}
@@ -35,6 +36,11 @@ public class VentanaJugador {
 	private void iniciarManoJugador(){
 		VistaManoJugador manoJugador = new VistaManoJugador();
 		this.vistas.add( manoJugador.obtenerVista(), 0, 1);
+	}
+	
+	private void iniciarMesa(){
+		VistaMesa mesa = new VistaMesa();
+		this.vistas.add( mesa.obtenerVista(), 0, 0);
 	}
 	
 	
