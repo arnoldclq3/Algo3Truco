@@ -1,6 +1,5 @@
 package truco.controlador;
 
-import truco.modelo.*;
 import truco.vista.*;
 
 import javafx.application.Application;
