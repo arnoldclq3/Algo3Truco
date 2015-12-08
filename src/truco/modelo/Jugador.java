@@ -2,13 +2,14 @@ package truco.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import truco.excepciones.jugador.CartaEnManoInexistenteException;
 import truco.excepciones.jugador.ElJugadorNoEstaEnNingunaMesaException;
 import truco.excepciones.jugador.ElJugadorNoTieneFlorException;
 import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnManoException;
 
-public class Jugador {
+public class Jugador extends Observable {
 	
 	/*************************************************
 	 ** 				Atributos					**
@@ -151,6 +152,8 @@ public class Jugador {
 			throw new JugadorNoPuedeTenerMasDeTresCartasEnManoException();
 		}
 		this.manoDelJugador.add(unaCarta);
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	public String getNombre() {
@@ -270,6 +273,11 @@ public class Jugador {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.valeCuatro(this);
+	}
+
+	public List<Carta> obtenerMano() {
+		// TODO Auto-generated method stub
+		return this.manoDelJugador;
 	}
 
 	/*************************************************

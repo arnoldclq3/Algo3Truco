@@ -6,40 +6,33 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
+import truco.modelo.Jugador;
 
 public class VentanaJugador {
 	
 	private GridPane vistas;
+	private Jugador miJugador;
 
-	public VentanaJugador(Stage escenaPrincipal){
+	public VentanaJugador(Jugador jugador){
+		this.miJugador = jugador;
 		this.iniciarGridVistas();
-		this.iniciarVistasRelacionadasConLaRondaActual();
-		this.iniciarVistaPuntaje();
-
-		// Aca lo que tengo que hacer es vincular esta ventana con la MESA
-		
-		Scene escenaJugador = new Scene(vistas, 1050, 650, Color.BLACK);
-		escenaPrincipal.setScene(escenaJugador);
+		this.iniciarBotonera();
+		this.iniciarManoJugador();
+		this.iniciarMesa();
 	}
 	
-	private void iniciarVistaPuntaje() {
-		// TODO Auto-generated method stub
+	public void mostrar(Stage stage) {
 		
+		Scene escenaJugador = new Scene(vistas, 1050, 650, Color.BLACK);
+		stage.setScene(escenaJugador);
 	}
-
+	
 	private void iniciarGridVistas() {
 		this.vistas = new GridPane();
 		this.vistas.setAlignment(Pos.CENTER);
 		this.vistas.setHgap(10);
 		this.vistas.setVgap(10);
 		this.vistas.setPadding( new Insets(25, 25, 25, 25) );
-	}
-	
-	private void iniciarVistasRelacionadasConLaRondaActual() {
-		this.iniciarBotonera();
-		this.iniciarManoJugador();
-		this.iniciarMesa();
 	}
 
 	private void iniciarBotonera() {
@@ -49,6 +42,7 @@ public class VentanaJugador {
 	
 	private void iniciarManoJugador(){
 		VistaManoJugador manoJugador = new VistaManoJugador();
+		miJugador.addObserver(manoJugador);
 		this.vistas.add( manoJugador.obtenerVista(), 0, 1);
 	}
 	
@@ -56,7 +50,6 @@ public class VentanaJugador {
 		VistaMesa mesa = new VistaMesa();
 		this.vistas.add( mesa.obtenerVista(), 0, 0);
 	}
-	
 	
 
 }

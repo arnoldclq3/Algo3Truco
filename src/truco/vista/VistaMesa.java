@@ -53,7 +53,6 @@ public class VistaMesa {
 		return cartaJugada;
 	}
 
-	
 	public Node obtenerVista() {
 		return this.cartasMesa;
 	}

@@ -266,6 +266,11 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 			throw new NoSeJuegaConFlorException();	
 	}
 
+	public Ronda obtenerRondaActual() {
+		// TODO Auto-generated method stub
+		return this.ronda;
+	}
+
 
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**

@@ -21,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import truco.controlador.Integrador;
 import truco.modelo.JuegoTruco;
 import truco.modelo.Jugador;
 
@@ -28,115 +29,13 @@ public class MenuPrincipal {
 
 	private Stage stage;
 	private JuegoTruco juego;
+	private Integrador integrador;
 	
 	public MenuPrincipal(Stage stage) {
 		
 		this.stage = stage;
 		this.juego = new JuegoTruco();
-	}
-	
-	public void crearMenuCantidadJugadores() {
-		
-		VBox botones = new VBox();
-		botones.setAlignment(Pos.TOP_CENTER);
-		botones.setSpacing(10);
-		botones.setPadding(new Insets(20, 10, 10, 10));
-		
-		Text tituloPrincipal = new Text("Seleccionar cantidad \n jugadores");
-		tituloPrincipal.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
-	    tituloPrincipal.setTextAlignment(TextAlignment.CENTER);
-	    tituloPrincipal.setFill(Color.WHITE);
-        
-        Button boton2Jug = new Button("2 jugadores");
-        boton2Jug.setOnAction(e->{
-        	this.juego.juegoDeDosJugadores();
-        	this.crearMenuNombresJugadores();
-        });
-        Button boton4Jug = new Button("4 jugadores");
-        boton4Jug.setDisable(true);
-        Button boton6Jug = new Button("6 jugadores");
-        boton6Jug.setDisable(true);
-		
-		botones.getChildren().add(tituloPrincipal);
-		botones.getChildren().add(new Text(""));
-		botones.getChildren().add(boton2Jug);
-		botones.getChildren().add(boton4Jug);
-		botones.getChildren().add(boton6Jug);
-		
-		BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
-        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:Imagenes/FONDO3.jpg"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        Background background = new Background(backgroundImage);
-        botones.setBackground(background);
-        
-		Scene scene = new Scene(botones,344,600);
-		this.stage.setScene(scene);
-	}
-	
-	public void crearMenuFlor() {
-		
-		VBox botones = new VBox();
-		botones.setAlignment(Pos.TOP_CENTER);
-		botones.setSpacing(10);
-		botones.setPadding(new Insets(20, 10, 10, 10));
-		
-		Text tituloPrincipal = new Text("Seleccionar si se juega \n con Flor");
-        tituloPrincipal.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
-        tituloPrincipal.setTextAlignment(TextAlignment.CENTER);
-        tituloPrincipal.setFill(Color.WHITE);
-        
-        Button botonConFlor = new Button("Con Flor");
-        botonConFlor.setOnAction(e->{
-        	this.juego.jugarConFlor();
-        	this.crearMenuIniciar();
-        });
-        
-        Button botonSinFlor = new Button("Sin Flor");
-        botonSinFlor.setOnAction(e->{
-        	this.juego.jugarSinFlor();
-        	this.crearMenuIniciar();
-        });
-		
-		botones.getChildren().add(tituloPrincipal);
-		botones.getChildren().add(new Text(""));
-		botones.getChildren().add(botonConFlor);
-		botones.getChildren().add(botonSinFlor);
-		
-		BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
-        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:Imagenes/FONDO3.jpg"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        Background background = new Background(backgroundImage);
-        botones.setBackground(background);
-        
-		Scene scene = new Scene(botones,344,600);
-		this.stage.setScene(scene);
-	}
-	
-	public void crearMenuIniciar() {
-		
-		VBox botones = new VBox();
-		botones.setAlignment(Pos.CENTER);
-		botones.setSpacing(10);
-		botones.setPadding(new Insets(10, 10, 10, 10));
-        
-		Image play = new Image("file:Imagenes/PLAY.png");
-		ImageView imagenPlay = new ImageView(play);
-		imagenPlay.setFitWidth(120);
-		imagenPlay.setPreserveRatio(true);
-		
-        Button botonIniciar = new Button("",imagenPlay);
-        botonIniciar.setOnAction(e->{
-        	this.juego.iniciarJuego();
-        	new VentanaJugador(stage);
-        });
-		
-		botones.getChildren().add(botonIniciar);
-		
-		BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
-        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:Imagenes/FONDO3.jpg"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        Background background = new Background(backgroundImage);
-        botones.setBackground(background);
-        
-		Scene scene = new Scene(botones,344,600);
-		this.stage.setScene(scene);
+		this.integrador = new Integrador(stage);
 	}
 	
 	public void crearMenuBienvenida() {
@@ -179,6 +78,42 @@ public class MenuPrincipal {
 		this.stage.show();
 	}
 	
+	public void crearMenuCantidadJugadores() {
+		
+		VBox botones = new VBox();
+		botones.setAlignment(Pos.TOP_CENTER);
+		botones.setSpacing(10);
+		botones.setPadding(new Insets(20, 10, 10, 10));
+		
+		Text tituloPrincipal = new Text("Seleccionar cantidad \n jugadores");
+		tituloPrincipal.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
+	    tituloPrincipal.setTextAlignment(TextAlignment.CENTER);
+	    tituloPrincipal.setFill(Color.WHITE);
+        
+        Button boton2Jug = new Button("2 jugadores");
+        boton2Jug.setOnAction(e->{
+        	this.juego.juegoDeDosJugadores();
+        	this.crearMenuNombresJugadores();
+        });
+        Button boton4Jug = new Button("4 jugadores");
+        boton4Jug.setDisable(true);
+        Button boton6Jug = new Button("6 jugadores");
+        boton6Jug.setDisable(true);
+		
+		botones.getChildren().add(tituloPrincipal);
+		botones.getChildren().add(new Text(""));
+		botones.getChildren().add(boton2Jug);
+		botones.getChildren().add(boton4Jug);
+		botones.getChildren().add(boton6Jug);
+		
+		BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:Imagenes/FONDO3.jpg"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
+        botones.setBackground(background);
+        
+		Scene scene = new Scene(botones,344,600);
+		this.stage.setScene(scene);
+	}
 	public void crearMenuNombresJugadores() {
 		
 		VBox botones2 = new VBox();
@@ -206,10 +141,16 @@ public class MenuPrincipal {
 		
         Button siguiente = new Button("Siguiente");
         siguiente.setOnAction(e->{
+        	
         	Jugador jugador1 = new Jugador(nombreJugador1.getText());
         	Jugador jugador2 = new Jugador(nombreJugador2.getText());
+        	
         	this.juego.agregarJugadorEnEquipoNosotros(jugador1);
         	this.juego.agregarJugadorEnEquipoEllos(jugador2);
+        	
+        	this.integrador.agregarJugadorObservado(jugador1);
+        	this.integrador.agregarJugadorObservado(jugador2);
+        	
         	this.crearMenuFlor();
         });
         
@@ -228,6 +169,74 @@ public class MenuPrincipal {
         botones2.setBackground(background);
         
 		Scene scene = new Scene(botones2,344,600);
+		this.stage.setScene(scene);
+	}
+	
+	public void crearMenuFlor() {
+		
+		VBox botones = new VBox();
+		botones.setAlignment(Pos.TOP_CENTER);
+		botones.setSpacing(10);
+		botones.setPadding(new Insets(20, 10, 10, 10));
+		
+		Text tituloPrincipal = new Text("Seleccionar si se juega \n con Flor");
+        tituloPrincipal.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
+        tituloPrincipal.setTextAlignment(TextAlignment.CENTER);
+        tituloPrincipal.setFill(Color.WHITE);
+        
+        Button botonConFlor = new Button("Con Flor");
+        botonConFlor.setOnAction(e->{
+        	this.juego.jugarConFlor();
+        	this.crearMenuJugar();
+        });
+        
+        Button botonSinFlor = new Button("Sin Flor");
+        botonSinFlor.setOnAction(e->{
+        	this.juego.jugarSinFlor();
+        	this.crearMenuJugar();
+        });
+		
+		botones.getChildren().add(tituloPrincipal);
+		botones.getChildren().add(new Text(""));
+		botones.getChildren().add(botonConFlor);
+		botones.getChildren().add(botonSinFlor);
+		
+		BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:Imagenes/FONDO3.jpg"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
+        botones.setBackground(background);
+        
+		Scene scene = new Scene(botones,344,600);
+		this.stage.setScene(scene);
+	}
+	
+	public void crearMenuJugar() {
+		
+		VBox botones = new VBox();
+		botones.setAlignment(Pos.CENTER);
+		botones.setSpacing(10);
+		botones.setPadding(new Insets(10, 10, 10, 10));
+        
+		Image play = new Image("file:Imagenes/PLAY.png");
+		ImageView imagenPlay = new ImageView(play);
+		imagenPlay.setFitWidth(120);
+		imagenPlay.setPreserveRatio(true);
+		
+        Button botonJugar = new Button("",imagenPlay);
+        botonJugar.setOnAction(e->{
+        
+        	this.integrador.agregarMesaObservada(this.juego.iniciarJuego());
+        	this.integrador.iniciar();
+        });
+		
+		botones.getChildren().add(botonJugar);
+		
+		BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:Imagenes/FONDO3.jpg"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
+        botones.setBackground(background);
+        
+		Scene scene = new Scene(botones,344,600);
 		this.stage.setScene(scene);
 	}
 }
