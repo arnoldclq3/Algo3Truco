@@ -26,14 +26,23 @@ public class Jugador {
 	 *************************************************/
 	
 	public Jugador(){
-		this.manoDelJugador = new ArrayList<Carta>();
-		this.nombre = "Jugador "+ Jugador.numeroJugador;
-		Jugador.numeroJugador++;
+		this.crearJugadorAutomatico();
 	}
 	
 	public Jugador(String nombreJugador){
-		this.nombre = nombreJugador;
+		
+		if ( nombreJugador == null || nombreJugador.isEmpty() ) 
+			this.crearJugadorAutomatico();
+		else
+			this.nombre = nombreJugador;
+			this.manoDelJugador = new ArrayList<Carta>();
+	}
+	
+	private void crearJugadorAutomatico() {
+		
 		this.manoDelJugador = new ArrayList<Carta>();
+		this.nombre = "Jugador "+ Jugador.numeroJugador;
+		Jugador.numeroJugador++;
 	}
 	
 	/*************************************************
