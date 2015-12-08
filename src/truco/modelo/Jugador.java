@@ -157,7 +157,8 @@ public class Jugador extends Observable {
 			throw new JugadorNoPuedeTenerMasDeTresCartasEnManoException();
 		}
 		this.manoDelJugador.add(unaCarta);
-		this.notificarObservadores();
+		
+		if (this.manoDelJugador.size() == 3) this.notificarObservadores();
 	}
 
 	public String getNombre() {

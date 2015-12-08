@@ -11,9 +11,11 @@ import truco.modelo.Jugador;
 public class VentanaJugador {
 	
 	private GridPane vistas;
+	private Scene escenaJugador;
 	private Jugador miJugador;
 
 	public VentanaJugador(Jugador jugador){
+		
 		this.miJugador = jugador;
 		this.iniciarGridVistas();
 		this.iniciarBotonera();
@@ -22,9 +24,8 @@ public class VentanaJugador {
 	}
 	
 	public void mostrar(Stage stage) {
-		
-		Scene escenaJugador = new Scene(vistas, 1050, 650, Color.BLACK);
-		stage.setScene(escenaJugador);
+
+		stage.setScene(this.escenaJugador);
 	}
 	
 	private void iniciarGridVistas() {
@@ -33,6 +34,7 @@ public class VentanaJugador {
 		this.vistas.setHgap(10);
 		this.vistas.setVgap(10);
 		this.vistas.setPadding( new Insets(25, 25, 25, 25) );
+		this.escenaJugador = new Scene(vistas, 1050, 650, Color.BLACK);
 	}
 
 	private void iniciarBotonera() {

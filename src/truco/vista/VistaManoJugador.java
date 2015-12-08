@@ -49,11 +49,20 @@ public class VistaManoJugador implements Observer {
 		List<Carta> cartas = jugador.obtenerMano();
 		ObservableList<Node> botones = this.manoJugador.getChildren();
 		
+		if ( cartas.size() < botones.size() ) {
+			for ( int i=botones.size()-1; i>=cartas.size(); i--) {
+			
+				Button boton = (Button)botones.get(i);
+				boton.setVisible(false);
+			}
+		}
+		
 		for ( int i=0; i<cartas.size(); i++ ) {
 			
 			Button boton = (Button)botones.get(i);
 			Carta carta = cartas.get(i);
 			ImageView imagen = new ImageView(this.miProveedor.obtenerImagenParaCarta(carta));
+			boton.setVisible(true);
 			boton.setGraphic(imagen);
 			boton.setOnAction( new ControladorJugarCarta(jugador,carta) );
 		}
