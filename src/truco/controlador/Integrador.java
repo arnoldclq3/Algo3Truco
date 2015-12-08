@@ -14,13 +14,14 @@ public class Integrador extends Application {
     }
     
     @Override
-    public void start(Stage escenaPrincipal) throws Exception {
+    public void start(Stage escenarioPrincipal) throws Exception {
 
     	this.iniciar();
     	
-    	VentanaJugador ventanaJugador = new VentanaJugador(escenaPrincipal);
+    	MenuPrincipal miMenu = new MenuPrincipal(escenarioPrincipal);
+    	miMenu.crearMenuBienvenida();
     		
-    	escenaPrincipal.show(); 
+    	escenarioPrincipal.show(); 
     }
     
     private void iniciar() {
