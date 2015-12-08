@@ -2,8 +2,8 @@ package truco.modelo;
 
 public class ValeCuatro extends Canto {
 
-	public ValeCuatro() {
-		super(null);
+	public ValeCuatro(Jugador jugadorQueCanta){
+		super(jugadorQueCanta);
 	}
 
 	public int puntosPorGanar(Jugador jugadorGanador) {

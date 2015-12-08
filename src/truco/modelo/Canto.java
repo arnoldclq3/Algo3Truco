@@ -16,8 +16,14 @@ public abstract class Canto {
 		return this.cantosValidosDeRespuesta.contains(unCanto);
 	}
 	
+	@Override
 	public boolean equals(Object objeto){
 		return ( this.getClass() == objeto.getClass());
+	}
+	
+	@Override
+	public int hashCode(){
+		return  ( this.getClass().getSimpleName().hashCode() );
 	}
 
 	public abstract int puntosPorGanar(Jugador jugadorGanador);
