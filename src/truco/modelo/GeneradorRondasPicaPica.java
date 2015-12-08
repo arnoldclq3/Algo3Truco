@@ -1,6 +1,7 @@
 package truco.modelo;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class GeneradorRondasPicaPica implements GeneradorRondas {
 
@@ -13,8 +14,8 @@ public class GeneradorRondasPicaPica implements GeneradorRondas {
 	}
 	
 	@Override
-	public LinkedList<Ronda> generar(Equipo equipo1, Equipo equipo2,
-			LinkedList<Jugador> jugadoresEnJuego) {
+	public List<Ronda> generar(Equipo equipo1, Equipo equipo2,
+			List<Jugador> jugadoresEnJuego) {
 		
 		if (this.seTieneQueJugarPicaAPica && 
 				this.seCumplenLasCondicionesParaPoderJugarUnaRondaPicaAPica(equipo1, equipo2) )
@@ -22,10 +23,10 @@ public class GeneradorRondasPicaPica implements GeneradorRondas {
 		return this.generardorNormal(equipo1, equipo2, jugadoresEnJuego);
 	}
 	
-	private LinkedList<Ronda> generardorPicaAPica(Equipo equipo1, Equipo equipo2,
-			LinkedList<Jugador> jugadoresEnJuego){
+	private List<Ronda> generardorPicaAPica(Equipo equipo1, Equipo equipo2,
+			List<Jugador> jugadoresEnJuego){
 		
-		LinkedList<Ronda> listadoRetorno = new LinkedList<Ronda>();
+		List<Ronda> listadoRetorno = new LinkedList<Ronda>();
 		/*
 		Jugador 1 -> Es la posicion 0 en el listado de Jugadores
 		Jugador 2 -> Es la posicion 1 en el listado de Jugadores
@@ -36,7 +37,7 @@ public class GeneradorRondasPicaPica implements GeneradorRondas {
 		*/
 		
 		for (int numeroRonda = 1 ; numeroRonda <= 3 ; numeroRonda ++){
-			LinkedList<Jugador> jugadoresDeLaRonda = new LinkedList<Jugador>();
+			List<Jugador> jugadoresDeLaRonda = new LinkedList<Jugador>();
 			jugadoresDeLaRonda.add( jugadoresEnJuego.get(numeroRonda - 1) );
 			jugadoresDeLaRonda.add( jugadoresEnJuego.get(numeroRonda + 2) );
 			
@@ -46,8 +47,8 @@ public class GeneradorRondasPicaPica implements GeneradorRondas {
 		return listadoRetorno;
 	}
 	
-	private LinkedList<Ronda> generardorNormal(Equipo equipo1, Equipo equipo2,
-			LinkedList<Jugador> jugadoresEnJuego){
+	private List<Ronda> generardorNormal(Equipo equipo1, Equipo equipo2,
+			List<Jugador> jugadoresEnJuego){
 		
 		GeneradorRondasNormales generadorAuxiliar = new GeneradorRondasNormales();
 		return generadorAuxiliar.generar(equipo1, equipo2, jugadoresEnJuego);

@@ -3,6 +3,7 @@ package truco.modelo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import truco.excepciones.mesa.NoSeJuegaConFlorException;
 
@@ -14,11 +15,11 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	 *************************************************/
 	
 	protected Ronda ronda;
-	private LinkedList<Ronda> rondasAJugar;
+	private List<Ronda> rondasAJugar;
 
 	protected Equipo nosotros;
 	protected Equipo ellos;
-	protected LinkedList<Jugador> jugadoresEnJuego;
+	protected List<Jugador> jugadoresEnJuego;
 	
 	private boolean juegoTerminado;
 
@@ -75,7 +76,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 			this.repartirCartasParaLosJugadores();
 		}
 		
-		this.ronda = this.rondasAJugar.remove();
+		this.ronda = this.rondasAJugar.remove(0);
 	}
 
 	/*************************************************
@@ -122,7 +123,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 		return this.juegoTerminado;
 	}
 	
-	public ArrayList<Carta> mostrarCartasDelJugador(Jugador unJugador) {
+	public List<Carta> mostrarCartasDelJugador(Jugador unJugador) {
 		return this.ronda.mostrarCartasDelJugador(unJugador);
 	}
 	

@@ -74,7 +74,7 @@ public class Jugador {
 	
 	public int puntajeEnvido() {
 		
-		ArrayList<Carta> misCartas = new ArrayList<Carta>();
+		List<Carta> misCartas = new ArrayList<Carta>();
 		this.agregarCartasJugadas(misCartas);
 		misCartas.addAll(this.manoDelJugador);
 		
@@ -97,7 +97,7 @@ public class Jugador {
 		if (! this.tieneFlor() )
 			throw new ElJugadorNoTieneFlorException();
 		
-		ArrayList<Carta> misCartas = new ArrayList<Carta>();
+		List<Carta> misCartas = new ArrayList<Carta>();
 		this.agregarCartasJugadas(misCartas);
 		misCartas.addAll(this.manoDelJugador);
 		
@@ -111,10 +111,10 @@ public class Jugador {
 		return valorRetorno;
 	}
 	
-	private void agregarCartasJugadas(ArrayList<Carta> listadoEnDondeAgregarLasCartas){
+	private void agregarCartasJugadas(List<Carta> listadoEnDondeAgregarLasCartas){
 		if (this.mesaEnLaQueEstoyJugando == null)
 			return;
-		ArrayList<Carta> cartasJugadas = this.mesaEnLaQueEstoyJugando.mostrarCartasDelJugador(this);
+		List<Carta> cartasJugadas = this.mesaEnLaQueEstoyJugando.mostrarCartasDelJugador(this);
 		listadoEnDondeAgregarLasCartas.addAll( cartasJugadas );
 	}
 

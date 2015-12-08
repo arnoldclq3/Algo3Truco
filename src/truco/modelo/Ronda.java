@@ -33,7 +33,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	private CantoEnProcesoParaElTanto cantoEnProcesoParaElTanto;
 	private CantosEnProcesoParaElTruco cantoEnProcesoParaElTruco;
 
-	public Ronda(Equipo equipo1, Equipo equipo2, LinkedList<Jugador> jugadoresEnJuego) {
+	public Ronda(Equipo equipo1, Equipo equipo2, List<Jugador> jugadoresEnJuego) {
 	
 		this.jugadoresEnJuego = new LinkedList<Jugador>();
 		this.jugadorQueSeFueronAlMazo = new LinkedList<Jugador>();
@@ -68,8 +68,8 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		return listadoARetornar;
 	}
 	
-	public ArrayList<Carta> mostrarCartasDelJugador(Jugador unJugador) {
-		ArrayList<Carta> cartas = new ArrayList<Carta>();
+	public List<Carta> mostrarCartasDelJugador(Jugador unJugador) {
+		List<Carta> cartas = new ArrayList<Carta>();
 		for (Mano unaMano : this.manos){
 			Carta cartaJugada = unaMano.mostrarCartaDelJugador(unJugador);
 			if (cartaJugada != null)
