@@ -67,6 +67,11 @@ public class Jugador extends Observable {
 		if ( this.mesaEnLaQueEstoyJugando == null ) throw new ElJugadorNoEstaEnNingunaMesaException();
 	}
 	
+	private void notificarObservadores(){
+		this.setChanged();
+		this.notifyObservers();
+	}
+	
 	/*************************************************
 	 ** 			  Metodos Publicos				**
 	 *************************************************/
@@ -152,8 +157,7 @@ public class Jugador extends Observable {
 			throw new JugadorNoPuedeTenerMasDeTresCartasEnManoException();
 		}
 		this.manoDelJugador.add(unaCarta);
-		this.setChanged();
-		this.notifyObservers();
+		this.notificarObservadores();
 	}
 
 	public String getNombre() {
@@ -170,6 +174,11 @@ public class Jugador extends Observable {
 		return ( this.nombre == unJugador.nombre);
 		
 	}
+	
+	@Override
+	public int hashCode(){
+		return this.nombre.hashCode();
+	}
 
 	public Mesa getMesa() {
 		return mesaEnLaQueEstoyJugando;
@@ -183,6 +192,7 @@ public class Jugador extends Observable {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.jugarCarta(this, this.tirarCarta(unaCarta));
+		this.notificarObservadores();
 	}
 	
 	public void irseAlMazo() {
@@ -274,6 +284,11 @@ public class Jugador extends Observable {
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.valeCuatro(this);
 	}
+	
+	
+	/*************************************************
+	 ** 		 		  GETTERS					**
+	 *************************************************/
 
 	public List<Carta> obtenerMano() {
 		// TODO Auto-generated method stub

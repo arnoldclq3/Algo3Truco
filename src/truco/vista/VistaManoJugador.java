@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import truco.controlador.ControladorJugarCarta;
 import truco.modelo.Carta;
 import truco.modelo.Jugador;
 
@@ -54,6 +55,7 @@ public class VistaManoJugador implements Observer {
 			Carta carta = cartas.get(i);
 			ImageView imagen = new ImageView(this.miProveedor.obtenerImagenParaCarta(carta));
 			boton.setGraphic(imagen);
+			boton.setOnAction( new ControladorJugarCarta(jugador,carta) );
 		}
 	}
 	

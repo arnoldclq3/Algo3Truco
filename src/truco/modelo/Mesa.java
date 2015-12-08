@@ -3,22 +3,23 @@ package truco.modelo;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 
 import truco.excepciones.mesa.NoSeJuegaConFlorException;
 
 
-public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales, Acciones {
+public class Mesa extends Observable implements CantosEnvido , CantosFlor , CantosTruco, CantosGenerales, Acciones {
 
 	/*************************************************
 	 ** 				Atributos					**
 	 *************************************************/
 	
-	protected Ronda ronda;
+	private Ronda rondaActual;
 	private List<Ronda> rondasAJugar;
 
-	protected Equipo nosotros;
-	protected Equipo ellos;
-	protected List<Jugador> jugadoresEnJuego;
+	private Equipo nosotros;
+	private Equipo ellos;
+	private List<Jugador> jugadoresEnJuego;
 	
 	private boolean juegoTerminado;
 
@@ -26,7 +27,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	
 	private GeneradorRondas generador;
 
-	protected boolean seJuegaConFlor;
+	private boolean seJuegaConFlor;
 	
 	/*************************************************
 	 ** 			   Constructores				**
@@ -75,7 +76,12 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 			this.repartirCartasParaLosJugadores();
 		}
 		
-		this.ronda = this.rondasAJugar.remove(0);
+		this.rondaActual = this.rondasAJugar.remove(0);
+	}
+	
+	private void notificarObservadores(){
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	/*************************************************
@@ -94,7 +100,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 		for (Jugador unJugador : this.jugadoresEnJuego){
 			this.mazo.devolverCartas( unJugador.devolverCartas() );
 		}
-		this.mazo.devolverCartas( this.ronda.devolverCartas() );
+		this.mazo.devolverCartas( this.rondaActual.devolverCartas() );
 	}
 
 	/*************************************************
@@ -115,7 +121,7 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
 				
-		return ( this.ronda.mostrarUltimaCartaJugadaPor(unJugador) ); 
+		return ( this.rondaActual.mostrarUltimaCartaJugadaPor(unJugador) ); 
 	}
 	
 	public boolean juegoTerminado(){
@@ -123,13 +129,13 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	}
 	
 	public List<Carta> mostrarCartasDelJugador(Jugador unJugador) {
-		return this.ronda.mostrarCartasDelJugador(unJugador);
+		return this.rondaActual.mostrarCartasDelJugador(unJugador);
 	}
 	
 	
 	private void verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego() {
 		this.verificarSiExisteUnEquipoGanador();
-		if ( this.ronda.estaTerminada() )
+		if ( this.rondaActual.estaTerminada() )
 			this.generadorDeNuevaRonda();
 	}
 	
@@ -149,30 +155,32 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	 *************************************************/
 	@Override
 	public void quiero(Jugador unJugador) {
-		this.ronda.quiero(unJugador);
+		this.rondaActual.quiero(unJugador);
 	}
 	
 	@Override
 	public void noQuiero(Jugador unJugador) {
-		this.ronda.noQuiero(unJugador);
+		this.rondaActual.noQuiero(unJugador);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
 		this.verificarSiExisteUnEquipoGanador();
-		this.ronda.jugarCarta(unJugador,unaCarta);
+		this.rondaActual.jugarCarta(unJugador,unaCarta);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
+		
+		this.notificarObservadores();
 	}
 	
 	public void irseAlMazo(Jugador unJugador) {
 		this.verificarSiExisteUnEquipoGanador();
-		this.ronda.irseAlMazo(unJugador);
+		this.rondaActual.irseAlMazo(unJugador);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
 	
 	// Se esta usando para hacer tests en Mesa-Test
 	public Jugador ganadorDelTantoDeLaRondaActual(){
-		return this.ronda.jugadorGanadorDelTanto();
+		return this.rondaActual.jugadorGanadorDelTanto();
 	}
 	
 	
@@ -182,19 +190,19 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	
 	@Override
 	public void truco(Jugador jugadorQueCanta) {
-		this.ronda.truco(jugadorQueCanta);
+		this.rondaActual.truco(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void retruco(Jugador jugadorQueCanta) {
-		this.ronda.retruco(jugadorQueCanta);
+		this.rondaActual.retruco(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void valeCuatro(Jugador jugadorQueCanta) {
-		this.ronda.valeCuatro(jugadorQueCanta);
+		this.rondaActual.valeCuatro(jugadorQueCanta);
 	}
 	
 	/*************************************************
@@ -203,30 +211,30 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 
 	@Override
 	public void envido(Jugador jugadorQueCanta) {
-		this.ronda.envido(jugadorQueCanta);	
+		this.rondaActual.envido(jugadorQueCanta);	
 	}
 
 	@Override
 	public void realEnvido(Jugador jugadorQueCanta) {
-		this.ronda.realEnvido(jugadorQueCanta);	
+		this.rondaActual.realEnvido(jugadorQueCanta);	
 	}
 
 	@Override
 	public void faltaEnvido(Jugador jugadorQueCanta) {
-		this.ronda.faltaEnvido(jugadorQueCanta);	
+		this.rondaActual.faltaEnvido(jugadorQueCanta);	
 		
 	}
 
 	@Override
 	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
-		this.ronda.cantarTantoDelEnvido(jugadorQueCanta);	
+		this.rondaActual.cantarTantoDelEnvido(jugadorQueCanta);	
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();	
 	}
 	
 	
 	@Override
 	public void sonBuenas(Jugador jugadorQueCanta) {
-		this.ronda.sonBuenas(jugadorQueCanta);
+		this.rondaActual.sonBuenas(jugadorQueCanta);
 	}
 
 	/*************************************************
@@ -236,28 +244,28 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 	@Override
 	public void flor(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
-		this.ronda.flor(jugadorQueCanta);
+		this.rondaActual.flor(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
-		this.ronda.contraFlor(jugadorQueCanta);
+		this.rondaActual.contraFlor(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
-		this.ronda.contraFlorAResto(jugadorQueCanta);
+		this.rondaActual.contraFlorAResto(jugadorQueCanta);
 		
 	}
 
 	@Override
 	public void cantarTantoDeLaFlor(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
-		this.ronda.cantarTantoDeLaFlor(jugadorQueCanta);
+		this.rondaActual.cantarTantoDeLaFlor(jugadorQueCanta);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 	}
 
@@ -268,9 +276,14 @@ public class Mesa implements CantosEnvido , CantosFlor , CantosTruco, CantosGene
 
 	public Ronda obtenerRondaActual() {
 		// TODO Auto-generated method stub
-		return this.ronda;
+		return this.rondaActual;
 	}
-
+	/*************************************************
+	 ** 		 	 	 GETTERS					**
+	 *************************************************/
+	public Ronda getRondaActual(){
+		return this.rondaActual;
+	}
 
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**
