@@ -26,6 +26,7 @@ bin
 # archivos classpath y project
 .classpath
 .project
+.settings
 
 # Sin archivos .html
 *.html

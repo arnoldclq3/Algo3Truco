@@ -6,18 +6,25 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import truco.modelo.Jugador;
 
 public class VentanaJugador {
 	
 	private GridPane vistas;
+	private Jugador miJugador;
 
-	public VentanaJugador(Stage escenaPrincipal){
+	public VentanaJugador(Jugador jugador){
+		this.miJugador = jugador;
 		this.iniciarGridVistas();
 		this.iniciarBotonera();
 		this.iniciarManoJugador();
 		this.iniciarMesa();
+	}
+	
+	public void mostrar(Stage stage) {
+		
 		Scene escenaJugador = new Scene(vistas, 1050, 650, Color.BLACK);
-		escenaPrincipal.setScene(escenaJugador);
+		stage.setScene(escenaJugador);
 	}
 	
 	private void iniciarGridVistas() {
@@ -35,6 +42,7 @@ public class VentanaJugador {
 	
 	private void iniciarManoJugador(){
 		VistaManoJugador manoJugador = new VistaManoJugador();
+		miJugador.addObserver(manoJugador);
 		this.vistas.add( manoJugador.obtenerVista(), 0, 1);
 	}
 	
@@ -42,7 +50,6 @@ public class VentanaJugador {
 		VistaMesa mesa = new VistaMesa();
 		this.vistas.add( mesa.obtenerVista(), 0, 0);
 	}
-	
 	
 
 }

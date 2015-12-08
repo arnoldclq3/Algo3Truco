@@ -498,5 +498,13 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		this.cantoEnProcesoParaElTruco.valeCuatro(jugadorQueCanta);
 		
 	}
+	
+	/*************************************************
+	 ** 			  	 GETTERS	  				**
+	 *************************************************/
+	public Jugador getJugadorQueDebeJugar() {
+		return jugadorQueDebeJugar;
+	}
+
 
 }

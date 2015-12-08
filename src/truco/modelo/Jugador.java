@@ -2,13 +2,14 @@ package truco.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import truco.excepciones.jugador.CartaEnManoInexistenteException;
 import truco.excepciones.jugador.ElJugadorNoEstaEnNingunaMesaException;
 import truco.excepciones.jugador.ElJugadorNoTieneFlorException;
 import truco.excepciones.jugador.JugadorNoPuedeTenerMasDeTresCartasEnManoException;
 
-public class Jugador {
+public class Jugador extends Observable {
 	
 	/*************************************************
 	 ** 				Atributos					**
@@ -64,6 +65,11 @@ public class Jugador {
 	private void verificarQueEstaEnUnaMesa() {
 		
 		if ( this.mesaEnLaQueEstoyJugando == null ) throw new ElJugadorNoEstaEnNingunaMesaException();
+	}
+	
+	private void notificarObservadores(){
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	/*************************************************
@@ -151,6 +157,7 @@ public class Jugador {
 			throw new JugadorNoPuedeTenerMasDeTresCartasEnManoException();
 		}
 		this.manoDelJugador.add(unaCarta);
+		this.notificarObservadores();
 	}
 
 	public String getNombre() {
@@ -167,6 +174,11 @@ public class Jugador {
 		return ( this.nombre == unJugador.nombre);
 		
 	}
+	
+	@Override
+	public int hashCode(){
+		return this.nombre.hashCode();
+	}
 
 	public Mesa getMesa() {
 		return mesaEnLaQueEstoyJugando;
@@ -180,6 +192,7 @@ public class Jugador {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.jugarCarta(this, this.tirarCarta(unaCarta));
+		this.notificarObservadores();
 	}
 	
 	public void irseAlMazo() {
@@ -270,6 +283,16 @@ public class Jugador {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.valeCuatro(this);
+	}
+	
+	
+	/*************************************************
+	 ** 		 		  GETTERS					**
+	 *************************************************/
+
+	public List<Carta> obtenerMano() {
+		// TODO Auto-generated method stub
+		return this.manoDelJugador;
 	}
 
 	/*************************************************
