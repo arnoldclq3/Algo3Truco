@@ -78,7 +78,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 
 	@Override
 	public void valeCuatro(Jugador jugadorQueCanta) {
-		ValeCuatro valeCuatro = new ValeCuatro();
+		ValeCuatro valeCuatro = new ValeCuatro(jugadorQueCanta);
 		this.verificarCantoValido(valeCuatro);
 		
 		this.agregarCanto(valeCuatro,jugadorQueCanta);	
