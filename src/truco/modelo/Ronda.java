@@ -2,9 +2,11 @@ package truco.modelo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.scene.control.Button;
 import truco.excepciones.mano.NoHayGanadorHuboEmpateException;
 import truco.excepciones.ronda.EsteJugadorSeFueAlMazoException;
 import truco.excepciones.ronda.NoEsElTurnoDeEsteJugadorException;
@@ -393,9 +395,11 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	private void iniciarProcesoDeLaFlor(Jugador jugadorQueCanta){
 		this.iniciarProcesoDelTanto();
+		
 	}
 	
 	private boolean iniciarProcesoDelTanto(){
+		//this.actualizarJugadorQueDebeJugar();
 		if (this.cantoEnProcesoParaElTanto == null){
 			this.cantoEnProcesoParaElTanto = new CantoEnProcesoParaElTanto(this.equipo1,this.equipo2);
 			return true;
@@ -502,8 +506,31 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	/*************************************************
 	 ** 			  	 GETTERS	  				**
 	 *************************************************/
+	
 	public Jugador getJugadorQueDebeJugar() {
 		return jugadorQueDebeJugar;
+	}
+
+	public CantoEnProcesoParaElTanto getCantoEnProcesoDelTanto() {
+		return this.cantoEnProcesoParaElTanto;
+	}
+	
+	public boolean terminoElProcesoDeCantoDelTanto(){
+		if (this.cantoEnProcesoParaElTanto == null)
+			return false;
+		if ( this.cantoEnProcesoParaElTanto.seCantoFlor() )
+			return this.controlarSiElCantoDeFlorFinalizo();
+		else
+			return this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto( this.jugadoresEnJuego.size() );
+		
+	}
+
+	public List<Mano> getManos() {
+		return this.manos;
+	}
+
+	public CantosEnProcesoParaElTruco getCantoEnProcesoDelTruco() {
+		return this.cantoEnProcesoParaElTruco;
 	}
 
 

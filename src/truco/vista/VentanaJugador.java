@@ -38,7 +38,8 @@ public class VentanaJugador {
 	}
 
 	private void iniciarBotonera() {
-		VistaBotonera botonera = new VistaBotonera();
+		VistaBotonera botonera = new VistaBotonera(this.miJugador);
+		miJugador.addObserver(botonera);
 		this.vistas.add(botonera.obtenerVista(), 1, 1);
 	}
 	

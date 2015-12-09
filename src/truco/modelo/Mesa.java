@@ -285,6 +285,10 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	public Ronda getRondaActual(){
 		return this.rondaActual;
 	}
+	
+	public boolean seJuegaConFlor(){
+		return this.seJuegaConFlor;
+	}
 
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**

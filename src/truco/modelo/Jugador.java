@@ -134,6 +134,8 @@ public class Jugador extends Observable {
 	}
 
 	public boolean tieneFlor() {
+		if (this.manoDelJugador.isEmpty() )
+			return false;
 		Carta primeraCarta = this.manoDelJugador.get(0);
 		for (Carta otraCarta : this.manoDelJugador){
 			if ( otraCarta != primeraCarta && ! otraCarta.mismoPalo(primeraCarta) )
@@ -200,90 +202,105 @@ public class Jugador extends Observable {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.irseAlMazo(this);
+		this.notificarObservadores();
 	}
 	
 	public void quiero() {
 	
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.quiero(this);
+		this.notificarObservadores();
 	}
 	
 	public void noQuiero() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.noQuiero(this);
+		this.notificarObservadores();
 	}
 	
 	public void envido() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.envido(this);
+		this.notificarObservadores();
 	}
 	
 	public void realEnvido() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.realEnvido(this);
+		this.notificarObservadores();
 	}
 	
 	public void faltaEnvido() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.faltaEnvido(this);
+		this.notificarObservadores();
 	}
 	
 	public void cantarTantoDelEnvido() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.cantarTantoDelEnvido(this);
+		this.notificarObservadores();
 	}
 	
 	public void sonBuenas() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.sonBuenas(this);
+		this.notificarObservadores();
 	}
 	
 	public void flor() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.flor(this);
+		this.notificarObservadores();
 	}
 	
 	public void contraFlor() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.contraFlor(this);
+		this.notificarObservadores();
 	}
 	
 	public void contraFlorAResto() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.contraFlorAResto(this);
+		this.notificarObservadores();
 	}
 	
 	public void cantarTantoDeLaFlor() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.cantarTantoDeLaFlor(this);
+		this.notificarObservadores();
 	}
 	
 	public void truco() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.truco(this);
+		this.notificarObservadores();
 	}
 	
 	public void retruco() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.retruco(this);
+		this.notificarObservadores();
 	}
 	
 	public void valeCuatro() {
 		
 		this.verificarQueEstaEnUnaMesa();
 		this.mesaEnLaQueEstoyJugando.valeCuatro(this);
+		this.notificarObservadores();
 	}
 	
 	

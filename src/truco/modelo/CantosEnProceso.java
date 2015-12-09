@@ -1,6 +1,7 @@
 package truco.modelo;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public abstract class CantosEnProceso implements CantosGenerales{
 
@@ -29,4 +30,8 @@ public abstract class CantosEnProceso implements CantosGenerales{
 	}
 	
 	public abstract Jugador jugadorGanador();
+	
+	public List<Canto> getCantosRealizados(){
+		return this.cantosAceptados;
+	}
 }
