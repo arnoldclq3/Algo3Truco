@@ -55,8 +55,17 @@ public class Integrador implements Observer{
 
 	@Override
 	public void update(Observable mesa, Object unJugador) {
-		Jugador jugadorQueDebeJugar = this.mesa.getRondaActual().getJugadorQueDebeJugar();
-		VentanaJugador ventanaAMostrar = this.ventanasJugadores.get(jugadorQueDebeJugar);
+		//Jugador jugadorQueDebeJugar = this.mesa.getRondaActual().getJugadorQueDebeJugar();
+		Jugador jugadorQueDebeCantar = this.mesa.getRondaActual().getJugadorQueDebeCantar();
+		
+		/*
+		System.out.print("Jugador que debe Jugar: ");
+		System.out.println( jugadorQueDebeJugar.getNombre() );
+		System.out.print("Jugador que debe Cantar: ");
+		System.out.println( jugadorQueDebeCantar.getNombre() );
+		*/
+		
+		VentanaJugador ventanaAMostrar = this.ventanasJugadores.get(jugadorQueDebeCantar);
 		ventanaAMostrar.mostrar(this.stage);
 	}
 

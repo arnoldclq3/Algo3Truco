@@ -34,6 +34,9 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	private CantoEnProcesoParaElTanto cantoEnProcesoParaElTanto;
 	private CantosEnProcesoParaElTruco cantoEnProcesoParaElTruco;
+	
+	private Jugador jugadorQueDebeCantar;
+	private Jugador jugadorManoDeLaRonda;
 
 	public Ronda(Equipo equipo1, Equipo equipo2, List<Jugador> jugadoresEnJuego) {
 	
@@ -41,6 +44,8 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		this.jugadorQueSeFueronAlMazo = new LinkedList<Jugador>();
 		this.jugadoresEnJuego.addAll(jugadoresEnJuego);
 		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
+		this.jugadorManoDeLaRonda = this.jugadorQueDebeJugar;
+		this.jugadorQueDebeCantar = this.jugadorQueDebeJugar;
 		this.iniciarJugadoresQueDebenCantarEnvido();
 		
 		this.equipo1 = equipo1;
@@ -147,6 +152,8 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		this.verificarSiSigueEnJuegoElEquipoDelJugador(unJugador);
 		
 		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
+		this.jugadorQueDebeCantar = this.jugadorQueDebeJugar;
+		
 		this.manoActual.unJugadorSeFueAlMazo();
 		
 		if ( this.manoActual.estaTerminada() && !this.hayEquipoGanador ) {
@@ -171,6 +178,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 				/* 	En este lugar podria agregase la condicion de que se puedan ir al mazo 
 			 		sin responder un envido por quiero o no quiero */
 		}
+		this.jugadorQueDebeCantar = this.jugadorQueDebeJugar;
 	}
 
 	public Carta mostrarUltimaCartaJugadaPor(Jugador unJugador) {
@@ -240,6 +248,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		
 		Collections.rotate(this.jugadoresEnJuego, -1);
 		this.jugadorQueDebeJugar = this.jugadoresEnJuego.getFirst();
+		this.jugadorQueDebeCantar = this.jugadorQueDebeJugar;
 	}
 	
 	private void actualizarJugadorQueDebeJugar() {
@@ -286,11 +295,15 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	@Override
 	public void quiero(Jugador jugadorQueCanta) {
-		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.jugadoresEnJuego.size()) )
+		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.jugadoresEnJuego.size()) ){
 			this.cantoEnProcesoParaElTanto.quiero(jugadorQueCanta);
+			this.actualizarJugadorQueDebeCantarParaIniciarCantosDeTantos();
+		}
 		else
-			if (this.cantoEnProcesoParaElTruco != null)
+			if (this.cantoEnProcesoParaElTruco != null){
 				this.cantoEnProcesoParaElTruco.quiero(jugadorQueCanta);
+				this.jugadorQueDebeCantar = this.jugadorQueDebeJugar;
+			}
 			else 
 				throw new RespuestaIncorrectaException();
 	}
@@ -310,6 +323,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 			}
 			else 
 				throw new RespuestaIncorrectaException();
+		this.jugadorQueDebeCantar = this.jugadorQueDebeJugar;
 	}
 	
 	
@@ -334,6 +348,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		
 		this.sumarPuntos(jugadorGanadorDelTanto, puntosGanados);
 		this.sumarPuntosParaPerdedorPorTanto(jugadorGanadorDelTanto);
+		this.jugadorQueDebeCantar = this.jugadorQueDebeJugar;
 	}
 
 	private void sumarPuntos(Jugador unJugador,int puntosGanados){
@@ -422,18 +437,21 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	public void envido(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDelEnvido(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.envido(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();
 	}
 
 	@Override
 	public void realEnvido(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDelEnvido(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.realEnvido(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();
 	}
 
 	@Override
 	public void faltaEnvido(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDelEnvido(jugadorQueCanta);
 		this.cantoEnProcesoParaElTanto.faltaEnvido(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();
 		
 	}
 
@@ -458,19 +476,22 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	@Override
 	public void flor(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDeLaFlor(jugadorQueCanta);
-		this.cantoEnProcesoParaElTanto.flor(jugadorQueCanta);		
+		this.cantoEnProcesoParaElTanto.flor(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();		
 	}
 
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDeLaFlor(jugadorQueCanta);
-		this.cantoEnProcesoParaElTanto.contraFlor(jugadorQueCanta);	
+		this.cantoEnProcesoParaElTanto.contraFlor(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();	
 	}
 
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
 		this.iniciarProcesoDeLaFlor(jugadorQueCanta);
-		this.cantoEnProcesoParaElTanto.contraFlorAResto(jugadorQueCanta);	
+		this.cantoEnProcesoParaElTanto.contraFlorAResto(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();	
 	}
 
 	@Override
@@ -488,20 +509,44 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	@Override
 	public void truco(Jugador jugadorQueCanta) {
 		this.cantoEnProcesoParaElTruco.truco(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();
 		
 	}
 
 	@Override
 	public void retruco(Jugador jugadorQueCanta) {
 		this.cantoEnProcesoParaElTruco.retruco(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();
 		
 	}
 
 	@Override
 	public void valeCuatro(Jugador jugadorQueCanta) {
 		this.cantoEnProcesoParaElTruco.valeCuatro(jugadorQueCanta);
+		this.actualizarJugadorQueDebeCantar();
 		
 	}
+	
+	/*************************************************
+	 **  Actualizaciones Jugador que debe Cantar	**
+	 *************************************************/
+	
+	private void actualizarJugadorQueDebeCantar(){
+		int posicion = 0;
+		for (Jugador jugadorActual : this.jugadoresEnJuego){
+			posicion++;	
+			if ( jugadorActual == this.jugadorQueDebeCantar )
+				break;	
+		}
+		if (posicion >= this.jugadoresEnJuego.size())
+			posicion = 0;
+		this.jugadorQueDebeCantar = this.jugadoresEnJuego.get(posicion);		
+	}
+	
+	private void actualizarJugadorQueDebeCantarParaIniciarCantosDeTantos(){
+		this.jugadorQueDebeCantar = this.jugadorManoDeLaRonda;
+	}
+	
 	
 	/*************************************************
 	 ** 			  	 GETTERS	  				**
@@ -509,6 +554,10 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	public Jugador getJugadorQueDebeJugar() {
 		return jugadorQueDebeJugar;
+	}
+	
+	public Jugador getJugadorQueDebeCantar() {
+		return this.jugadorQueDebeCantar;
 	}
 
 	public CantoEnProcesoParaElTanto getCantoEnProcesoDelTanto() {
