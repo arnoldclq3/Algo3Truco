@@ -288,6 +288,16 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 		return this.rondaActual;
 	}
 
+	public Equipo getEquipo1() {
+		// TODO Auto-generated method stub
+		return this.ellos;
+	}
+
+	public Equipo getEquipo2() {
+		// TODO Auto-generated method stub
+		return this.nosotros;
+	}
+
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**
 	 *************************************************/

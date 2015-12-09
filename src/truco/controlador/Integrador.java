@@ -45,6 +45,7 @@ public class Integrador implements Observer{
 		
 		for ( VentanaJugador ventana : ventanas ) {
 			ventana.iniciarMesa();
+			ventana.iniciarVistaPuntaje();
 		}
 	}
 	

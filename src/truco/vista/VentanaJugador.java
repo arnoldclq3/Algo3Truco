@@ -21,8 +21,8 @@ import truco.modelo.Jugador;
 public class VentanaJugador {
 	
 	private GridPane vistas;
-	private Scene escenaJugador;
 	private Jugador miJugador;
+	private Scene escenaJugador;
 
 	public VentanaJugador(Jugador jugador){
 		
@@ -30,7 +30,6 @@ public class VentanaJugador {
 		this.iniciarGridVistas();
 		this.iniciarBotonera();
 		this.iniciarManoJugador();
-		//this.iniciarMesa();
 	}
 	
 	public void mostrar(Stage stage) {
@@ -50,30 +49,41 @@ public class VentanaJugador {
         Background background2 = new Background(backgroundImage2);
 		
         this.vistas.setBackground(background2);
-		
-        Text tituloPrincipal = new Text(this.miJugador.getNombre());
-        tituloPrincipal.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
-        tituloPrincipal.setTextAlignment(TextAlignment.CENTER);
-        tituloPrincipal.setFill(Color.WHITE);
-        this.vistas.add(tituloPrincipal, 1, 0);
-        
-		this.escenaJugador = new Scene(vistas, 1050, 650, Color.BLACK);
+        this.agregarNombreJugador();
+		this.escenaJugador = new Scene(vistas, 1200, 700, Color.BLACK);
 	}
 
+	public void iniciarVistaPuntaje() {
+		
+		VistaPuntaje vistaPuntaje = new VistaPuntaje(miJugador);
+		this.miJugador.getMesa().addObserver(vistaPuntaje);
+		this.vistas.add(vistaPuntaje.obtenerVista(), 1, 1);
+	}
+	
 	private void iniciarBotonera() {
 		VistaBotonera botonera = new VistaBotonera();
-		this.vistas.add(botonera.obtenerVista(), 1, 1);
+		this.vistas.add(botonera.obtenerVista(), 1, 2);
 	}
 	
 	private void iniciarManoJugador(){
 		VistaManoJugador vistaManoJugador = new VistaManoJugador(miJugador);
-		miJugador.addObserver(vistaManoJugador);
-		this.vistas.add(vistaManoJugador.obtenerVista(), 0, 1);
+		this.miJugador.addObserver(vistaManoJugador);
+		this.vistas.add(vistaManoJugador.obtenerVista(), 0, 2);
 	}
 	
 	public void iniciarMesa(){
 		VistaMesa vistaMesa = new VistaMesa(miJugador);
 		this.miJugador.getMesa().addObserver(vistaMesa);
-		this.vistas.add(vistaMesa.obtenerVista(), 0, 0);
+		this.vistas.add(vistaMesa.obtenerVista(), 0, 1);
+	}
+	
+	private void agregarNombreJugador() {
+		
+		Text texto = new Text(this.miJugador.getNombre());
+		texto.setFont(Font.font("Tahoma", FontWeight.BOLD, 30));
+		texto.setTextAlignment(TextAlignment.CENTER);
+		texto.setFill(Color.WHITE);
+		
+		this.vistas.add(texto, 0, 3);
 	}
 }

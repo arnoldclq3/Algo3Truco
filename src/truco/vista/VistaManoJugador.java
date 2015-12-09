@@ -27,7 +27,7 @@ public class VistaManoJugador implements Observer {
 
 	private void iniciarManoJugador() {
 		this.manoJugador = new HBox();
-		this.manoJugador.setSpacing(10);
+		this.manoJugador.setSpacing(3);
 		this.manoJugador.getChildren().add( this.iniciarBotonCarta() );
 		this.manoJugador.getChildren().add( this.iniciarBotonCarta() );
 		this.manoJugador.getChildren().add( this.iniciarBotonCarta() );
@@ -35,8 +35,8 @@ public class VistaManoJugador implements Observer {
 
 	private Button iniciarBotonCarta() {
 		Button botonCarta = new Button();
-		botonCarta.setMinSize(100, 200);
-		botonCarta.setMaxSize(100, 200);
+		//botonCarta.setMinSize(100, 200);
+		//botonCarta.setMaxSize(100, 200);
 		return botonCarta;
 	}
 
