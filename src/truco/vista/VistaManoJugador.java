@@ -44,6 +44,7 @@ public class VistaManoJugador implements Observer {
 		Button botonCarta = new Button();
 		ImageView imagen = new ImageView(this.miProveedor.obtenerImagenParaCarta(carta));
 		botonCarta.setGraphic(imagen);
+		botonCarta.setOnAction( new ControladorJugarCarta(this.miJugador ,carta) );
 		return botonCarta;
 	}
 

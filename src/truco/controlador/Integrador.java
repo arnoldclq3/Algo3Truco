@@ -34,7 +34,7 @@ public class Integrador implements Observer{
 		VentanaJugador ventanaJugador = new VentanaJugador(unJugador);
 		this.ventanasJugadores.put(unJugador, ventanaJugador);
 	}
-	
+	/*
 	public void agregarMesaObservada(Mesa laMesa) {
 		
 		this.mesa = laMesa;
@@ -48,14 +48,12 @@ public class Integrador implements Observer{
 			ventana.iniciarVistaPuntaje();
 		}
 	}
-	
+	*/
 	public void iniciar(Mesa mesaJuego) {
-		
+		this.mesa = mesaJuego;
 		List<Jugador> jugadoresEnJuego = mesaJuego.getJugadoresEnJuego();
-		
+		this.mesa.addObserver(this);
 		for (Jugador jugadorActual : jugadoresEnJuego){
-			System.out.print("El Jugador Actual es: ");
-			System.out.println( jugadorActual.getNombre() );
 			this.agregarJugadorObservado(jugadorActual);
 		}
 		
@@ -77,7 +75,7 @@ public class Integrador implements Observer{
 	*/
 	@Override
 	public void update(Observable mesa, Object unJugador) {
-		Jugador jugadorQueDebeJugar = this.mesa.getRondaActual().getJugadorQueDebeJugar();
+		//Jugador jugadorQueDebeJugar = this.mesa.getRondaActual().getJugadorQueDebeJugar();
 		Jugador jugadorQueDebeCantar = this.mesa.getRondaActual().getJugadorQueDebeCantar();
 		
 		/*
