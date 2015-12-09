@@ -304,13 +304,15 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	}
 
 	public Equipo getEquipo1() {
-		// TODO Auto-generated method stub
 		return this.ellos;
 	}
 
 	public Equipo getEquipo2() {
-		// TODO Auto-generated method stub
 		return this.nosotros;
+	}
+
+	public List<Jugador> getJugadoresEnJuego() {
+		return this.jugadoresEnJuego;
 	}
 
 	/*************************************************

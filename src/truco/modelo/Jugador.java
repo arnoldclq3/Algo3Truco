@@ -18,7 +18,7 @@ public class Jugador extends Observable {
 	private ArrayList<Carta> manoDelJugador;
 	private String nombre;
 	private Mesa mesaEnLaQueEstoyJugando;
-	private static int numeroJugador = 0;
+	private static int numeroJugador = 1;
 	
 	
 	/*************************************************

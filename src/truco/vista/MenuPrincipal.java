@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import truco.controlador.Integrador;
 import truco.modelo.JuegoTruco;
 import truco.modelo.Jugador;
+import truco.modelo.Mesa;
 
 public class MenuPrincipal {
 
@@ -148,9 +149,10 @@ public class MenuPrincipal {
         	this.juego.agregarJugadorEnEquipoNosotros(jugador1);
         	this.juego.agregarJugadorEnEquipoEllos(jugador2);
         	
+        	/*
         	this.integrador.agregarJugadorObservado(jugador1);
         	this.integrador.agregarJugadorObservado(jugador2);
-        	
+        	*/
         	this.crearMenuFlor();
         });
         
@@ -225,8 +227,9 @@ public class MenuPrincipal {
         Button botonJugar = new Button("",imagenPlay);
         botonJugar.setOnAction(e->{
         
-        	this.integrador.agregarMesaObservada(this.juego.iniciarJuego());
-        	this.integrador.iniciar();
+        
+        	//this.integrador.agregarMesaObservada(this.juego.iniciarJuego());
+        	this.integrador.iniciar( this.juego.iniciarJuego() );
         });
 		
 		botones.getChildren().add(botonJugar);

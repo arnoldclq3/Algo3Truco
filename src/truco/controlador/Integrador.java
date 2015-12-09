@@ -6,6 +6,7 @@ import truco.vista.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -48,20 +49,32 @@ public class Integrador implements Observer{
 		}
 	}
 	
-	public void iniciar() {
+	public void iniciar(Mesa mesaJuego) {
 		
+		List<Jugador> jugadoresEnJuego = mesaJuego.getJugadoresEnJuego();
+		
+		for (Jugador jugadorActual : jugadoresEnJuego){
+			System.out.print("El Jugador Actual es: ");
+			System.out.println( jugadorActual.getNombre() );
+			this.agregarJugadorObservado(jugadorActual);
+		}
+		
+		this.ventanasJugadores.get( jugadoresEnJuego.get(0) ).mostrar(stage);
+		/*
 		if ( this.estadoValido() ) {
 			
 			Collection<VentanaJugador> valores = this.ventanasJugadores.values();
 			((VentanaJugador) valores.iterator().next()).mostrar(stage);
 		}
+		*/
 	}
 
+	/*
 	private boolean estadoValido() {
 		
 		return ( ventanasJugadores.size() != 0);
 	}
-
+	*/
 	@Override
 	public void update(Observable mesa, Object unJugador) {
 		Jugador jugadorQueDebeJugar = this.mesa.getRondaActual().getJugadorQueDebeJugar();

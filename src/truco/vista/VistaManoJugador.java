@@ -20,23 +20,30 @@ public class VistaManoJugador implements Observer {
 	private Jugador miJugador;
 	
 	public VistaManoJugador(Jugador miJugador){
-		this.iniciarManoJugador();
-		this.miProveedor = new ProveedorDeImagenDeCarta();
 		this.miJugador = miJugador;
+		this.miProveedor = new ProveedorDeImagenDeCarta();
+		this.iniciarManoJugador();	
 	}
 
 	private void iniciarManoJugador() {
 		this.manoJugador = new HBox();
 		this.manoJugador.setSpacing(3);
-		this.manoJugador.getChildren().add( this.iniciarBotonCarta() );
-		this.manoJugador.getChildren().add( this.iniciarBotonCarta() );
-		this.manoJugador.getChildren().add( this.iniciarBotonCarta() );
+		
+		this.agregarCartas();
 	}
 
-	private Button iniciarBotonCarta() {
+	private void agregarCartas() {
+		List<Carta> cartas = this.miJugador.obtenerMano();
+		if (cartas == null)
+			return;
+		for (Carta carta : cartas)
+			this.manoJugador.getChildren().add( this.iniciarBotonCarta( carta ) );
+	}
+
+	private Button iniciarBotonCarta(Carta carta) {
 		Button botonCarta = new Button();
-		//botonCarta.setMinSize(100, 200);
-		//botonCarta.setMaxSize(100, 200);
+		ImageView imagen = new ImageView(this.miProveedor.obtenerImagenParaCarta(carta));
+		botonCarta.setGraphic(imagen);
 		return botonCarta;
 	}
 

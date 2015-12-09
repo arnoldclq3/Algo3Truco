@@ -26,10 +26,13 @@ public class VentanaJugador {
 
 	public VentanaJugador(Jugador jugador){
 		
+	
 		this.miJugador = jugador;
 		this.iniciarGridVistas();
 		this.iniciarBotonera();
 		this.iniciarManoJugador();
+		this.iniciarMesa();
+		this.iniciarVistaPuntaje();
 	}
 	
 	public void mostrar(Stage stage) {
@@ -55,25 +58,25 @@ public class VentanaJugador {
 
 	public void iniciarVistaPuntaje() {
 		
-		VistaPuntaje vistaPuntaje = new VistaPuntaje(miJugador);
+		VistaPuntaje vistaPuntaje = new VistaPuntaje(this.miJugador);
 		this.miJugador.getMesa().addObserver(vistaPuntaje);
 		this.vistas.add(vistaPuntaje.obtenerVista(), 1, 1);
 	}
 	
 	private void iniciarBotonera() {
 		VistaBotonera botonera = new VistaBotonera(this.miJugador);
-		miJugador.addObserver(botonera);
+		this.miJugador.addObserver(botonera);
 		this.vistas.add(botonera.obtenerVista(), 1, 2);
 	}
 	
 	private void iniciarManoJugador(){
-		VistaManoJugador vistaManoJugador = new VistaManoJugador(miJugador);
+		VistaManoJugador vistaManoJugador = new VistaManoJugador(this.miJugador);
 		this.miJugador.addObserver(vistaManoJugador);
 		this.vistas.add(vistaManoJugador.obtenerVista(), 0, 2);
 	}
 	
 	public void iniciarMesa(){
-		VistaMesa vistaMesa = new VistaMesa(miJugador);
+		VistaMesa vistaMesa = new VistaMesa(this.miJugador);
 		this.miJugador.getMesa().addObserver(vistaMesa);
 		this.vistas.add(vistaMesa.obtenerVista(), 0, 1);
 	}
