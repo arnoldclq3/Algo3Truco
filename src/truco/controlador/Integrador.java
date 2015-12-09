@@ -6,7 +6,6 @@ import truco.vista.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,8 +16,8 @@ public class Integrador implements Observer{
 	private Stage stage;
 	/* objetos observados */
 	private Mesa mesa;
-	private Ronda ronda;
-	private Mano mano;
+	//private Ronda ronda;
+	//private Mano mano;
 	/* objetos observadores */
 	private HashMap<Jugador, VentanaJugador> ventanasJugadores;
 	/* controladores */
@@ -66,7 +65,16 @@ public class Integrador implements Observer{
 	@Override
 	public void update(Observable mesa, Object unJugador) {
 		Jugador jugadorQueDebeJugar = this.mesa.getRondaActual().getJugadorQueDebeJugar();
-		VentanaJugador ventanaAMostrar = this.ventanasJugadores.get(jugadorQueDebeJugar);
+		Jugador jugadorQueDebeCantar = this.mesa.getRondaActual().getJugadorQueDebeCantar();
+		
+		/*
+		System.out.print("Jugador que debe Jugar: ");
+		System.out.println( jugadorQueDebeJugar.getNombre() );
+		System.out.print("Jugador que debe Cantar: ");
+		System.out.println( jugadorQueDebeCantar.getNombre() );
+		*/
+		
+		VentanaJugador ventanaAMostrar = this.ventanasJugadores.get(jugadorQueDebeCantar);
 		ventanaAMostrar.mostrar(this.stage);
 	}
 

@@ -47,7 +47,7 @@ public class VistaManoJugador implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		
-		Jugador jugador = (Jugador)o;
+		Jugador jugador = this.miJugador;
 		List<Carta> cartas = jugador.obtenerMano();
 		ObservableList<Node> botones = this.manoJugador.getChildren();
 		
