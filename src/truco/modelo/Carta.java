@@ -17,7 +17,7 @@ public class Carta {
 		return ( this.palo == carta.palo );
 	}
 	
-	int getValor() {
+	public int getValor() {
 		
 		return this.valor;
 	}

@@ -506,5 +506,15 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		return jugadorQueDebeJugar;
 	}
 
+	public Mano obtenerManoActual() {
+		// TODO Auto-generated method stub
+		return this.manoActual;
+	}
+
+	public List<Mano> obtenerManos() {
+		// TODO Auto-generated method stub
+		return this.manos;
+	}
+
 
 }

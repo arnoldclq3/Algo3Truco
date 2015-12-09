@@ -275,14 +275,16 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 			throw new NoSeJuegaConFlorException();	
 	}
 
-	public Ronda obtenerRondaActual() {
-		// TODO Auto-generated method stub
-		return this.rondaActual;
-	}
+	
 	/*************************************************
 	 ** 		 	 	 GETTERS					**
 	 *************************************************/
 	public Ronda getRondaActual(){
+		return this.rondaActual;
+	}
+	
+	public Ronda obtenerRondaActual() {
+		// TODO Auto-generated method stub
 		return this.rondaActual;
 	}
 

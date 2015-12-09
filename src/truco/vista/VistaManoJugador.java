@@ -17,10 +17,12 @@ public class VistaManoJugador implements Observer {
 	
 	private HBox manoJugador;
 	private ProveedorDeImagenDeCarta miProveedor;
+	private Jugador miJugador;
 	
-	public VistaManoJugador(){
+	public VistaManoJugador(Jugador miJugador){
 		this.iniciarManoJugador();
 		this.miProveedor = new ProveedorDeImagenDeCarta();
+		this.miJugador = miJugador;
 	}
 
 	private void iniciarManoJugador() {

@@ -5,6 +5,8 @@ import truco.vista.*;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -33,16 +35,23 @@ public class Integrador implements Observer{
 		this.ventanasJugadores.put(unJugador, ventanaJugador);
 	}
 	
-	public void agregarMesaObservada(Mesa unaMesa) {
+	public void agregarMesaObservada(Mesa laMesa) {
 		
-		this.mesa = unaMesa;
+		this.mesa = laMesa;
 		this.mesa.addObserver(this);
 		
+		LinkedList<VentanaJugador> ventanas = new LinkedList<VentanaJugador>();
+		ventanas.addAll(this.ventanasJugadores.values());
+		
+		for ( VentanaJugador ventana : ventanas ) {
+			ventana.iniciarMesa();
+		}
 	}
 	
 	public void iniciar() {
 		
 		if ( this.estadoValido() ) {
+			
 			Collection<VentanaJugador> valores = this.ventanasJugadores.values();
 			((VentanaJugador) valores.iterator().next()).mostrar(stage);
 		}
