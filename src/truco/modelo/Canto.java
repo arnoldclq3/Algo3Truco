@@ -1,6 +1,7 @@
 package truco.modelo;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Canto {
 	
@@ -32,5 +33,8 @@ public abstract class Canto {
 		return this.jugadorQueCanta;
 	}
 
+	public List<Canto> cantosValidosDeRespuesta(){
+		return this.cantosValidosDeRespuesta;
+	}
 
 }

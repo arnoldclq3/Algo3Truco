@@ -157,12 +157,14 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	@Override
 	public void quiero(Jugador unJugador) {
 		this.rondaActual.quiero(unJugador);
+		this.notificarObservadores();
 	}
 	
 	@Override
 	public void noQuiero(Jugador unJugador) {
 		this.rondaActual.noQuiero(unJugador);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
+		this.notificarObservadores();
 	}
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
@@ -177,6 +179,7 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 		this.verificarSiExisteUnEquipoGanador();
 		this.rondaActual.irseAlMazo(unJugador);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
+		this.notificarObservadores();
 	}
 	
 	// Se esta usando para hacer tests en Mesa-Test
@@ -192,18 +195,21 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	@Override
 	public void truco(Jugador jugadorQueCanta) {
 		this.rondaActual.truco(jugadorQueCanta);
+		this.notificarObservadores();
 		
 	}
 
 	@Override
 	public void retruco(Jugador jugadorQueCanta) {
 		this.rondaActual.retruco(jugadorQueCanta);
+		this.notificarObservadores();
 		
 	}
 
 	@Override
 	public void valeCuatro(Jugador jugadorQueCanta) {
 		this.rondaActual.valeCuatro(jugadorQueCanta);
+		this.notificarObservadores();
 	}
 	
 	/*************************************************
@@ -213,16 +219,19 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	@Override
 	public void envido(Jugador jugadorQueCanta) {
 		this.rondaActual.envido(jugadorQueCanta);	
+		this.notificarObservadores();
 	}
 
 	@Override
 	public void realEnvido(Jugador jugadorQueCanta) {
-		this.rondaActual.realEnvido(jugadorQueCanta);	
+		this.rondaActual.realEnvido(jugadorQueCanta);
+		this.notificarObservadores();
 	}
 
 	@Override
 	public void faltaEnvido(Jugador jugadorQueCanta) {
 		this.rondaActual.faltaEnvido(jugadorQueCanta);	
+		this.notificarObservadores();
 		
 	}
 
@@ -230,12 +239,14 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
 		this.rondaActual.cantarTantoDelEnvido(jugadorQueCanta);	
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();	
+		this.notificarObservadores();
 	}
 	
 	
 	@Override
 	public void sonBuenas(Jugador jugadorQueCanta) {
 		this.rondaActual.sonBuenas(jugadorQueCanta);
+		this.notificarObservadores();
 	}
 
 	/*************************************************
@@ -246,20 +257,21 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	public void flor(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
 		this.rondaActual.flor(jugadorQueCanta);
-		
+		this.notificarObservadores();
 	}
 
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
 		this.rondaActual.contraFlor(jugadorQueCanta);
-		
+		this.notificarObservadores();
 	}
 
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
 		this.rondaActual.contraFlorAResto(jugadorQueCanta);
+		this.notificarObservadores();
 		
 	}
 
@@ -268,6 +280,7 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 		this.controlarSiSeJuegaConFlor();
 		this.rondaActual.cantarTantoDeLaFlor(jugadorQueCanta);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
+		this.notificarObservadores();
 	}
 
 	private void controlarSiSeJuegaConFlor() {
@@ -279,13 +292,15 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	/*************************************************
 	 ** 		 	 	 GETTERS					**
 	 *************************************************/
+	
 	public Ronda getRondaActual(){
 		return this.rondaActual;
 	}
 	
-	public Ronda obtenerRondaActual() {
-		// TODO Auto-generated method stub
-		return this.rondaActual;
+
+	public boolean seJuegaConFlor(){
+		return this.seJuegaConFlor;
+
 	}
 
 	/*************************************************

@@ -1,7 +1,6 @@
 package truco.vista;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -35,7 +34,7 @@ public class VistaMesa implements Observer {
 	private ProveedorDeImagenDeCarta miProveedor;
 	private List<ImageView> c;
 	private Jugador miJugador;
-	private ImageView imagenActual;
+	//private ImageView imagenActual;
 	private Ronda miRonda;
 	private Mesa miMesa;
 	private List<Carta> cartasMostradas;
@@ -158,7 +157,7 @@ public class VistaMesa implements Observer {
 		}
 		
 		Mesa miMesa = (Mesa)o;
-		List<Mano> manos = miMesa.obtenerRondaActual().obtenerManos();
+		List<Mano> manos = miMesa.getRondaActual().obtenerManos();
 		for ( Mano mano : manos ) {
 			Collection<Carta> cartas = mano.devolverCartas();
 			for ( Carta carta : cartas ) {

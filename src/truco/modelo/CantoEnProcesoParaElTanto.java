@@ -273,6 +273,13 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 			this.jugadorGanadorDelProceso = jugadorQueCanta;
 	}
 
+	/*************************************************
+	 **      		    	GETTERS					**
+	 *************************************************/
+	
+	public boolean sePuedenRealizarOtrosCantos(){
+		return this.sePuedenRealizarCantosNuevos;
+	}
 
 
 
