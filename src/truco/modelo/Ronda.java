@@ -309,7 +309,8 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	@Override
 	public void noQuiero(Jugador jugadorQueCanta) {
-		if (this.cantoEnProcesoParaElTanto != null && !this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.jugadoresEnJuego.size()) ){
+		if (this.cantoEnProcesoParaElTanto != null && 
+			!this.terminoElProcesoDeCantoDelTanto() ){
 			// El "no quiero" es para un tanto (envido/flor)
 			this.cantoEnProcesoParaElTanto.noQuiero(jugadorQueCanta);
 			this.sumarPuntosPorTantoFinalizado();

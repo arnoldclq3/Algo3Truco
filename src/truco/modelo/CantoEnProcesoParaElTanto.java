@@ -8,6 +8,10 @@ import truco.excepciones.cantos.NoSePuedeCantarTantoDosVecesEnUnaRondaException;
 import truco.excepciones.cantos.RespuestaIncorrectaException;
 
 public class CantoEnProcesoParaElTanto extends CantosEnProceso implements CantosEnvido , CantosFlor{
+	
+	private static final int MAXIMA_CANTIDAD_DE_ENVIDO = 2;
+	private static final int MAXIMA_CANTIDAD_DE_REAL_ENVIDO = 2;
+	private static final int MAXIMA_CANTIDAD_DE_FLOR = 2;
 
 	private boolean seCantoFlor;
 	private boolean sePuedenRealizarCantosNuevos;
@@ -118,13 +122,18 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	 ** 			 VERIFICACIONES					**
 	 *************************************************/
 	
-	private void verificacionDeCantoRepetido(Canto elCantoABuscar,int maximaVecesQuePuedeEstarElCanto){
-		/*	Post:	Si el canto pasado se encuentra mas de 1 vez se lanza Excepcion
-		 * 			Excepcion = RespuestaIncorrecta */
+	private int cantidadVecesQueEstaUnCanto(Canto elCantoABuscar){
 		int cantidadDeVecesQueEstaElCantoABuscar = 0;
 		for (Canto unCanto : this.cantosAceptados)
 			if (unCanto.equals(elCantoABuscar))
 				cantidadDeVecesQueEstaElCantoABuscar += 1;
+		return cantidadDeVecesQueEstaElCantoABuscar;
+	}
+	
+	private void verificacionDeCantoRepetido(Canto elCantoABuscar,int maximaVecesQuePuedeEstarElCanto){
+		/*	Post:	Si el canto pasado se encuentra mas de 1 vez se lanza Excepcion
+		 * 			Excepcion = RespuestaIncorrecta */
+		int cantidadDeVecesQueEstaElCantoABuscar = this.cantidadVecesQueEstaUnCanto(elCantoABuscar);
 		if (cantidadDeVecesQueEstaElCantoABuscar > maximaVecesQuePuedeEstarElCanto)
 			throw new RespuestaIncorrectaException();	
 	}
@@ -145,6 +154,11 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 			throw new RespuestaIncorrectaException();
 		// 1º) Se verifica que no se supere la maxima veces que puede estar el canto
 		this.verificacionDeCantoRepetido(unCanto,maximaVecesQuePuedeEstarElCanto);
+		// SE ANALIZA EL CASO PARTICULAR DE ENVIDO + FLOR
+		if (this.cantosAceptados.size() == 1 
+				&& this.cantosAceptados.getFirst().equals( new Envido(null) )
+				&& unCanto.equals(new Flor(null) ) )
+			return;
 		// 2º) Se verifica que el ultimo canto tenga como canto de respuesta valida el canto.
 		this.verificacionDeRespuestaCorrecta(unCanto);	
 	}
@@ -188,7 +202,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	@Override
 	public void envido(Jugador jugadorQueCanta) {
 		Canto envido = new Envido(jugadorQueCanta);
-		this.verificacionesDelEnvido(envido, 1);
+		this.verificacionesDelEnvido(envido, MAXIMA_CANTIDAD_DE_ENVIDO - 1);
 		
 		this.agregarCanto(envido, jugadorQueCanta);
 	}
@@ -196,7 +210,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	@Override
 	public void realEnvido(Jugador jugadorQueCanta) {
 		Canto realEnvido = new RealEnvido(jugadorQueCanta);
-		this.verificacionesDelEnvido(realEnvido, 1);
+		this.verificacionesDelEnvido(realEnvido, MAXIMA_CANTIDAD_DE_REAL_ENVIDO - 1);
 		
 		this.agregarCanto(realEnvido, jugadorQueCanta);
 	}
@@ -237,7 +251,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	public void flor(Jugador jugadorQueCanta) {
 		Canto flor = new Flor(jugadorQueCanta);
 		this.verificacionDeCantoDeTantoUnicoPorLaRonda();
-		this.verificacionesGeneralesDelTanto(flor, 1);
+		this.verificacionesGeneralesDelTanto(flor, MAXIMA_CANTIDAD_DE_FLOR - 1);
 		
 		this.agregarCanto(flor, jugadorQueCanta);
 		this.seCantoFlor = true;
@@ -287,7 +301,18 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	public boolean seTerminoElProcesoPorUnNoQuiero(){
 		return this.seTerminoElProcesoPorUnNoQuiero;
 	}
-
+	
+	public boolean sePuedeCantarOtroEnvido(){
+		return ( this.cantidadVecesQueEstaUnCanto( new Envido(null) ) < MAXIMA_CANTIDAD_DE_ENVIDO);	
+	}
+	
+	public boolean sePuedeCantarOtroRealEnvido(){
+		return ( this.cantidadVecesQueEstaUnCanto( new RealEnvido(null) ) < MAXIMA_CANTIDAD_DE_REAL_ENVIDO);	
+	}
+	
+	public boolean sePuedeCantarOtraFlor(){
+		return ( this.cantidadVecesQueEstaUnCanto( new Flor(null) ) < MAXIMA_CANTIDAD_DE_FLOR);	
+	}
 
 
 }
