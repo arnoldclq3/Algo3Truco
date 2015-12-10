@@ -590,6 +590,11 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		// TODO Auto-generated method stub
 		return this.manos;
 	}
+	
+	public boolean trucoOEnvidoEnProceso() {
+		
+		return ( this.cantoEnProcesoParaElTanto != null && !this.terminoElProcesoDeCantoDelTanto() || this.cantoEnProcesoParaElTruco.hayTrucoEnProceso() );
+	}
 
 
 }

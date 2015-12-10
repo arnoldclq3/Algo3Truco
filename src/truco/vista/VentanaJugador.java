@@ -72,6 +72,7 @@ public class VentanaJugador {
 	private void iniciarManoJugador(){
 		VistaManoJugador vistaManoJugador = new VistaManoJugador(this.miJugador);
 		this.miJugador.addObserver(vistaManoJugador);
+		this.miJugador.getMesa().addObserver(vistaManoJugador);
 		this.vistas.add(vistaManoJugador.obtenerVista(), 0, 2);
 	}
 	

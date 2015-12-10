@@ -102,9 +102,9 @@ public class VistaMesa implements Observer {
 		if ( this.miRonda != null && this.miRonda.estaTerminada() ) {
 			
 			this.cartasMostradas.clear();
-			this.miRonda = this.miMesa.getRondaActual();
 			this.cartasJugadorUno.getChildren().clear();
 			this.cartasJugadorDos.getChildren().clear();
+			this.miRonda = this.miMesa.getRondaActual();
 		}
 		
 		Mesa miMesa = (Mesa)o;

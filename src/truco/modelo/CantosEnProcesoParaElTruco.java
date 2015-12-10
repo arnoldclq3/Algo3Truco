@@ -5,6 +5,7 @@ import truco.excepciones.cantos.RespuestaIncorrectaException;
 public class CantosEnProcesoParaElTruco extends CantosEnProceso implements CantosTruco{
 
 	private boolean existeGanador = false;
+	private boolean trucoEnProceso = false;
 	
 	/*************************************************
 	 **  Sobrecarga de Metodos en CantosEnProceso	**
@@ -13,6 +14,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 	@Override
 	public void quiero(Jugador jugadorQueCanta) {
 		// En el truco, aceptar no implica mas nada que seguir jugando
+		this.trucoEnProceso = false;
 		return;
 	}
 	
@@ -65,6 +67,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 		this.verificarQueNoExisteCantoPrevio();
 		
 		this.agregarCanto(truco,jugadorQueCanta);
+		this.trucoEnProceso = true;
 	}
 
 	@Override
@@ -73,6 +76,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 		this.verificarCantoValido(reTruco);
 		
 		this.agregarCanto(reTruco,jugadorQueCanta);
+		this.trucoEnProceso = true;
 	}
 
 
@@ -81,7 +85,13 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 		ValeCuatro valeCuatro = new ValeCuatro(jugadorQueCanta);
 		this.verificarCantoValido(valeCuatro);
 		
-		this.agregarCanto(valeCuatro,jugadorQueCanta);	
+		this.agregarCanto(valeCuatro,jugadorQueCanta);
+		this.trucoEnProceso = true;
+	}
+
+	public boolean hayTrucoEnProceso() {
+		
+		return this.trucoEnProceso;
 	}
 
 }

@@ -27,7 +27,7 @@ public class VistaManoJugador implements Observer {
 
 	private void iniciarManoJugador() {
 		this.manoJugador = new HBox();
-		this.manoJugador.setSpacing(3);
+		this.manoJugador.setSpacing(-10);
 		
 		this.agregarCartas();
 	}
@@ -55,8 +55,12 @@ public class VistaManoJugador implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		
-		Jugador jugador = this.miJugador;
-		List<Carta> cartas = jugador.obtenerMano();
+		if ( this.miJugador.getMesa().getRondaActual().trucoOEnvidoEnProceso() )
+			this.manoJugador.setDisable(true);
+		else 
+			this.manoJugador.setDisable(false);
+		
+		List<Carta> cartas = this.miJugador.obtenerMano();
 		ObservableList<Node> botones = this.manoJugador.getChildren();
 		
 		if ( cartas.size() < botones.size() ) {
@@ -74,7 +78,7 @@ public class VistaManoJugador implements Observer {
 			ImageView imagen = new ImageView(this.miProveedor.obtenerImagenParaCarta(carta));
 			boton.setVisible(true);
 			boton.setGraphic(imagen);
-			boton.setOnAction( new ControladorJugarCarta(jugador,carta) );
+			boton.setOnAction( new ControladorJugarCarta(this.miJugador,carta) );
 		}
 	}
 	
