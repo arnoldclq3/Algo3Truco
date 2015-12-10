@@ -15,40 +15,26 @@ public class Integrador implements Observer{
 	private Stage stage;
 	/* objetos observados */
 	private Mesa mesa;
-	//private Ronda ronda;
-	//private Mano mano;
+	private Jugador jugadorActual;
 	/* objetos observadores */
 	private HashMap<Jugador, VentanaJugador> ventanasJugadores;
-	private VistaJuegoTerminado ventanaJuegoTerminado;
+	private VentanaJuegoTerminado ventanaJuegoTerminado;
 	/* controladores */
 	
 	public Integrador(Stage stage) {
 	
+		this.jugadorActual = null;
 		this.stage = stage;
-		this.ventanaJuegoTerminado = new VistaJuegoTerminado();
+		this.ventanaJuegoTerminado = new VentanaJuegoTerminado();
 		this.ventanasJugadores = new HashMap<Jugador,VentanaJugador>();
 	}
 	
 	public void agregarJugadorObservado(Jugador unJugador) {
 		
-		VentanaJugador ventanaJugador = new VentanaJugador(unJugador);
+		VentanaJugador ventanaJugador = new VentanaJugador(this.stage, unJugador);
 		this.ventanasJugadores.put(unJugador, ventanaJugador);
 	}
-	/*
-	public void agregarMesaObservada(Mesa laMesa) {
-		
-		this.mesa = laMesa;
-		this.mesa.addObserver(this);
-		
-		LinkedList<VentanaJugador> ventanas = new LinkedList<VentanaJugador>();
-		ventanas.addAll(this.ventanasJugadores.values());
-		
-		for ( VentanaJugador ventana : ventanas ) {
-			ventana.iniciarMesa();
-			ventana.iniciarVistaPuntaje();
-		}
-	}
-	*/
+
 	public void iniciar(Mesa mesaJuego) {
 		this.mesa = mesaJuego;
 		List<Jugador> jugadoresEnJuego = mesaJuego.getJugadoresEnJuego();
@@ -57,25 +43,10 @@ public class Integrador implements Observer{
 			this.agregarJugadorObservado(jugadorActual);
 		}
 		
-		this.ventanasJugadores.get( jugadoresEnJuego.get(0) ).mostrar(stage);
-		/*
-		if ( this.estadoValido() ) {
-			
-			Collection<VentanaJugador> valores = this.ventanasJugadores.values();
-			((VentanaJugador) valores.iterator().next()).mostrar(stage);
-		}
-		*/
+		this.ventanasJugadores.get( jugadoresEnJuego.get(0) ).mostrar();
 	}
-
-	/*
-	private boolean estadoValido() {
-		
-		return ( ventanasJugadores.size() != 0);
-	}
-	*/
-	@Override
-	public void update(Observable mesa, Object unJugador) {
-		//Jugador jugadorQueDebeJugar = this.mesa.getRondaActual().getJugadorQueDebeJugar();
+	
+	private boolean terminoElJuego() {
 		
 		if ( this.mesa.juegoTerminado() ) {
 			Equipo equipoGanador = this.mesa.getEquipoGanador();
@@ -83,21 +54,28 @@ public class Integrador implements Observer{
 			for ( Jugador jugador : ganadores )
 				this.ventanaJuegoTerminado.agregarNombreGanador(jugador.getNombre());
 			this.ventanaJuegoTerminado.mostrar(stage);
-			return;
+			return true;
 		}
 		
-		Jugador jugadorQueDebeCantar = this.mesa.getRondaActual().getJugadorQueDebeCantar();
-		
-		/*
-		System.out.print("Jugador que debe Jugar: ");
-		System.out.println( jugadorQueDebeJugar.getNombre() );
-		System.out.print("Jugador que debe Cantar: ");
-		System.out.println( jugadorQueDebeCantar.getNombre() );
-		*/
-		
-		VentanaJugador ventanaAMostrar = this.ventanasJugadores.get(jugadorQueDebeCantar);
-		ventanaAMostrar.mostrar(this.stage);
+		return false;
 	}
 
-	
+	@Override
+	public void update(Observable mesa, Object unJugador) {
+		
+		if ( this.terminoElJuego() )
+			return;
+		
+		Jugador jugadorQueDebeCantar = this.mesa.getRondaActual().getJugadorQueDebeCantar();
+		VentanaJugador ventanaDelJugador = this.ventanasJugadores.get(jugadorQueDebeCantar);
+		
+		if ( this.jugadorActual != jugadorQueDebeCantar ) {
+			VentanaTelon telon = new VentanaTelon(this.stage, ventanaDelJugador, jugadorQueDebeCantar.getNombre());
+			telon.mostrar();
+		}else{
+			ventanaDelJugador.mostrar();
+		}
+		
+		this.jugadorActual = jugadorQueDebeCantar;
+	}
 }

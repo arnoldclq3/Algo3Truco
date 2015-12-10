@@ -17,12 +17,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-public class VistaJuegoTerminado {
+public class VentanaJuegoTerminado {
 
 	private Scene miEscena;
 	private VBox vistaJuegoTerminado;
 	
-	public VistaJuegoTerminado() {
+	public VentanaJuegoTerminado() {
 		
 		this.iniciarVistaJuegoTerminado();
 	}

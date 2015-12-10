@@ -23,10 +23,11 @@ public class VentanaJugador {
 	private GridPane vistas;
 	private Jugador miJugador;
 	private Scene escenaJugador;
+	private Stage miStage;
 
-	public VentanaJugador(Jugador jugador){
+	public VentanaJugador(Stage stage, Jugador jugador){
 		
-	
+		this.miStage = stage;
 		this.miJugador = jugador;
 		this.iniciarGridVistas();
 		this.iniciarBotonera();
@@ -35,9 +36,9 @@ public class VentanaJugador {
 		this.iniciarVistaPuntaje();
 	}
 	
-	public void mostrar(Stage stage) {
+	public void mostrar() {
 
-		stage.setScene(this.escenaJugador);
+		this.miStage.setScene(this.escenaJugador);
 	}
 	
 	private void iniciarGridVistas() {
