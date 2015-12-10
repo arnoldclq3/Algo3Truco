@@ -197,6 +197,11 @@ public class VistaBotonera implements Observer{
 		this.mapaDeBotonesPorNombre.get("No Quiero").setDisable(false);
 	}
 	
+	private void apagarBotonesDeAceptacion(){
+		this.mapaDeBotonesPorNombre.get("Quiero").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("No Quiero").setDisable(true);
+	}
+	
 	private void apagarBotonesDeTruco(){
 		this.mapaDeBotonesPorNombre.get("Truco").setDisable(true);
 		this.mapaDeBotonesPorNombre.get("Retruco").setDisable(true);
@@ -259,12 +264,16 @@ public class VistaBotonera implements Observer{
 	 *************************************************/
 	@Override
 	public void update(Observable objetoObservable, Object argumento) {
+		/*
 		// En caso de que el jugador no sea el jugador que debe jugar no actualizo la botonera
 		if ( !this.jugador.equals( rondaActual.getJugadorQueDebeCantar() )  )
 			return;
-		
+		*/
 		if (this.rondaActual.estaTerminada() ){
 			// Se inicia la botonera
+			System.out.println("Se reinicia la botonera");
+			System.out.print("Para el Jugador: ");
+			System.out.println(this.jugador.getNombre());
 			this.rondaActual = this.jugador.getMesa().getRondaActual();
 			this.estadoInicialDeBotonera();
 		}
@@ -282,15 +291,18 @@ public class VistaBotonera implements Observer{
 		CantosEnProcesoParaElTruco cantoEnProcesoDeTruco = rondaActual.getCantoEnProcesoDelTruco();
 		// En el caso de que no se halla cantado ningun Truco, se deja en el estado inicial
 		if ( ! cantoEnProcesoDeTruco.seRealizoAlgunCanto() ){
+			System.out.println("No se realizo ningun canto de Truco. Se prenden los botones iniciales de truco");
 			this.prenderBotonesInicialesParaElTruco();
 			return;
 		}
 		if ( cantoEnProcesoDeTruco.seAceptaronLosCantos() ){
 			// Si se acepto un truco, solo hay que habilitar los botones de respuestas posibles para el ultimo canto
+			System.out.println("Se aceptaron todos los cantos del truco. Hay que prender solo las respuestas");
 			this.prenderBotonesRespuestasParaElUltimoCanto(cantoEnProcesoDeTruco);
 		}
 		else{
 			// Si hay un canto en proceso, se tienen que habilitar los de aceptacion y el canto siguiente para el utlimo Truco cantado.
+			System.out.println("Hay un truco pendiente, se activa aceptacion y respuesta al ultimo canto. Se apaga mazo");
 			this.prenderBotonesDeAceptacion();
 			this.prenderBotonesRespuestasParaElUltimoCanto(cantoEnProcesoDeTruco);
 			this.apagarBotonDeMeVoyAlMazo();
@@ -323,6 +335,7 @@ public class VistaBotonera implements Observer{
 		}
 		// Los ultimos casos a analizar es cuando hay un canto de los puntos del tanto en progreso.
 		System.out.println("Se estan cantando los puntos del tanto");
+		this.apagarBotonesDeAceptacion();
 		if ( this.jugador.getMesa().seJuegaConFlor() && cantoEnProcesoDeTanto.seCantoFlor()){
 			this.prenderBotonesParaCantarElTantoDeLaFlor();
 		}
