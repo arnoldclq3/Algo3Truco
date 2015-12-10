@@ -65,7 +65,7 @@ public class VentanaJugador {
 	
 	private void iniciarBotonera() {
 		VistaBotonera botonera = new VistaBotonera(this.miJugador);
-		this.miJugador.addObserver(botonera);
+		this.miJugador.getMesa().addObserver(botonera);
 		this.vistas.add(botonera.obtenerVista(), 1, 2);
 	}
 	

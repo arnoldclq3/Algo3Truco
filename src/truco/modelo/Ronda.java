@@ -374,12 +374,15 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	}
 	
 	private void controlarSiElCantoDelTantoFinalizo(){
+		this.actualizarJugadorQueDebeCantar();
 		boolean cantoFinalizadoDeFlor = false;
 		if ( this.cantoEnProcesoParaElTanto.seCantoFlor() )
 			cantoFinalizadoDeFlor = this.controlarSiElCantoDeFlorFinalizo();
 		
-		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.jugadoresEnJuego.size()) || cantoFinalizadoDeFlor)
+		if (this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto(this.jugadoresEnJuego.size()) || cantoFinalizadoDeFlor){
 			this.sumarPuntosPorTantoFinalizado();
+			this.jugadorQueDebeCantar = this.jugadorQueDebeJugar;
+		}
 	}
 	
 
@@ -569,8 +572,7 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		if ( this.cantoEnProcesoParaElTanto.seCantoFlor() )
 			return this.controlarSiElCantoDeFlorFinalizo();
 		else
-			return this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto( this.jugadoresEnJuego.size() );
-		
+			return this.cantoEnProcesoParaElTanto.terminoElProcesoDeCanto( this.jugadoresEnJuego.size() );	
 	}
 
 	public List<Mano> getManos() {
@@ -596,5 +598,13 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		return ( this.cantoEnProcesoParaElTanto != null && !this.terminoElProcesoDeCantoDelTanto() || this.cantoEnProcesoParaElTruco.hayTrucoEnProceso() );
 	}
 
+	public boolean seEstaJugandoLaPrimeraMano() {
+		return (this.manos.size() == 1);
+	}
+
+	public boolean seRealizoAlgunCantoDelTanto() {
+		return this.cantoEnProcesoParaElTanto != null;
+	}
+	
 
 }

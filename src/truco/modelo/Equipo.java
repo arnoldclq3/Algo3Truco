@@ -2,7 +2,6 @@ package truco.modelo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Observable;
 
 import truco.excepciones.equipo.ExisteJugadorEnEquipoException;
 import truco.excepciones.equipo.JugadorInexistenteException;

@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 import truco.controlador.Integrador;
 import truco.modelo.JuegoTruco;
 import truco.modelo.Jugador;
-import truco.modelo.Mesa;
 
 public class MenuPrincipal {
 
