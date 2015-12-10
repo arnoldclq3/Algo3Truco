@@ -177,7 +177,8 @@ public class VistaBotonera implements Observer{
 	}
 
 	private void prenderBotonesInicialesParaElTanto(){
-		this.mapaDeBotonesPorNombre.get("Flor").setDisable(false);
+		if ( this.jugador.tieneFlor() )
+			this.mapaDeBotonesPorNombre.get("Flor").setDisable(false);
 		this.mapaDeBotonesPorNombre.get("Envido").setDisable(false);
 		this.mapaDeBotonesPorNombre.get("Real Envido").setDisable(false);
 		this.mapaDeBotonesPorNombre.get("Falta Envido").setDisable(false);
@@ -322,7 +323,7 @@ public class VistaBotonera implements Observer{
 		}
 		// Los ultimos casos a analizar es cuando hay un canto de los puntos del tanto en progreso.
 		System.out.println("Se estan cantando los puntos del tanto");
-		if ( this.jugador.getMesa().seJuegaConFlor()  ){
+		if ( this.jugador.getMesa().seJuegaConFlor() && cantoEnProcesoDeTanto.seCantoFlor()){
 			this.prenderBotonesParaCantarElTantoDeLaFlor();
 		}
 		else
