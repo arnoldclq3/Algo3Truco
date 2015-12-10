@@ -11,6 +11,7 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 
 	private boolean seCantoFlor;
 	private boolean sePuedenRealizarCantosNuevos;
+	private boolean seTerminoElProcesoPorUnNoQuiero = false;
 	private int cantidadDeJugadoresQueCantaronSuTanto;
 	
 	private Equipo equipo1;
@@ -59,6 +60,8 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	
 	@Override
 	public void noQuiero(Jugador jugadorQueCanta){
+		this.sePuedenRealizarCantosNuevos = false;
+		this.seTerminoElProcesoPorUnNoQuiero = true;
 		if (!this.seCantoFlor){
 			super.noQuiero(jugadorQueCanta);
 			return;
@@ -279,6 +282,10 @@ public class CantoEnProcesoParaElTanto extends CantosEnProceso implements Cantos
 	
 	public boolean sePuedenRealizarOtrosCantos(){
 		return this.sePuedenRealizarCantosNuevos;
+	}
+	
+	public boolean seTerminoElProcesoPorUnNoQuiero(){
+		return this.seTerminoElProcesoPorUnNoQuiero;
 	}
 
 

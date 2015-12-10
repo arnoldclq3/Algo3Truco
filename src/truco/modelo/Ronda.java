@@ -569,6 +569,8 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	public boolean terminoElProcesoDeCantoDelTanto(){
 		if (this.cantoEnProcesoParaElTanto == null)
 			return false;
+		if (this.cantoEnProcesoParaElTanto.seTerminoElProcesoPorUnNoQuiero() )
+			return true;
 		if ( this.cantoEnProcesoParaElTanto.seCantoFlor() )
 			return this.controlarSiElCantoDeFlorFinalizo();
 		else
@@ -593,7 +595,9 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	
 	public boolean trucoOEnvidoEnProceso() {
 		
-		return ( this.cantoEnProcesoParaElTanto != null && !this.terminoElProcesoDeCantoDelTanto() || this.cantoEnProcesoParaElTruco.hayTrucoEnProceso() );
+		return ( this.cantoEnProcesoParaElTanto != null && 
+				!this.terminoElProcesoDeCantoDelTanto() || 
+				this.cantoEnProcesoParaElTruco.hayTrucoEnProceso() );
 	}
 
 	public boolean seEstaJugandoLaPrimeraMano() {
