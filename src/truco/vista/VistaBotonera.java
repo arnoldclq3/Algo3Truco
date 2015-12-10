@@ -230,6 +230,8 @@ public class VistaBotonera implements Observer{
 	}
 	
 	private void prenderBotonesRespuestasParaElUltimoCanto(CantosEnProceso procesoDeCantos){
+		if ( procesoDeCantos.getCantosRealizados().isEmpty() )
+			return;
 		Canto ultimoCanto = procesoDeCantos.getCantosRealizados().get(procesoDeCantos.getCantosRealizados().size() - 1 );
 		this.habilitarCantosDeRespuestaParaElCanto(ultimoCanto);
 	}
@@ -313,8 +315,9 @@ public class VistaBotonera implements Observer{
 	private void analizarQueBotonesDelTantoHayQuePrender() {
 		/*	En los siguientes casos hay que apagar los botones del tanto: 
 		 * 	1º) No se este jugando la primera mano
-		 * 	2º) Se halla terminado el canto del tanto.
+		 * 	2º) Se halla terminado el canto del tanto. (Puede ser por un No Quiero)
 		 * 	3º) Halla un canto del truco aceptado */
+		CantoEnProcesoParaElTanto cantoEnProcesoDeTanto = rondaActual.getCantoEnProcesoDelTanto();
 		if ( ! this.rondaActual.seEstaJugandoLaPrimeraMano() || 
 				rondaActual.terminoElProcesoDeCantoDelTanto() ||
 				rondaActual.getCantoEnProcesoDelTruco().seAceptaronLosCantos() ){
@@ -322,7 +325,7 @@ public class VistaBotonera implements Observer{
 			this.apagarBotonesDelTanto();
 			return;
 		}
-		CantoEnProcesoParaElTanto cantoEnProcesoDeTanto = rondaActual.getCantoEnProcesoDelTanto();
+		
 		// En el caso de que se este jugando la primera ronda y no se halla cantad nada de tanto
 		if ( this.rondaActual.seEstaJugandoLaPrimeraMano() && ! rondaActual.seRealizoAlgunCantoDelTanto() ){
 			//System.out.println("1º Ronda sin ningun canto del tanto");
@@ -339,6 +342,7 @@ public class VistaBotonera implements Observer{
 			this.prenderBotonesDeAceptacion();
 			return;
 		}
+			
 		// Los ultimos casos a analizar es cuando hay un canto de los puntos del tanto en progreso.
 		//System.out.println("Se estan cantando los puntos del tanto");
 		this.apagarBotonesDeAceptacion();
