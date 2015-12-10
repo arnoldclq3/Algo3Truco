@@ -584,12 +584,10 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 	}
 
 	public Mano obtenerManoActual() {
-		// TODO Auto-generated method stub
 		return this.manoActual;
 	}
 
 	public List<Mano> obtenerManos() {
-		// TODO Auto-generated method stub
 		return this.manos;
 	}
 	
@@ -604,6 +602,14 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 
 	public boolean seRealizoAlgunCantoDelTanto() {
 		return this.cantoEnProcesoParaElTanto != null;
+	}
+	
+	public boolean puedeElJugadorRealizarUnCantoDeTruco(Jugador jugadorEnAnalisis){
+		if ( ! this.cantoEnProcesoParaElTruco.seAceptaronLosCantos() )
+			return false;
+		Jugador jugadorQueCantoUltimo = this.cantoEnProcesoParaElTruco.obtenerJugadorQueRealizoElUltimoCanto();
+		// Los dos jugadores tienen que estar en equipos distintos. El XOR (^) logra esto ya que T+T=F y F+F=F y T+F=T (Necesito esto invertido)
+		return ! ( this.equipo1.estaJugador(jugadorEnAnalisis) ^ this.equipo2.estaJugador(jugadorQueCantoUltimo) );
 	}
 	
 
