@@ -209,12 +209,20 @@ public class VistaBotonera implements Observer{
 	}
 	
 	private void apagarBotonesDelTanto(){
+		this.apagarBotonesDeEnvido();
+		this.apagarBotonesDeFlor();
+	}
+	
+	private void apagarBotonesDeEnvido(){
 		this.mapaDeBotonesPorNombre.get("Envido").setDisable(true);
 		this.mapaDeBotonesPorNombre.get("Real Envido").setDisable(true);
 		this.mapaDeBotonesPorNombre.get("Falta Envido").setDisable(true);
+	}
+	
+	private void apagarBotonesDeFlor(){
 		this.mapaDeBotonesPorNombre.get("Flor").setDisable(true);
 		this.mapaDeBotonesPorNombre.get("Contra Flor").setDisable(true);
-		this.mapaDeBotonesPorNombre.get("Contra Flor a Resto").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("Contra Flor a Resto").setDisable(true);	
 	}
 	
 	private void prenderBotonesParaCantarElTantoDelEnvido() {
@@ -258,6 +266,23 @@ public class VistaBotonera implements Observer{
 	private void setearLosPuntosDeTanto(int puntos){
 		Text valorPuntos = (Text) this.cajaPuntosTanto.getChildren().get(1);
 		valorPuntos.setText( String.valueOf(puntos) );
+	}
+	
+	private void apagarBotonesDeTantoDeCasosParticulares(CantoEnProcesoParaElTanto cantoEnProcesoDeTanto) {
+		if ( !this.jugador.tieneFlor() ){
+			this.apagarBotonesDeFlor();
+			if ( this.rondaActual.getCantoEnProcesoDelTanto().seCantoFlor() )
+				this.mapaDeBotonesPorNombre.get("Quiero").setDisable(true);
+		}
+		else
+			this.mapaDeBotonesPorNombre.get("Flor").setDisable(false);
+		
+		if (! cantoEnProcesoDeTanto.sePuedeCantarOtroEnvido() )
+			this.mapaDeBotonesPorNombre.get("Envido").setDisable(true);
+		if (! cantoEnProcesoDeTanto.sePuedeCantarOtroRealEnvido() )
+			this.mapaDeBotonesPorNombre.get("Real Envido").setDisable(true);
+		if (! cantoEnProcesoDeTanto.sePuedeCantarOtraFlor() )
+			this.mapaDeBotonesPorNombre.get("Flor").setDisable(true);
 	}
 	
 	
@@ -340,6 +365,7 @@ public class VistaBotonera implements Observer{
 			//System.out.println("Se esta en el proceso de cantos de respuesta para el tanto");
 			this.prenderBotonesRespuestasParaElUltimoCanto(cantoEnProcesoDeTanto);
 			this.prenderBotonesDeAceptacion();
+			this.apagarBotonesDeTantoDeCasosParticulares(cantoEnProcesoDeTanto);
 			return;
 		}
 			
@@ -354,7 +380,6 @@ public class VistaBotonera implements Observer{
 			
 	}
 	
-
 
 	/*************************************************
 	 ** 		    Metodos Publicos				**
