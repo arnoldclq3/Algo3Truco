@@ -12,20 +12,23 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import truco.controlador.*;
 import truco.modelo.*;
 
 public class VistaBotonera implements Observer{
 
-	private HBox botoneraTruco;
-	private HBox botoneraEnvido;
-	private HBox botoneraFlor;
-	private HBox botoneraAcciones;
-	private HBox botoneraTantos;
 	
 	private HashMap<Canto, Button> mapaBotonesCantos;
 	private VBox botonera;
 	private Jugador jugador;
+	private HashMap<String, Button> mapaDeBotonesPorNombre;
+	private Ronda rondaActual;
+	private HBox cajaPuntosTanto;
 	
 	
 	/*************************************************
@@ -34,15 +37,31 @@ public class VistaBotonera implements Observer{
 
 	public VistaBotonera(Jugador jugador){
 		this.jugador = jugador;
-		this.inciarBotoneras();
-		this.iniciarCajaVertical();
+		this.rondaActual = this.jugador.getMesa().getRondaActual();
+		this.botonera = new VBox();
+		this.mapaDeBotonesPorNombre = new HashMap<String,Button>();
+		
 		this.iniciarBotoneraTruco();
 		this.iniciarBotoneraEnvido();
 		this.iniciarBotoneraFlor();
 		this.iniciarBotoneraAcciones();
 		this.iniciarBotoneraCantosDelTanto();
-		this.iniciarVinculacionesDeBotones();
+		this.iniciarCajaDeResultadoDePuntosDeTanto();
+		
+		this.vincularBotonesDeCantosConObjetosCanto();
 		this.estadoInicialDeBotonera();
+		
+		this.volverInvisibleLosBotonesDeLaFlorEnCasoDeQueNoSeJuegueConFlor();
+	}
+
+	// Text tituloPrincipa2 = new Text("Bienvenido \n a");
+	private void volverInvisibleLosBotonesDeLaFlorEnCasoDeQueNoSeJuegueConFlor() {
+		if ( !this.jugador.getMesa().seJuegaConFlor() ){
+			this.mapaDeBotonesPorNombre.get("Flor").setVisible(false);
+			this.mapaDeBotonesPorNombre.get("Contra Flor").setVisible(false);
+			this.mapaDeBotonesPorNombre.get("Contra Flor a Resto").setVisible(false);
+		}
+		
 	}
 
 	private Button iniciarBotonDeBotonera(String nombre, EventHandler<ActionEvent> eventoPorMouse){
@@ -50,6 +69,7 @@ public class VistaBotonera implements Observer{
 		botonARetornar.setOnAction(eventoPorMouse);
 		botonARetornar.setMinSize(150, 20);
 		botonARetornar.setMaxSize(150, 40);
+		this.mapaDeBotonesPorNombre.put(nombre, botonARetornar);
 		return botonARetornar;
 	}
 	
@@ -61,122 +81,153 @@ public class VistaBotonera implements Observer{
 		return cajaARetornar;
 	}
 	
-	private void inciarBotoneras() {
-		this.botoneraTruco = this.iniciarCajaHorizontal();
-		this.botoneraEnvido = this.iniciarCajaHorizontal();
-		this.botoneraFlor = this.iniciarCajaHorizontal();
-		this.botoneraAcciones = this.iniciarCajaHorizontal();
-		this.botoneraTantos = this.iniciarCajaHorizontal();
-	}
-	
-	private void iniciarCajaVertical(){
-		this.botonera = new VBox();
-		this.botonera.getChildren().add(this.botoneraTruco);
-		this.botonera.getChildren().add(this.botoneraEnvido);
-		this.botonera.getChildren().add(this.botoneraFlor);
-		this.botonera.getChildren().add(this.botoneraAcciones);
-		this.botonera.getChildren().add(this.botoneraTantos);
-	}
 	
 	private void iniciarBotoneraTruco() {
-		this.botoneraTruco.getChildren().add( this.iniciarBotonDeBotonera("Truco" , new ControladorTruco(jugador) ) );
-		this.botoneraTruco.getChildren().add( this.iniciarBotonDeBotonera("Retruco" , new ControladorRetruco(jugador) ) );
-		this.botoneraTruco.getChildren().add( this.iniciarBotonDeBotonera("Vale Cuatro" , new ControladorValeCuatro(jugador) ) );
+		HBox botoneraTruco = this.iniciarCajaHorizontal();
+		botoneraTruco.getChildren().add( this.iniciarBotonDeBotonera("Truco" , new ControladorTruco(jugador) ) );
+		botoneraTruco.getChildren().add( this.iniciarBotonDeBotonera("Retruco" , new ControladorRetruco(jugador) ) );
+		botoneraTruco.getChildren().add( this.iniciarBotonDeBotonera("Vale Cuatro" , new ControladorValeCuatro(jugador) ) );
+		botonera.getChildren().add(botoneraTruco);
 	}
 	
 	private void iniciarBotoneraEnvido() {
-		this.botoneraEnvido.getChildren().add( this.iniciarBotonDeBotonera("Envido" , new ControladorEnvido(jugador) ) );
-		this.botoneraEnvido.getChildren().add( this.iniciarBotonDeBotonera("Real Envido" , new ControladorRealEnvido(jugador) ) );
-		this.botoneraEnvido.getChildren().add( this.iniciarBotonDeBotonera("Falta Envido" , new ControladorFaltaEnvido(jugador) ) );
+		HBox botoneraEnvido = this.iniciarCajaHorizontal();
+		botoneraEnvido.getChildren().add( this.iniciarBotonDeBotonera("Envido" , new ControladorEnvido(jugador) ) );
+		botoneraEnvido.getChildren().add( this.iniciarBotonDeBotonera("Real Envido" , new ControladorRealEnvido(jugador) ) );
+		botoneraEnvido.getChildren().add( this.iniciarBotonDeBotonera("Falta Envido" , new ControladorFaltaEnvido(jugador) ) );
+		botonera.getChildren().add(botoneraEnvido);
 	}
 	
 	private void iniciarBotoneraFlor() {
-		this.botoneraFlor.getChildren().add( this.iniciarBotonDeBotonera("Flor" , new ControladorFlor(jugador) ) );
-		this.botoneraFlor.getChildren().add( this.iniciarBotonDeBotonera("Contra Flor" , new ControladorContraFlor(jugador) ) );
-		this.botoneraFlor.getChildren().add( this.iniciarBotonDeBotonera("Contra Flor a Resto" , new ControladorContraFlorAResto(jugador) ) );
+		HBox botoneraFlor = this.iniciarCajaHorizontal();
+		botoneraFlor.getChildren().add( this.iniciarBotonDeBotonera("Flor" , new ControladorFlor(jugador) ) );
+		botoneraFlor.getChildren().add( this.iniciarBotonDeBotonera("Contra Flor" , new ControladorContraFlor(jugador) ) );
+		botoneraFlor.getChildren().add( this.iniciarBotonDeBotonera("Contra Flor a Resto" , new ControladorContraFlorAResto(jugador) ) );
+		botonera.getChildren().add(botoneraFlor);
 	}
 	
 	private void iniciarBotoneraAcciones() {
-		this.botoneraAcciones.getChildren().add( this.iniciarBotonDeBotonera("Quiero" , new ControladorQuiero(jugador) ) );
-		this.botoneraAcciones.getChildren().add( this.iniciarBotonDeBotonera("No Quiero" , new ControladorNoQuiero(jugador) ) );
-		this.botoneraAcciones.getChildren().add( this.iniciarBotonDeBotonera("Me voy al mazo" , new ControladorMeVoyAlMazo(jugador) ) );
+		HBox botoneraAcciones = this.iniciarCajaHorizontal();
+		botoneraAcciones.getChildren().add( this.iniciarBotonDeBotonera("Quiero" , new ControladorQuiero(jugador) ) );
+		botoneraAcciones.getChildren().add( this.iniciarBotonDeBotonera("No Quiero" , new ControladorNoQuiero(jugador) ) );
+		botoneraAcciones.getChildren().add( this.iniciarBotonDeBotonera("Me voy al mazo" , new ControladorMeVoyAlMazo(jugador) ) );
+		botonera.getChildren().add(botoneraAcciones);
 	}
 	
 	private void iniciarBotoneraCantosDelTanto() {
-		this.botoneraTantos.getChildren().add( this.iniciarBotonDeBotonera("Cantar Tanto Envido" , new ControladorCantarTantoDelEnvido(jugador) ) );
-		this.botoneraTantos.getChildren().add( this.iniciarBotonDeBotonera("Cantar Tanto Flor" , new ControladorCantarTantoDeLaFlor(jugador) ) );
-		this.botoneraTantos.getChildren().add( this.iniciarBotonDeBotonera("Son Buenas" , new ControladorSonBuenas(jugador) ) );	
+		HBox botoneraTantos = this.iniciarCajaHorizontal();
+		botoneraTantos.getChildren().add( this.iniciarBotonDeBotonera("Cantar Tanto Envido" , new ControladorCantarTantoDelEnvido(jugador) ) );
+		botoneraTantos.getChildren().add( this.iniciarBotonDeBotonera("Cantar Tanto Flor" , new ControladorCantarTantoDeLaFlor(jugador) ) );
+		botoneraTantos.getChildren().add( this.iniciarBotonDeBotonera("Son Buenas" , new ControladorSonBuenas(jugador) ) );
+		botonera.getChildren().add(botoneraTantos);
 	}
 	
-	private void iniciarVinculacionesDeBotones(){
+
+	private void iniciarCajaDeResultadoDePuntosDeTanto() {
+		this.cajaPuntosTanto = this.iniciarCajaHorizontal();
+		Text descripcion = this.crearCajaDeTexto("Puntos de Tanto: ");
+		Text valorPuntos = this.crearCajaDeTexto("");
+		cajaPuntosTanto.getChildren().add(descripcion);
+		cajaPuntosTanto.getChildren().add(valorPuntos);
+		this.botonera.getChildren().add( this.cajaPuntosTanto );
+	}
+	
+	private Text crearCajaDeTexto(String texto){
+		Text caja = new Text("Puntos de Tanto: ");
+		caja.setFont(Font.font("Tahoma", FontWeight.BOLD, 25));
+		caja.setTextAlignment(TextAlignment.CENTER);
+		caja.setFill(Color.WHITE);
+		return caja;
+	}
+	
+	private void vincularBotonesDeCantosConObjetosCanto(){
 		this.mapaBotonesCantos = new HashMap<Canto,Button>();
-		this.mapaBotonesCantos.put( new Envido(null) , (Button) this.botoneraEnvido.getChildren().get(0) );
-		this.mapaBotonesCantos.put( new RealEnvido(null) , (Button) this.botoneraEnvido.getChildren().get(1) );
-		this.mapaBotonesCantos.put( new FaltaEnvido(null) , (Button) this.botoneraEnvido.getChildren().get(2) );
-		this.mapaBotonesCantos.put( new Truco(null) , (Button) this.botoneraTruco.getChildren().get(0) );
-		this.mapaBotonesCantos.put( new Retruco(null) , (Button) this.botoneraTruco.getChildren().get(1) );
-		this.mapaBotonesCantos.put( new ValeCuatro(null) , (Button) this.botoneraTruco.getChildren().get(2) );
-		this.mapaBotonesCantos.put( new Flor(null) , (Button) this.botoneraFlor.getChildren().get(0) );
-		this.mapaBotonesCantos.put( new ContraFlor(null) , (Button) this.botoneraFlor.getChildren().get(1) );
-		this.mapaBotonesCantos.put( new ContraFlorAResto(null) , (Button) this.botoneraFlor.getChildren().get(2) );
+		this.mapaBotonesCantos.put( new Envido(null) , this.mapaDeBotonesPorNombre.get("Envido") );
+		this.mapaBotonesCantos.put( new RealEnvido(null) , this.mapaDeBotonesPorNombre.get("Real Envido") );
+		this.mapaBotonesCantos.put( new FaltaEnvido(null) , this.mapaDeBotonesPorNombre.get("Falta Envido") );
+		this.mapaBotonesCantos.put( new Truco(null) , this.mapaDeBotonesPorNombre.get("Truco") );
+		this.mapaBotonesCantos.put( new Retruco(null) , this.mapaDeBotonesPorNombre.get("Retruco") );
+		this.mapaBotonesCantos.put( new ValeCuatro(null) , this.mapaDeBotonesPorNombre.get("Vale Cuatro") );
+		this.mapaBotonesCantos.put( new Flor(null) , this.mapaDeBotonesPorNombre.get("Flor") );
+		this.mapaBotonesCantos.put( new ContraFlor(null) , this.mapaDeBotonesPorNombre.get("Contra Flor") );
+		this.mapaBotonesCantos.put( new ContraFlorAResto(null) , this.mapaDeBotonesPorNombre.get("Contra Flor a Resto") );
 	}
 	
 	private void estadoInicialDeBotonera(){
-		this.botoneraTruco.getChildren().get(1).setDisable(true);
-		this.botoneraTruco.getChildren().get(2).setDisable(true);
-		
-		
-		this.estadoIncialBotonerasDelTanto();
-	}
-	
-	private void estadoIncialBotonerasDelTanto(){
-		this.botoneraEnvido.setDisable(false);
-		this.botoneraFlor.getChildren().get(1).setDisable(true);
-		this.botoneraFlor.getChildren().get(2).setDisable(true);
-		
-		if ( this.jugador.tieneFlor() )
-			this.botoneraFlor.getChildren().get(0).setDisable(false);
-		
-		this.botoneraTantos.setDisable(true);
-		
-		this.botoneraAcciones.getChildren().get(0).setDisable(true);
-		this.botoneraAcciones.getChildren().get(1).setDisable(true);
+		this.apagarTodosLosBotonoes();
+		this.prenderBotonesInicialesParaElTruco();
+		this.prenderBotonesInicialesParaElTanto();
+		this.prenderBotonDeMeVoyAlMazo();
 	}
 	
 
 	
 	/*************************************************
-	 ** 				Observer					**
+	 ** 			Prender o Apagar Botones		**
 	 *************************************************/
-	@Override
-	public void update(Observable objetoObservable, Object argumento) {
-		this.botoneraFlor.setVisible( this.jugador.getMesa().seJuegaConFlor() );
-		Ronda rondaActual = this.jugador.getMesa().getRondaActual();
-		// En caso de que el jugador no sea el jugador que debe jugar no actualizo la botonera
-		if (rondaActual == null || !this.jugador.equals( rondaActual.getJugadorQueDebeJugar() )  )
-			return;
-		
-		this.deshabilitarBotones();
-		if ( rondaActual.getManos().size() > 1 )
-			this.actualizarBotoneraDeTruco(rondaActual);
-		this.procesoActualizacionBotoneraParaPrimeraRonda(rondaActual);
+	
+	private void apagarTodosLosBotonoes() {
+		for (Button unBoton : this.mapaDeBotonesPorNombre.values() )
+			unBoton.setDisable(true);
+		this.apagarLaCajaDePuntosDelTanto();
+	}
+	
+	private void prenderBotonesInicialesParaElTruco() {
+		this.mapaDeBotonesPorNombre.get("Truco").setDisable(false);
 	}
 
-	private void deshabilitarBotones() {
-		this.botonera.setDisable(true);
+	private void prenderBotonesInicialesParaElTanto(){
+		this.mapaDeBotonesPorNombre.get("Flor").setDisable(false);
+		this.mapaDeBotonesPorNombre.get("Envido").setDisable(false);
+		this.mapaDeBotonesPorNombre.get("Real Envido").setDisable(false);
+		this.mapaDeBotonesPorNombre.get("Falta Envido").setDisable(false);
 	}
 	
-	private void actualizarBotoneraDeTruco(Ronda rondaActual) {
-		CantosEnProcesoParaElTruco cantoTruco = rondaActual.getCantoEnProcesoDelTruco();
-		if ( cantoTruco.getCantosRealizados().isEmpty() )
-			this.botoneraTruco.getChildren().get(0).setDisable(false);
-		else{
-			Canto ultimoCanto = cantoTruco.getCantosRealizados().get( cantoTruco.getCantosRealizados().size() - 1 );
-			this.habilitarCantosDeRespuestaParaElCanto(ultimoCanto);
-		}
-		
+	private void prenderBotonDeMeVoyAlMazo() {
+		this.mapaDeBotonesPorNombre.get("Me voy al mazo").setDisable(false);
 	}
 	
+	private void apagarBotonDeMeVoyAlMazo() {
+		this.mapaDeBotonesPorNombre.get("Me voy al mazo").setDisable(true);
+	}
+	
+	private void prenderBotonesDeAceptacion(){
+		this.mapaDeBotonesPorNombre.get("Quiero").setDisable(false);
+		this.mapaDeBotonesPorNombre.get("No Quiero").setDisable(false);
+	}
+	
+	private void apagarBotonesDeTruco(){
+		this.mapaDeBotonesPorNombre.get("Truco").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("Retruco").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("Vale Cuatro").setDisable(true);
+	}
+	
+	private void apagarBotonesDelTanto(){
+		this.mapaDeBotonesPorNombre.get("Envido").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("Real Envido").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("Falta Envido").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("Flor").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("Contra Flor").setDisable(true);
+		this.mapaDeBotonesPorNombre.get("Contra Flor a Resto").setDisable(true);
+	}
+	
+	private void prenderBotonesParaCantarElTantoDelEnvido() {
+		this.mapaDeBotonesPorNombre.get("Cantar Tanto Envido").setDisable(false);
+		this.mapaDeBotonesPorNombre.get("Son Buenas").setDisable(false);
+		this.prenderLaCajaDePuntosDelTanto(false);
+	}
+
+	private void prenderBotonesParaCantarElTantoDeLaFlor() {
+		this.mapaDeBotonesPorNombre.get("Cantar Tanto Flor").setDisable(false);
+		this.mapaDeBotonesPorNombre.get("Son Buenas").setDisable(false);
+		this.prenderLaCajaDePuntosDelTanto(true);
+	}
+	
+	private void prenderBotonesRespuestasParaElUltimoCanto(CantosEnProceso procesoDeCantos){
+		Canto ultimoCanto = procesoDeCantos.getCantosRealizados().get(procesoDeCantos.getCantosRealizados().size() - 1 );
+		this.habilitarCantosDeRespuestaParaElCanto(ultimoCanto);
+	}
+
 	private void habilitarCantosDeRespuestaParaElCanto(Canto ultimoCanto) {
 		List<Canto> cantosRespuestas = ultimoCanto.cantosValidosDeRespuesta();
 		for (Canto unCanto : cantosRespuestas)
@@ -184,39 +235,102 @@ public class VistaBotonera implements Observer{
 	}
 	
 	
-	private void procesoActualizacionBotoneraParaPrimeraRonda(Ronda rondaActual) {
-		// Casos de la primera ronda
-		CantoEnProcesoParaElTanto cantoTanto = rondaActual.getCantoEnProcesoDelTanto();
-		// Caso donde no se canto el tanto
-		if ( cantoTanto == null ){
-			this.estadoIncialBotonerasDelTanto();
-			this.actualizarBotoneraDeTruco(rondaActual);
-			return;
-		}
-		// Caso donde el canto ya se termino de cantar
-		if ( rondaActual.terminoElProcesoDeCantoDelTanto() ){
-			this.actualizarBotoneraDeTruco(rondaActual);
-			return;
-		}
-		// Caso donde se este cantando el tanto
-		if ( ! cantoTanto.sePuedenRealizarOtrosCantos() ){
-			this.actualizarBotoneraDeTantos(cantoTanto);
-			return;
-		}
-		// El ultimo caso seria la posibilidad de un canto de envido en espera de respuesta
-		Canto ultimoCanto = cantoTanto.getCantosRealizados().get( cantoTanto.getCantosRealizados().size() - 1 );
-		this.habilitarCantosDeRespuestaParaElCanto(ultimoCanto);			
+	private void apagarLaCajaDePuntosDelTanto(){
+		this.cajaPuntosTanto.setVisible(false);
 	}
-
-	private void actualizarBotoneraDeTantos(CantoEnProcesoParaElTanto cantoTanto) {
-		if ( cantoTanto.seCantoFlor() )
-			this.botoneraTantos.getChildren().get(1).setDisable(false);
-		else
-			this.botoneraTantos.getChildren().get(0).setDisable(false);
-		this.botoneraTantos.getChildren().get(2).setDisable(false);
-	}
-
 	
+	private void prenderLaCajaDePuntosDelTanto(boolean paraLaFlor){
+		this.cajaPuntosTanto.setVisible(true);
+		if (paraLaFlor)
+			this.setearLosPuntosDeTanto(this.jugador.puntajeFlor() );
+		else
+			this.setearLosPuntosDeTanto(this.jugador.puntajeEnvido() );
+	}
+
+	private void setearLosPuntosDeTanto(int puntos){
+		Text valorPuntos = (Text) this.cajaPuntosTanto.getChildren().get(1);
+		valorPuntos.setText( String.valueOf(puntos) );
+	}
+	
+	
+	/*************************************************
+	 ** 				Observer					**
+	 *************************************************/
+	@Override
+	public void update(Observable objetoObservable, Object argumento) {
+		// En caso de que el jugador no sea el jugador que debe jugar no actualizo la botonera
+		if ( !this.jugador.equals( rondaActual.getJugadorQueDebeCantar() )  )
+			return;
+		
+		if (this.rondaActual.estaTerminada() ){
+			// Se inicia la botonera
+			this.rondaActual = this.jugador.getMesa().getRondaActual();
+			this.estadoInicialDeBotonera();
+		}
+		else{
+			// Se analiza el caso particular de la botonera
+			this.apagarTodosLosBotonoes();
+			this.prenderBotonDeMeVoyAlMazo();
+			this.analizarQueBotonesDelTrucoHayQuePrender();
+			this.analizarQueBotonesDelTantoHayQuePrender();
+		}
+		
+	}
+
+	private void analizarQueBotonesDelTrucoHayQuePrender() {
+		CantosEnProcesoParaElTruco cantoEnProcesoDeTruco = rondaActual.getCantoEnProcesoDelTruco();
+		// En el caso de que no se halla cantado ningun Truco, se deja en el estado inicial
+		if ( ! cantoEnProcesoDeTruco.seRealizoAlgunCanto() ){
+			this.prenderBotonesInicialesParaElTruco();
+			return;
+		}
+		if ( cantoEnProcesoDeTruco.seAceptaronLosCantos() ){
+			// Si se acepto un truco, solo hay que habilitar los botones de respuestas posibles para el ultimo canto
+			this.prenderBotonesRespuestasParaElUltimoCanto(cantoEnProcesoDeTruco);
+		}
+		else{
+			// Si hay un canto en proceso, se tienen que habilitar los de aceptacion y el canto siguiente para el utlimo Truco cantado.
+			this.prenderBotonesDeAceptacion();
+			this.prenderBotonesRespuestasParaElUltimoCanto(cantoEnProcesoDeTruco);
+			this.apagarBotonDeMeVoyAlMazo();
+		}		
+	}
+	
+	private void analizarQueBotonesDelTantoHayQuePrender() {
+		// En los casos que no se este jugando la primera mano o se halla terminado el canto de un tanto, se apagan los botones del tanto.
+		if ( ! this.rondaActual.seEstaJugandoLaPrimeraMano() || rondaActual.terminoElProcesoDeCantoDelTanto() ){
+			System.out.println("Se apagan todos los botones del tanto");
+			this.apagarBotonesDelTanto();
+			return;
+		}
+		CantoEnProcesoParaElTanto cantoEnProcesoDeTanto = rondaActual.getCantoEnProcesoDelTanto();
+		// En el caso de que se este jugando la primera ronda y no se halla cantad nada de tanto
+		if ( this.rondaActual.seEstaJugandoLaPrimeraMano() && ! rondaActual.seRealizoAlgunCantoDelTanto() ){
+			System.out.println("1º Ronda sin ningun canto del tanto");
+			this.prenderBotonesInicialesParaElTanto();
+			return;
+		}
+		// De ahora en mas, hay un tanto cantado, y por ende, debo apagar los botones de truco
+		this.apagarBotonesDeTruco();
+		this.apagarBotonDeMeVoyAlMazo();
+		// En el caso que se pueda seguir respondiendo a los envidos, habilito las respuestas y los de aceptacion.
+		if ( cantoEnProcesoDeTanto.sePuedenRealizarOtrosCantos() ){
+			System.out.println("Se esta en el proceso de cantos de respuesta para el tanto");
+			this.prenderBotonesRespuestasParaElUltimoCanto(cantoEnProcesoDeTanto);
+			this.prenderBotonesDeAceptacion();
+			return;
+		}
+		// Los ultimos casos a analizar es cuando hay un canto de los puntos del tanto en progreso.
+		System.out.println("Se estan cantando los puntos del tanto");
+		if ( this.jugador.getMesa().seJuegaConFlor()  ){
+			this.prenderBotonesParaCantarElTantoDeLaFlor();
+		}
+		else
+			this.prenderBotonesParaCantarElTantoDelEnvido();
+			
+	}
+	
+
 
 	/*************************************************
 	 ** 		    Metodos Publicos				**

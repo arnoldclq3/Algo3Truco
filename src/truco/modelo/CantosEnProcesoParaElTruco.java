@@ -5,6 +5,7 @@ import truco.excepciones.cantos.RespuestaIncorrectaException;
 public class CantosEnProcesoParaElTruco extends CantosEnProceso implements CantosTruco{
 
 	private boolean existeGanador = false;
+	private boolean seAceptaronLosCantos;
 	
 	/*************************************************
 	 **  Sobrecarga de Metodos en CantosEnProceso	**
@@ -12,13 +13,14 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 	
 	@Override
 	public void quiero(Jugador jugadorQueCanta) {
-		// En el truco, aceptar no implica mas nada que seguir jugando
+		this.seAceptaronLosCantos = true;
 		return;
 	}
 	
 	@Override
 	public void noQuiero(Jugador jugadorQueCanta){
 		super.noQuiero(jugadorQueCanta);
+		this.seAceptaronLosCantos = false;
 		this.existeGanador = true;
 	}
 
@@ -62,6 +64,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 	@Override
 	public void truco(Jugador jugadorQueCanta) {
 		Truco truco = new Truco(jugadorQueCanta);
+		this.seAceptaronLosCantos = false;
 		this.verificarQueNoExisteCantoPrevio();
 		
 		this.agregarCanto(truco,jugadorQueCanta);
@@ -70,6 +73,7 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 	@Override
 	public void retruco(Jugador jugadorQueCanta) {
 		Retruco reTruco = new Retruco(jugadorQueCanta);
+		this.seAceptaronLosCantos = false;
 		this.verificarCantoValido(reTruco);
 		
 		this.agregarCanto(reTruco,jugadorQueCanta);
@@ -79,9 +83,18 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 	@Override
 	public void valeCuatro(Jugador jugadorQueCanta) {
 		ValeCuatro valeCuatro = new ValeCuatro(jugadorQueCanta);
+		this.seAceptaronLosCantos = false;
 		this.verificarCantoValido(valeCuatro);
 		
 		this.agregarCanto(valeCuatro,jugadorQueCanta);	
+	}
+	
+	/*************************************************
+	 **       			GETTER						**
+	 *************************************************/
+	
+	public boolean seAceptaronLosCantos(){
+		return this.seAceptaronLosCantos;
 	}
 
 }

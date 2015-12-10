@@ -34,4 +34,8 @@ public abstract class CantosEnProceso implements CantosGenerales{
 	public List<Canto> getCantosRealizados(){
 		return this.cantosAceptados;
 	}
+	
+	public boolean seRealizoAlgunCanto(){
+		return ( ! this.cantosAceptados.isEmpty() );
+	}
 }
