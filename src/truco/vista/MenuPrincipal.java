@@ -131,13 +131,15 @@ public class MenuPrincipal {
         tituloPrincipal.setTextAlignment(TextAlignment.CENTER);
         tituloPrincipal.setFill(Color.WHITE);
         
-        Label jugador1Label = new Label("nombre Jugador 1:");
+        Label jugador1Label = new Label("Nombre Jugador 1:");
         jugador1Label.setTextFill(Color.WHITE);
-        Label jugador2Label = new Label("nombre Jugador 2:");
+        Label jugador2Label = new Label("Nombre Jugador 2:");
         jugador2Label.setTextFill(Color.WHITE);
         
         TextField nombreJugador1 = new TextField();
+        nombreJugador1.setPromptText("Jugador 1");
         TextField nombreJugador2 = new TextField();
+        nombreJugador2.setPromptText("Jugador 2");
 		
         Button siguiente = new Button("Siguiente");
         siguiente.setOnAction(e->{
