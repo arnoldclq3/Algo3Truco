@@ -110,4 +110,10 @@ public class CantosEnProcesoParaElTruco extends CantosEnProceso implements Canto
 		return this.trucoEnProceso;
 	}
 
+	public Jugador obtenerJugadorQueRealizoElUltimoCanto() {
+		if (this.cantosAceptados.isEmpty())
+			return null;
+		return this.cantosAceptados.getLast().jugadorQueRealizoElCanto();
+	}
+
 }
