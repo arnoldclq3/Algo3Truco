@@ -281,10 +281,12 @@ public class VistaBotonera implements Observer{
 			this.mapaDeBotonesPorNombre.get("Envido").setDisable(true);
 		if (! cantoEnProcesoDeTanto.sePuedeCantarOtroRealEnvido() )
 			this.mapaDeBotonesPorNombre.get("Real Envido").setDisable(true);
-		if (! cantoEnProcesoDeTanto.sePuedeCantarOtraFlor() )
+		if (! cantoEnProcesoDeTanto.sePuedeCantarOtraFlor() && cantoEnProcesoDeTanto.getCantosRealizados().size() == 1 )
 			this.mapaDeBotonesPorNombre.get("Flor").setDisable(true);
+		if ( cantoEnProcesoDeTanto.seCantoFlor() && cantoEnProcesoDeTanto.getCantosRealizados().size() >= 2 )
+			this.apagarBotonesDeFlor();
 	}
-	
+
 	
 	/*************************************************
 	 ** 				Observer					**
