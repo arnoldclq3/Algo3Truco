@@ -617,5 +617,9 @@ public class Ronda implements CantosEnvido , CantosFlor , CantosTruco, CantosGen
 		return ! ( this.equipo1.estaJugador(jugadorEnAnalisis) ^ this.equipo2.estaJugador(jugadorQueCantoUltimo) );
 	}
 	
+	public boolean puedeElJugadorCantarSonBuenas(Jugador unJugador){
+		return (this.jugadoresEnJuego.getFirst() != unJugador);
+	}
+	
 
 }
