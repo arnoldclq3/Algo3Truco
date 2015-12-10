@@ -2,6 +2,7 @@ package truco.modelo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import truco.excepciones.equipo.ExisteJugadorEnEquipoException;
 import truco.excepciones.equipo.JugadorInexistenteException;
@@ -86,6 +87,11 @@ public class Equipo {
 
 	public boolean esGanador() {
 		return (this.puntaje >= this.puntosParaGanar);
+	}
+
+	public List<Jugador> getJugadores() {
+		
+		return this.jugadores;
 	}
 
 	

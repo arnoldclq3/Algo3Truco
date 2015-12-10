@@ -48,12 +48,12 @@ public class MenuPrincipal {
 		Text tituloPrincipa2 = new Text("Bienvenido \n a");
         tituloPrincipa2.setFont(Font.font("Tahoma", FontWeight.BOLD, 25));
         tituloPrincipa2.setTextAlignment(TextAlignment.CENTER);
-        tituloPrincipa2.setFill(Color.BLACK);
+        tituloPrincipa2.setFill(Color.WHITE);
         
 		Text tituloPrincipal = new Text("ALGO3TRUCO");
         tituloPrincipal.setFont(Font.font("Tahoma", FontWeight.BOLD, 40));
         tituloPrincipal.setTextAlignment(TextAlignment.CENTER);
-        tituloPrincipal.setFill(Color.BLACK);
+        tituloPrincipal.setFill(Color.WHITE);
 		
         Button comenzar = new Button("Comenzar");
         comenzar.setOnAction(e->{

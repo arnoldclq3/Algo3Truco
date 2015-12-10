@@ -53,7 +53,7 @@ public class VentanaJugador {
 		
         this.vistas.setBackground(background2);
         this.agregarNombreJugador();
-		this.escenaJugador = new Scene(vistas, 1200, 700, Color.BLACK);
+		this.escenaJugador = new Scene(vistas, 1200, 750, Color.BLACK);
 	}
 
 	public void iniciarVistaPuntaje() {

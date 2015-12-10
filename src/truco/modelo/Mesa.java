@@ -315,6 +315,20 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 		return this.jugadoresEnJuego;
 	}
 
+	public Equipo getEquipoGanador() {
+		
+		Equipo equipoGanador = null;
+		
+		if (this.juegoTerminado){
+			if (this.nosotros.obtenerCantidadDePuntos() == 30)
+				equipoGanador = this.nosotros;
+			else
+				equipoGanador = this.ellos;
+		}
+		
+		return equipoGanador;
+	}
+
 	/*************************************************
 	 ** 		 	  Fin de la Clase				**
 	 *************************************************/

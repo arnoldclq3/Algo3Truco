@@ -19,11 +19,13 @@ public class Integrador implements Observer{
 	//private Mano mano;
 	/* objetos observadores */
 	private HashMap<Jugador, VentanaJugador> ventanasJugadores;
+	private VistaJuegoTerminado ventanaJuegoTerminado;
 	/* controladores */
 	
 	public Integrador(Stage stage) {
 	
 		this.stage = stage;
+		this.ventanaJuegoTerminado = new VistaJuegoTerminado();
 		this.ventanasJugadores = new HashMap<Jugador,VentanaJugador>();
 	}
 	
@@ -74,6 +76,16 @@ public class Integrador implements Observer{
 	@Override
 	public void update(Observable mesa, Object unJugador) {
 		//Jugador jugadorQueDebeJugar = this.mesa.getRondaActual().getJugadorQueDebeJugar();
+		
+		if ( this.mesa.juegoTerminado() ) {
+			Equipo equipoGanador = this.mesa.getEquipoGanador();
+			List<Jugador> ganadores = equipoGanador.getJugadores();
+			for ( Jugador jugador : ganadores )
+				this.ventanaJuegoTerminado.agregarNombreGanador(jugador.getNombre());
+			this.ventanaJuegoTerminado.mostrar(stage);
+			return;
+		}
+		
 		Jugador jugadorQueDebeCantar = this.mesa.getRondaActual().getJugadorQueDebeCantar();
 		
 		/*
