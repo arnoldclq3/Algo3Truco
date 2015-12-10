@@ -24,6 +24,7 @@ public class VentanaJugador {
 	private Jugador miJugador;
 	private Scene escenaJugador;
 	private Stage miStage;
+	private VistaMensajeDelUltimoCantoRealizado vistaMensajeDelUltimoCantoRealizado;
 
 	public VentanaJugador(Stage stage, Jugador jugador){
 		
@@ -34,8 +35,9 @@ public class VentanaJugador {
 		this.iniciarManoJugador();
 		this.iniciarMesa();
 		this.iniciarVistaPuntaje();
+		this.iniciarVistaMensajeDelUltimoCantoRealizado();
 	}
-	
+
 	public void mostrar() {
 
 		this.miStage.setScene(this.escenaJugador);
@@ -56,7 +58,7 @@ public class VentanaJugador {
         this.agregarNombreJugador();
 		this.escenaJugador = new Scene(vistas, 1200, 750, Color.BLACK);
 	}
-
+	
 	public void iniciarVistaPuntaje() {
 		
 		VistaPuntaje vistaPuntaje = new VistaPuntaje(this.miJugador);
@@ -92,4 +94,11 @@ public class VentanaJugador {
 		
 		this.vistas.add(texto, 0, 3);
 	}
+	
+	private void iniciarVistaMensajeDelUltimoCantoRealizado() {
+		this.vistaMensajeDelUltimoCantoRealizado = new VistaMensajeDelUltimoCantoRealizado();
+		this.miJugador.getMesa().addObserver(vistaMensajeDelUltimoCantoRealizado);
+		this.vistas.add(this.vistaMensajeDelUltimoCantoRealizado.obtenerCajaMuestroDeCantos(), 1, 3);
+	}
+
 }

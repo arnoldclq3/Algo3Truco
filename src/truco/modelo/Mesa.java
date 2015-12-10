@@ -80,9 +80,14 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 		this.rondaActual = this.rondasAJugar.remove(0);
 	}
 	
-	private void notificarObservadores(){
+	private void notificarObservadores(Jugador jugadorQueCanta, String descripcion){
 		this.setChanged();
-		this.notifyObservers();
+		String cadenaAPasar;
+		if (descripcion != null)
+			cadenaAPasar = jugadorQueCanta.getNombre() + " canto: " + descripcion;
+		else
+			cadenaAPasar = descripcion;
+		this.notifyObservers(cadenaAPasar);
 	}
 
 	/*************************************************
@@ -157,14 +162,14 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	@Override
 	public void quiero(Jugador unJugador) {
 		this.rondaActual.quiero(unJugador);
-		this.notificarObservadores();
+		this.notificarObservadores(unJugador,"Quiero");
 	}
 	
 	@Override
 	public void noQuiero(Jugador unJugador) {
 		this.rondaActual.noQuiero(unJugador);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
-		this.notificarObservadores();
+		this.notificarObservadores(unJugador,"No Quiero");
 	}
 
 	public void jugarCarta(Jugador unJugador, Carta unaCarta) {
@@ -172,14 +177,14 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 		this.rondaActual.jugarCarta(unJugador,unaCarta);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
 		
-		this.notificarObservadores();
+		this.notificarObservadores(unJugador,null);
 	}
 	
 	public void irseAlMazo(Jugador unJugador) {
 		this.verificarSiExisteUnEquipoGanador();
 		this.rondaActual.irseAlMazo(unJugador);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
-		this.notificarObservadores();
+		this.notificarObservadores(unJugador,"Me voy al mazo");
 	}
 	
 	// Se esta usando para hacer tests en Mesa-Test
@@ -195,21 +200,21 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	@Override
 	public void truco(Jugador jugadorQueCanta) {
 		this.rondaActual.truco(jugadorQueCanta);
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Truco");
 		
 	}
 
 	@Override
 	public void retruco(Jugador jugadorQueCanta) {
 		this.rondaActual.retruco(jugadorQueCanta);
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Retruco");
 		
 	}
 
 	@Override
 	public void valeCuatro(Jugador jugadorQueCanta) {
 		this.rondaActual.valeCuatro(jugadorQueCanta);
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Vale Cuatro");
 	}
 	
 	/*************************************************
@@ -219,19 +224,19 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	@Override
 	public void envido(Jugador jugadorQueCanta) {
 		this.rondaActual.envido(jugadorQueCanta);	
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Envido");
 	}
 
 	@Override
 	public void realEnvido(Jugador jugadorQueCanta) {
 		this.rondaActual.realEnvido(jugadorQueCanta);
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Real Envido");
 	}
 
 	@Override
 	public void faltaEnvido(Jugador jugadorQueCanta) {
 		this.rondaActual.faltaEnvido(jugadorQueCanta);	
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Falta Envido");
 		
 	}
 
@@ -239,14 +244,15 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	public void cantarTantoDelEnvido(Jugador jugadorQueCanta) {
 		this.rondaActual.cantarTantoDelEnvido(jugadorQueCanta);	
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();	
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta, " Puntos Envido: " + jugadorQueCanta.puntajeEnvido() );
 	}
 	
 	
 	@Override
 	public void sonBuenas(Jugador jugadorQueCanta) {
 		this.rondaActual.sonBuenas(jugadorQueCanta);
-		this.notificarObservadores();
+		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
+		this.notificarObservadores(jugadorQueCanta,"Son Buenas");
 	}
 
 	/*************************************************
@@ -257,21 +263,21 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 	public void flor(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
 		this.rondaActual.flor(jugadorQueCanta);
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Flor");
 	}
 
 	@Override
 	public void contraFlor(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
 		this.rondaActual.contraFlor(jugadorQueCanta);
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Contra Flor");
 	}
 
 	@Override
 	public void contraFlorAResto(Jugador jugadorQueCanta) {
 		this.controlarSiSeJuegaConFlor();
 		this.rondaActual.contraFlorAResto(jugadorQueCanta);
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta,"Contra Flor a Resto");
 		
 	}
 
@@ -280,7 +286,7 @@ public class Mesa extends Observable implements CantosEnvido , CantosFlor , Cant
 		this.controlarSiSeJuegaConFlor();
 		this.rondaActual.cantarTantoDeLaFlor(jugadorQueCanta);
 		this.verificarLaPosibilidadDeUnaFinalizacionDeRondaODelJuego();
-		this.notificarObservadores();
+		this.notificarObservadores(jugadorQueCanta, " Puntos Flor: " + jugadorQueCanta.puntajeFlor() );
 	}
 
 	private void controlarSiSeJuegaConFlor() {
